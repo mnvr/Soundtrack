@@ -1,0 +1,471 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */; };
+		F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9661F19A2EC00BFA8ED /* ViewController.swift */; };
+		F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9681F19A2EC00BFA8ED /* Main.storyboard */; };
+		F94DD96C1F19A2EC00BFA8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */; };
+		F94DD96F1F19A2EC00BFA8ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */; };
+		F94DD9781F19A41000BFA8ED /* MN - Going Down.wav in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */; };
+		F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */; };
+		F9C597381F1CEA15000B1A8B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Logging.swift */; };
+		F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */; };
+		F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597411F1CEB90000B1A8B /* ViewController.swift */; };
+		F9C597441F1CEB90000B1A8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9C597431F1CEB90000B1A8B /* Assets.xcassets */; };
+		F9C597471F1CEB90000B1A8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C597451F1CEB90000B1A8B /* Main.storyboard */; };
+		F9C5974C1F1CECC0000B1A8B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Logging.swift */; };
+		F9C5974D1F1CEE88000B1A8B /* MN - Going Down.wav in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F94DD9661F19A2EC00BFA8ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F94DD9691F19A2EC00BFA8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F94DD96E1F19A2EC00BFA8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F94DD9701F19A2EC00BFA8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "MN - Going Down.wav"; path = "Media/MN - Going Down.wav"; sourceTree = "<group>"; };
+		F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
+		F9C597371F1CEA15000B1A8B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F9C597411F1CEB90000B1A8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F9C597431F1CEB90000B1A8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F9C597461F1CEB90000B1A8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F9C597481F1CEB90000B1A8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F94DD95E1F19A2EC00BFA8ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9C5973A1F1CEB90000B1A8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F94DD9581F19A2EC00BFA8ED = {
+			isa = PBXGroup;
+			children = (
+				F9C597361F1CE9E3000B1A8B /* Soundtrack */,
+				F94DD9631F19A2EC00BFA8ED /* Soundtrack iOS */,
+				F9C5973E1F1CEB90000B1A8B /* Soundtrack macOS */,
+				F94DD9761F19A3F200BFA8ED /* Media */,
+				F94DD9621F19A2EC00BFA8ED /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F94DD9621F19A2EC00BFA8ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */,
+				F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F94DD9631F19A2EC00BFA8ED /* Soundtrack iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */,
+				F94DD9661F19A2EC00BFA8ED /* ViewController.swift */,
+				F94DD9681F19A2EC00BFA8ED /* Main.storyboard */,
+				F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */,
+				F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */,
+				F94DD9701F19A2EC00BFA8ED /* Info.plist */,
+				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
+			);
+			name = "Soundtrack iOS";
+			path = "Soundtrack-iOS";
+			sourceTree = "<group>";
+		};
+		F94DD9761F19A3F200BFA8ED /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
+		F9C597361F1CE9E3000B1A8B /* Soundtrack */ = {
+			isa = PBXGroup;
+			children = (
+				F9C597371F1CEA15000B1A8B /* Logging.swift */,
+			);
+			path = Soundtrack;
+			sourceTree = "<group>";
+		};
+		F9C5973E1F1CEB90000B1A8B /* Soundtrack macOS */ = {
+			isa = PBXGroup;
+			children = (
+				F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */,
+				F9C597411F1CEB90000B1A8B /* ViewController.swift */,
+				F9C597431F1CEB90000B1A8B /* Assets.xcassets */,
+				F9C597451F1CEB90000B1A8B /* Main.storyboard */,
+				F9C597481F1CEB90000B1A8B /* Info.plist */,
+			);
+			name = "Soundtrack macOS";
+			path = "Soundtrack-macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F94DD9601F19A2EC00BFA8ED /* Soundtrack iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack iOS" */;
+			buildPhases = (
+				F94DD95D1F19A2EC00BFA8ED /* Sources */,
+				F94DD95E1F19A2EC00BFA8ED /* Frameworks */,
+				F94DD95F1F19A2EC00BFA8ED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Soundtrack iOS";
+			productName = Soundtrack;
+			productReference = F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F9C5973C1F1CEB90000B1A8B /* Soundtrack macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack macOS" */;
+			buildPhases = (
+				F9C597391F1CEB90000B1A8B /* Sources */,
+				F9C5973A1F1CEB90000B1A8B /* Frameworks */,
+				F9C5973B1F1CEB90000B1A8B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Soundtrack macOS";
+			productName = "Soundtrack macOS";
+			productReference = F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F94DD9591F19A2EC00BFA8ED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Manav Rathi";
+				TargetAttributes = {
+					F94DD9601F19A2EC00BFA8ED = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 4682UAMU7T;
+						ProvisioningStyle = Automatic;
+					};
+					F9C5973C1F1CEB90000B1A8B = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 4682UAMU7T;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F94DD95C1F19A2EC00BFA8ED /* Build configuration list for PBXProject "Soundtrack" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F94DD9581F19A2EC00BFA8ED;
+			productRefGroup = F94DD9621F19A2EC00BFA8ED /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F94DD9601F19A2EC00BFA8ED /* Soundtrack iOS */,
+				F9C5973C1F1CEB90000B1A8B /* Soundtrack macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F94DD95F1F19A2EC00BFA8ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F94DD96F1F19A2EC00BFA8ED /* LaunchScreen.storyboard in Resources */,
+				F94DD96C1F19A2EC00BFA8ED /* Assets.xcassets in Resources */,
+				F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */,
+				F94DD9781F19A41000BFA8ED /* MN - Going Down.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9C5973B1F1CEB90000B1A8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9C597441F1CEB90000B1A8B /* Assets.xcassets in Resources */,
+				F9C597471F1CEB90000B1A8B /* Main.storyboard in Resources */,
+				F9C5974D1F1CEE88000B1A8B /* MN - Going Down.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F94DD95D1F19A2EC00BFA8ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */,
+				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
+				F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */,
+				F9C597381F1CEA15000B1A8B /* Logging.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9C597391F1CEB90000B1A8B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */,
+				F9C5974C1F1CECC0000B1A8B /* Logging.swift in Sources */,
+				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F94DD9681F19A2EC00BFA8ED /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F94DD9691F19A2EC00BFA8ED /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F94DD96E1F19A2EC00BFA8ED /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		F9C597451F1CEB90000B1A8B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F9C597461F1CEB90000B1A8B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F94DD9711F19A2EC00BFA8ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F94DD9721F19A2EC00BFA8ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F94DD9741F19A2EC00BFA8ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 4682UAMU7T;
+				INFOPLIST_FILE = "Soundtrack-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		F94DD9751F19A2EC00BFA8ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 4682UAMU7T;
+				INFOPLIST_FILE = "Soundtrack-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		F9C5974A1F1CEB90000B1A8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 4682UAMU7T;
+				INFOPLIST_FILE = "Soundtrack-macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		F9C5974B1F1CEB90000B1A8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 4682UAMU7T;
+				INFOPLIST_FILE = "Soundtrack-macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F94DD95C1F19A2EC00BFA8ED /* Build configuration list for PBXProject "Soundtrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F94DD9711F19A2EC00BFA8ED /* Debug */,
+				F94DD9721F19A2EC00BFA8ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F94DD9741F19A2EC00BFA8ED /* Debug */,
+				F94DD9751F19A2EC00BFA8ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9C5974A1F1CEB90000B1A8B /* Debug */,
+				F9C5974B1F1CEB90000B1A8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F94DD9591F19A2EC00BFA8ED /* Project object */;
+}
