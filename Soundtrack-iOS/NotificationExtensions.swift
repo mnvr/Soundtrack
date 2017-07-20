@@ -1,5 +1,5 @@
 // NotificationExtensions.swift
-// Soundtrack
+// Soundtrack-iOS
 //
 // Copyright (c) 2017 Manav Rathi
 //

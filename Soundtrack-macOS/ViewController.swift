@@ -1,5 +1,5 @@
 // ViewController.swift
-// Soundtrack macOS
+// Soundtrack-macOS
 //
 // Copyright (c) 2017 Manav Rathi
 //
@@ -11,12 +11,17 @@ import AVKit
 
 class ViewController: NSViewController {
 
+    var audioPlayer: AVAudioPlayer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let playerView = AVPlayerView(frame: self.view.bounds)
-        let url = Bundle.main.url(forResource: "MN - Going Down.wav", withExtension: nil)
-        playerView.player = AVPlayer(url: url!)
+        audioPlayer = AudioPlayer.shared.makeExampleLocalPlayer()
+        audioPlayer?.play()
+        if let url = audioPlayer?.url {
+            playerView.player = AVPlayer(url: url)
+        }
         self.view.addSubview(playerView)
     }
 

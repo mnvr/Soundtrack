@@ -1,5 +1,5 @@
 // ViewController.swift
-// Soundtrack iOS
+// Soundtrack-iOS
 //
 // Copyright (c) 2017 Manav Rathi
 //
@@ -54,13 +54,13 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
 
     private func indicatePlaybackReadiness() {
         DispatchQueue.main.async { [weak self] in
-            self?.playButton.setTitle("Play", for: .normal)
+            self?.playButton.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
         }
     }
 
     private func indicatePlayback() {
         DispatchQueue.main.async { [weak self] in
-            self?.playButton.setTitle("Pause", for: .normal)
+            self?.playButton.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
         }
     }
 
@@ -269,24 +269,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     // MARK: Player
 
     private func makePlayer() -> AVAudioPlayer? {
-        let fileName = "MN - Going Down.wav"
-        let shouldLoop = true
-
-        let player: AVAudioPlayer
-        guard let exampleFileURL = Bundle.main.url(forResource: fileName, withExtension: nil) else {
-            logWarning("Could not locate \(fileName) in the main bundle")
-            return nil
-        }
-        do {
-            player = try AVAudioPlayer(contentsOf: exampleFileURL)
-        } catch {
-            logWarning("Could not create audio player: \(error)")
-            return nil
-        }
-        player.delegate = self
-        if shouldLoop {
-            player.numberOfLoops = -1
-        }
+        let player = AudioPlayer.shared.makeExampleLocalPlayer()
+        player?.delegate = self
         return player
     }
 

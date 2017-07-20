@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F92B47B01F2079B400FAFAA3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */; };
+		F92B47B11F2079B400FAFAA3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */; };
+		F92B47B31F207A9400FAFAA3 /* UIApplicationStateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */; };
 		F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */; };
 		F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9661F19A2EC00BFA8ED /* ViewController.swift */; };
 		F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9681F19A2EC00BFA8ED /* Main.storyboard */; };
@@ -24,7 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationStateExtensions.swift; sourceTree = "<group>"; };
+		F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F94DD9661F19A2EC00BFA8ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F94DD9691F19A2EC00BFA8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -34,7 +39,7 @@
 		F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "MN - Going Down.wav"; path = "Media/MN - Going Down.wav"; sourceTree = "<group>"; };
 		F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		F9C597371F1CEA15000B1A8B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
-		F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundtrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9C597411F1CEB90000B1A8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F9C597431F1CEB90000B1A8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -64,8 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				F9C597361F1CE9E3000B1A8B /* Soundtrack */,
-				F94DD9631F19A2EC00BFA8ED /* Soundtrack iOS */,
-				F9C5973E1F1CEB90000B1A8B /* Soundtrack macOS */,
+				F94DD9631F19A2EC00BFA8ED /* Soundtrack-iOS */,
+				F9C5973E1F1CEB90000B1A8B /* Soundtrack-macOS */,
 				F94DD9761F19A3F200BFA8ED /* Media */,
 				F94DD9621F19A2EC00BFA8ED /* Products */,
 			);
@@ -74,13 +79,13 @@
 		F94DD9621F19A2EC00BFA8ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */,
-				F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */,
+				F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */,
+				F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F94DD9631F19A2EC00BFA8ED /* Soundtrack iOS */ = {
+		F94DD9631F19A2EC00BFA8ED /* Soundtrack-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */,
@@ -90,8 +95,8 @@
 				F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */,
 				F94DD9701F19A2EC00BFA8ED /* Info.plist */,
 				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
+				F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */,
 			);
-			name = "Soundtrack iOS";
 			path = "Soundtrack-iOS";
 			sourceTree = "<group>";
 		};
@@ -107,11 +112,12 @@
 			isa = PBXGroup;
 			children = (
 				F9C597371F1CEA15000B1A8B /* Logging.swift */,
+				F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */,
 			);
 			path = Soundtrack;
 			sourceTree = "<group>";
 		};
-		F9C5973E1F1CEB90000B1A8B /* Soundtrack macOS */ = {
+		F9C5973E1F1CEB90000B1A8B /* Soundtrack-macOS */ = {
 			isa = PBXGroup;
 			children = (
 				F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */,
@@ -120,16 +126,15 @@
 				F9C597451F1CEB90000B1A8B /* Main.storyboard */,
 				F9C597481F1CEB90000B1A8B /* Info.plist */,
 			);
-			name = "Soundtrack macOS";
 			path = "Soundtrack-macOS";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F94DD9601F19A2EC00BFA8ED /* Soundtrack iOS */ = {
+		F94DD9601F19A2EC00BFA8ED /* Soundtrack-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack iOS" */;
+			buildConfigurationList = F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack-iOS" */;
 			buildPhases = (
 				F94DD95D1F19A2EC00BFA8ED /* Sources */,
 				F94DD95E1F19A2EC00BFA8ED /* Frameworks */,
@@ -139,14 +144,14 @@
 			);
 			dependencies = (
 			);
-			name = "Soundtrack iOS";
+			name = "Soundtrack-iOS";
 			productName = Soundtrack;
-			productReference = F94DD9611F19A2EC00BFA8ED /* Soundtrack iOS.app */;
+			productReference = F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F9C5973C1F1CEB90000B1A8B /* Soundtrack macOS */ = {
+		F9C5973C1F1CEB90000B1A8B /* Soundtrack-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack macOS" */;
+			buildConfigurationList = F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack-macOS" */;
 			buildPhases = (
 				F9C597391F1CEB90000B1A8B /* Sources */,
 				F9C5973A1F1CEB90000B1A8B /* Frameworks */,
@@ -156,9 +161,9 @@
 			);
 			dependencies = (
 			);
-			name = "Soundtrack macOS";
-			productName = "Soundtrack macOS";
-			productReference = F9C5973D1F1CEB90000B1A8B /* Soundtrack macOS.app */;
+			name = "Soundtrack-macOS";
+			productName = Soundtrack;
+			productReference = F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -196,8 +201,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F94DD9601F19A2EC00BFA8ED /* Soundtrack iOS */,
-				F9C5973C1F1CEB90000B1A8B /* Soundtrack macOS */,
+				F94DD9601F19A2EC00BFA8ED /* Soundtrack-iOS */,
+				F9C5973C1F1CEB90000B1A8B /* Soundtrack-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -233,6 +238,8 @@
 			files = (
 				F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */,
 				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
+				F92B47B31F207A9400FAFAA3 /* UIApplicationStateExtensions.swift in Sources */,
+				F92B47B01F2079B400FAFAA3 /* AudioPlayer.swift in Sources */,
 				F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */,
 				F9C597381F1CEA15000B1A8B /* Logging.swift in Sources */,
 			);
@@ -245,6 +252,7 @@
 				F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */,
 				F9C5974C1F1CECC0000B1A8B /* Logging.swift in Sources */,
 				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
+				F92B47B11F2079B400FAFAA3 /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,7 +420,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Soundtrack;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 3.0;
 			};
@@ -429,7 +437,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Soundtrack;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 3.0;
 			};
@@ -447,7 +455,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack iOS" */ = {
+		F94DD9731F19A2EC00BFA8ED /* Build configuration list for PBXNativeTarget "Soundtrack-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F94DD9741F19A2EC00BFA8ED /* Debug */,
@@ -456,7 +464,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack macOS" */ = {
+		F9C597491F1CEB90000B1A8B /* Build configuration list for PBXNativeTarget "Soundtrack-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9C5974A1F1CEB90000B1A8B /* Debug */,

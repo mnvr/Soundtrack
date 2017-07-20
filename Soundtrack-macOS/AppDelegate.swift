@@ -1,5 +1,5 @@
 // AppDelegate.swift
-// Soundtrack macOS
+// Soundtrack-macOS
 //
 // Copyright (c) 2017 Manav Rathi
 //
