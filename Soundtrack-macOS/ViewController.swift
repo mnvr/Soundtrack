@@ -1,9 +1,11 @@
-// ViewController.swift
-// Soundtrack-macOS
 //
-// Copyright (c) 2017 Manav Rathi
+//  ViewController.swift
+//  Soundtrack-macOS
 //
-// Apache License, Version 2.0 (see LICENSE)
+//  Copyright (c) 2017 Manav Rathi
+//
+//  Apache License, Version 2.0 (see LICENSE)
+//
 
 import Cocoa
 import AVFoundation

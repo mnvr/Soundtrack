@@ -1,9 +1,11 @@
-// AudioPlayer.swift
-// Soundtrack
 //
-// Copyright (c) 2017 Manav Rathi
+//  AudioPlayer.swift
+//  Soundtrack
 //
-// Apache License, Version 2.0 (see LICENSE)
+//  Copyright (c) 2017 Manav Rathi
+//
+//  Apache License, Version 2.0 (see LICENSE)
+//
 
 import AVFoundation
 

@@ -1,9 +1,11 @@
-// AppDelegate.swift
-// Soundtrack-iOS
 //
-// Copyright (c) 2017 Manav Rathi
+//  AppDelegate.swift
+//  Soundtrack-iOS
 //
-// Apache License, Version 2.0 (see LICENSE)
+//  Copyright (c) 2017 Manav Rathi
+//
+//  Apache License, Version 2.0 (see LICENSE)
+//
 
 import UIKit
 
