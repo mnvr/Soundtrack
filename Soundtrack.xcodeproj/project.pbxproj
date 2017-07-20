@@ -29,6 +29,7 @@
 /* Begin PBXFileReference section */
 		F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationStateExtensions.swift; sourceTree = "<group>"; };
+		F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundtrack.entitlements; sourceTree = "<group>"; };
 		F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F94DD9661F19A2EC00BFA8ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 				F9C597431F1CEB90000B1A8B /* Assets.xcassets */,
 				F9C597451F1CEB90000B1A8B /* Main.storyboard */,
 				F9C597481F1CEB90000B1A8B /* Info.plist */,
+				F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */,
 			);
 			path = "Soundtrack-macOS";
 			sourceTree = "<group>";
@@ -185,6 +187,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 4682UAMU7T;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -413,7 +420,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = "Soundtrack-macOS/Soundtrack.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4682UAMU7T;
 				INFOPLIST_FILE = "Soundtrack-macOS/Info.plist";
@@ -430,7 +438,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_ENTITLEMENTS = "Soundtrack-macOS/Soundtrack.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4682UAMU7T;
 				INFOPLIST_FILE = "Soundtrack-macOS/Info.plist";
