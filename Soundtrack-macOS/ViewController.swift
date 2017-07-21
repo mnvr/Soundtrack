@@ -20,7 +20,7 @@ class ViewController: NSViewController {
 
         let playerView = AVPlayerView(frame: self.view.bounds)
         audioPlayer = AudioPlayer.shared.makeExampleLocalPlayer()
-        audioPlayer?.play()
+        //audioPlayer?.play()
         if let url = audioPlayer?.url {
             playerView.player = AVPlayer(url: url)
         }
