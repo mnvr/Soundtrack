@@ -104,14 +104,10 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
         // running on a device (iPhone 4S, iOS 9.3) that they are instead
         // delivered on a thread named "AVAudioSession Notify Thread".
 
-        let observe = {
-            NotificationCenter.default.addObserver(self, selector: $1, name: $0, object: nil)
-        }
-
-        observe(.AVAudioSessionInterruption, #selector(audioSessionInterruption(_:)))
-        observe(.AVAudioSessionRouteChange, #selector(audioSessionRouteChange(_:)))
-        observe(.AVAudioSessionMediaServicesWereLost, #selector(audioSessionMediaServicesWereLost(_:)))
-        observe(.AVAudioSessionMediaServicesWereReset, #selector(audioSessionMediaServicesWereReset(_:)))
+        observe(.AVAudioSessionInterruption, with: #selector(audioSessionInterruption(_:)))
+        observe(.AVAudioSessionRouteChange, with: #selector(audioSessionRouteChange(_:)))
+        observe(.AVAudioSessionMediaServicesWereLost, with: #selector(audioSessionMediaServicesWereLost(_:)))
+        observe(.AVAudioSessionMediaServicesWereReset, with: #selector(audioSessionMediaServicesWereReset(_:)))
     }
 
     private func configureAudioSession(_ audioSession: AVAudioSession) {
