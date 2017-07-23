@@ -27,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F91E384D1F24D5CE00E6E332 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F92B47AF1F2079B400FAFAA3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationStateExtensions.swift; sourceTree = "<group>"; };
 		F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundtrack.entitlements; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		F94DD9581F19A2EC00BFA8ED = {
 			isa = PBXGroup;
 			children = (
+				F91E384D1F24D5CE00E6E332 /* LICENSE */,
 				F9C597361F1CE9E3000B1A8B /* Soundtrack */,
 				F94DD9631F19A2EC00BFA8ED /* Soundtrack-iOS */,
 				F9C5973E1F1CEB90000B1A8B /* Soundtrack-macOS */,
