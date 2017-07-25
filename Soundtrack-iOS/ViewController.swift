@@ -9,28 +9,33 @@ import AVFoundation
 
 class ViewController: UIViewController, AudioSessionDelegate, AVAudioPlayerDelegate {
 
-    // MARK: Properties
-
-    @IBOutlet weak var playButton: UIButton!
-
     let audioSession = AudioSession.shared
     var player: AVAudioPlayer?
 
+    var useRadio: Bool = false
+
     var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
 
-    // MARK: User Interface
+    // MARK: UI
+
+    @IBOutlet weak var playButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        prepareForPlayback()
+        prepareToPlay()
     }
 
-    @IBAction func queryAudioSession() {
-        audioSession.query()
+    @IBAction func changeSource(_ sender: UISegmentedControl) {
+        useRadio = sender.selectedSegmentIndex == 1
+        logInfo("User changed source; use radio = \(useRadio)")
+
+        if let player = player, player.isPlaying {
+            pause()
+        }
     }
 
-    @IBAction func togglePlayback() {
+    @IBAction func togglePlayPause() {
         logInfo("User toggled playback state")
 
         guard let player = player else {
@@ -46,13 +51,17 @@ class ViewController: UIViewController, AudioSessionDelegate, AVAudioPlayerDeleg
 
     private func indicatePlaybackReadiness() {
         DispatchQueue.main.async { [weak self] in
-            self?.playButton.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
+            if let button = self?.playButton {
+                button.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
+            }
         }
     }
 
     private func indicatePlayback() {
         DispatchQueue.main.async { [weak self] in
-            self?.playButton.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
+            if let button = self?.playButton {
+                button.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
+            }
         }
     }
 
@@ -78,7 +87,7 @@ class ViewController: UIViewController, AudioSessionDelegate, AVAudioPlayerDeleg
     }
 
     func audioSessionMediaServicesWereReset(_ audioSession: AudioSession) {
-        prepareForPlayback()
+        prepareToPlay()
     }
 
     private func playAfterResumingFromInterruption() {
@@ -149,7 +158,7 @@ class ViewController: UIViewController, AudioSessionDelegate, AVAudioPlayerDeleg
 
     // MARK: Event Handlers
 
-    private func prepareForPlayback() {
+    private func prepareToPlay() {
         logWarningIf(player != nil)
 
         audioSession.configure()

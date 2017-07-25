@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Soundtrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Soundtrack_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -22,28 +22,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vb2-oN-5mq">
-                                <rect key="frame" x="116" y="300" width="143" height="68"/>
+                                <rect key="frame" x="173" y="319" width="30" height="30"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMh-R1-PCK">
-                                        <rect key="frame" x="0.0" y="0.0" width="143" height="30"/>
-                                        <state key="normal" title="Query Audio Session"/>
-                                        <connections>
-                                            <action selector="queryAudioSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="yev-UK-YYe"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-ti-8ml">
-                                        <rect key="frame" x="0.0" y="38" width="143" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                         <state key="normal" title="Play"/>
                                         <connections>
-                                            <action selector="togglePlayback" destination="BYZ-38-t0r" eventType="touchUpInside" id="MGD-Nb-Tby"/>
+                                            <action selector="togglePlayPause" destination="BYZ-38-t0r" eventType="touchUpInside" id="tTq-MV-JgQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PBs-wR-9RC">
+                                <rect key="frame" x="138" y="28" width="99" height="29"/>
+                                <segments>
+                                    <segment title="Loop"/>
+                                    <segment title="Radio"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeSource:" destination="BYZ-38-t0r" eventType="valueChanged" id="bFb-ID-gec"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="vb2-oN-5mq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Q21-le-BMR"/>
+                            <constraint firstItem="PBs-wR-9RC" firstAttribute="centerX" secondItem="vb2-oN-5mq" secondAttribute="centerX" id="euw-Ju-Hx8"/>
+                            <constraint firstItem="PBs-wR-9RC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="fD5-qX-hAB"/>
                             <constraint firstItem="vb2-oN-5mq" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="lvU-4V-dEH"/>
                         </constraints>
                     </view>

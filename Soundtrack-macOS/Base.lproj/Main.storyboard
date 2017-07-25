@@ -655,7 +655,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack_macOS" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
@@ -681,11 +681,45 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Soundtrack_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Soundtrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3MT-LX-vDr">
+                                <rect key="frame" x="184" y="227" width="113" height="24"/>
+                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="m4m-R4-Eb9">
+                                    <font key="font" metaFont="system"/>
+                                    <segments>
+                                        <segment label="Loop" selected="YES"/>
+                                        <segment label="Radio" tag="1"/>
+                                    </segments>
+                                </segmentedCell>
+                                <connections>
+                                    <action selector="changeSource:" target="XfG-lQ-9wD" id="532-KP-mRr"/>
+                                </connections>
+                            </segmentedControl>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
+                                <rect key="frame" x="208" y="117" width="66" height="32"/>
+                                <buttonCell key="cell" type="push" title="Play" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="togglePlayPause:" target="XfG-lQ-9wD" id="ofR-GT-OtC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="3MT-LX-vDr" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="EQa-Lx-8cg"/>
+                            <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerX" secondItem="3MT-LX-vDr" secondAttribute="centerX" id="MSH-NJ-HH0"/>
+                            <constraint firstItem="3MT-LX-vDr" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" symbolic="YES" id="Sr7-ma-nPk"/>
+                            <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="jbV-Wn-9Zu"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="playButton" destination="1hl-U6-7Wv" id="jFu-Gw-FHq"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
