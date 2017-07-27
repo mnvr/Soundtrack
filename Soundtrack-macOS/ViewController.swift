@@ -5,11 +5,10 @@
 //
 
 import Cocoa
-import AVFoundation
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, AudioPlayerDelegate {
 
-    var player: AVAudioPlayer?
+    var player: AudioPlayer!
     var useRadio: Bool = false
 
     // MARK: UI
@@ -19,121 +18,67 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // FIXME: This blocks the main queue during launch
-        prepareToPlay()
+        indicatePlaybackUnavailability()
+
+        player = AudioPlayer.makeExampleFilePlayer(delegate: self)
     }
 
     @IBAction func changeSource(_ sender: NSSegmentedControl) {
         useRadio = sender.selectedSegment == 1
         logInfo("User changed source; use radio = \(useRadio)")
 
-        if let player = player, player.isPlaying {
-            pause()
-        }
+        player.pauseIfPlaying()
     }
 
     @IBAction func togglePlayPause(_ sender: NSButton) {
         logInfo("User toggled playback state")
+        player.togglePlayPause()
+    }
 
-        guard let player = player else {
-            return logWarning()
-        }
+    // MARK: UI Playback State
 
-        if player.isPlaying {
-            pause()
-        } else {
-            play()
-        }
+    private func indicatePlaybackUnavailability() {
+        playButton.title = NSLocalizedString("Loading", comment: "")
+        playButton.isEnabled = false
+    }
+
+    private func indicatePlaybackAvailability() {
+        indicatePlaybackReadiness()
+        playButton.isEnabled = true
     }
 
     private func indicatePlaybackReadiness() {
-        DispatchQueue.main.async { [weak self] in
-            if let button = self?.playButton {
-                button.title = NSLocalizedString("Play", comment: "")
-            }
-        }
+        playButton.title = NSLocalizedString("Play", comment: "")
     }
 
     private func indicatePlayback() {
+        playButton.title = NSLocalizedString("Pause", comment: "")
+    }
+
+    // MARK: AudioPlayer Delegate
+
+    func audioPlayerDidBecomeAvailable(_ audioPlayer: AudioPlayer) {
         DispatchQueue.main.async { [weak self] in
-            if let button = self?.playButton {
-                button.title = NSLocalizedString("Pause", comment: "")
-            }
+            self?.indicatePlaybackAvailability()
         }
     }
 
-    // MARK: Player
-
-    private func makePlayer() -> AVAudioPlayer? {
-        let player = AudioPlayer.shared.makeExampleLocalPlayer()
-        //player?.delegate = self
-        return player
-    }
-    /*
-     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-     logInfo("\(player) decode error: \(error)")
-     }
-
-     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-     logInfo("\(player) finished playing (successfully = \(flag))")
-     playbackEnded()
-     }
-     */
-
-    // MARK: Event Handlers
-
-    private func prepareToPlay() {
-        logWarningIf(player != nil)
-
-        player = makePlayer()
-        guard let player = player else {
-            return
+    func audioPlayerDidBecomeUnavailable(_ audioPlayer: AudioPlayer) {
+        DispatchQueue.main.async { [weak self] in
+            self?.indicatePlaybackUnavailability()
         }
-        logInfo("Created \(player)")
-
-        guard player.prepareToPlay() else {
-            self.player = nil
-            return logWarning("\(player) failed to prepare for playback")
-        }
-
-        // FIXME: Conditionally enable this on macOS 10.12
-        //logInfo("Registering for receiving remote control events")
-        //UIApplication.shared.beginReceivingRemoteControlEvents()
-
-        indicatePlaybackReadiness()
     }
 
-    private func play() {
-        guard let player = player else {
-            return logWarning()
+    func audioPlayerDidPlay(_ audioPlayer: AudioPlayer) {
+        DispatchQueue.main.async { [weak self] in
+            self?.indicatePlayback()
         }
-
-        logWarningIf(player.isPlaying)
-
-        guard player.play() else {
-            return logWarning("Could not start playback")
-        }
-
-        indicatePlayback()
-
-        logInfo("Begin playback")
     }
 
-    private func pause() {
-        guard let player = player else {
-            return logWarning()
+    func audioPlayerDidPause(_ audioPlayer: AudioPlayer) {
+        DispatchQueue.main.async { [weak self] in
+            self?.indicatePlaybackReadiness()
         }
-
-        logWarningIf(!player.isPlaying)
-
-        player.pause()
-
-        playbackEnded()
     }
 
-    private func playbackEnded() {
-        indicatePlaybackReadiness()
-
-        logInfo("Ended playback")
-    }
 }
