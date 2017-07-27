@@ -4,24 +4,27 @@
 //  Apache License, v2.0
 //
 
+import UIKit
 import AVFoundation
 
-class AudioSession: NSObject {
+class AudioSessionIOS: NSObject, AudioSession {
+
+    static let shared = AudioSessionIOS()
 
     let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
 
     var delegate: AudioSessionDelegate?
 
-    var wasPlaying: Bool = false
-
-    static let shared = AudioSession()
+    private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+    private var wasPlaying: Bool = false
 
     override init() {
         super.init()
+        
         observeAudioSessionNotifications()
     }
 
-    func query(abridged: Bool = false) {
+    private func query(abridged: Bool = false) {
         logInfo("Querying \(audioSession)...")
 
         logInfo("Current audio session category: \(audioSession.category)")
@@ -73,34 +76,72 @@ class AudioSession: NSObject {
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
         } catch {
-            logWarning("Could not set audio session category: \(error)")
-            return
+            return logWarning("Could not set audio session category: \(error)")
         }
+
+        logInfo("Registering for receiving remote control events")
+        UIApplication.shared.beginReceivingRemoteControlEvents()
 
         logInfo("Re-querying audio session post configuration...")
         query()
     }
 
     func activate() -> Bool {
+        beginBackgroundTask()
+
         do {
             try audioSession.setActive(true)
         } catch {
+            endBackgroundTask()
             logWarning(error)
             return false
         }
+
+        wasPlaying = true
+
         return true
     }
 
     func deactivate() -> Bool {
+        wasPlaying = false
+
+        defer {
+            endBackgroundTask()
+        }
+
         do {
             try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
         } catch {
             logWarning(error)
             return false
         }
+
         return true
     }
 
+    // MARK: Background Task
+
+    private func beginBackgroundTask() {
+        if backgroundTaskIdentifier != nil {
+            return logWarning()
+        }
+        backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            logWarning("We were asked to relinquish our background task before playback ended")
+        })
+        logInfo("Did begin background task with identifier \(backgroundTaskIdentifier)")
+    }
+
+    private func endBackgroundTask() {
+        guard let backgroundTaskIdentifier = backgroundTaskIdentifier else {
+            return logWarning()
+        }
+
+        logInfo("Will end background task with identifier \(backgroundTaskIdentifier)")
+        UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
+
+        self.backgroundTaskIdentifier = nil
+    }
+    
     // MARK: Audio Session Notifications
 
     func audioSessionInterruption(_ notification: Notification) {
@@ -114,6 +155,7 @@ class AudioSession: NSObject {
         case .began:
             logInfo("Interruption began")
             if wasPlaying {
+                endBackgroundTask()
                 delegate?.audioSessionWasInterrupted(self)
             }
 
@@ -128,7 +170,7 @@ class AudioSession: NSObject {
             if options.contains(.shouldResume) {
                 logInfo("Interruption options mention that playback should resume")
                 if wasPlaying {
-                    delegate?.audioSessionPlaybackMayResume(self)
+                    delegate?.audioSessionPlaybackShouldResume(self)
                 }
             }
         }
@@ -154,6 +196,8 @@ class AudioSession: NSObject {
 
     func audioSessionMediaServicesWereLost(_ notification: Notification) {
         logInfo("Media services were lost: \(notification)")
+        wasPlaying = false
+        endBackgroundTask()
         delegate?.audioSessionMediaServicesWereLost(self)
     }
 
@@ -161,16 +205,5 @@ class AudioSession: NSObject {
         logInfo("Media services were restarted: \(notification)")
         delegate?.audioSessionMediaServicesWereReset(self)
     }
-
-}
-
-protocol AudioSessionDelegate {
-
-    func audioSessionWasInterrupted(_ audioSession: AudioSession)
-    func audioSessionPlaybackShouldPause(_ audioSession: AudioSession)
-    func audioSessionPlaybackMayResume(_ audioSession: AudioSession)
-
-    func audioSessionMediaServicesWereLost(_ audioSession: AudioSession)
-    func audioSessionMediaServicesWereReset(_ audioSession: AudioSession)
 
 }

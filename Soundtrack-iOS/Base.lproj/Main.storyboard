@@ -28,7 +28,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                         <state key="normal" title="Play"/>
                                         <connections>
-                                            <action selector="togglePlayPause" destination="BYZ-38-t0r" eventType="touchUpInside" id="tTq-MV-JgQ"/>
+                                            <action selector="togglePlayPause:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8uG-ab-2Yb"/>
                                         </connections>
                                     </button>
                                 </subviews>

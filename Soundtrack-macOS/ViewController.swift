@@ -8,7 +8,9 @@ import Cocoa
 
 class ViewController: NSViewController, AudioPlayerDelegate {
 
+    let session = AudioSessionMacOS.shared
     var player: AudioPlayer!
+
     var useRadio: Bool = false
 
     // MARK: UI
@@ -20,7 +22,7 @@ class ViewController: NSViewController, AudioPlayerDelegate {
 
         indicatePlaybackUnavailability()
 
-        player = AudioPlayer.makeExampleFilePlayer(delegate: self)
+        player = AudioPlayer.makeExampleFilePlayer(session: session, delegate: self)
     }
 
     @IBAction func changeSource(_ sender: NSSegmentedControl) {
