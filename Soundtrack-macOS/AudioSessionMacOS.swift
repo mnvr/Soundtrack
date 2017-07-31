@@ -8,7 +8,7 @@ class AudioSessionMacOS: AudioSession {
 
     static let shared = AudioSessionMacOS()
 
-    var delegate: AudioSessionDelegate?
+    weak var delegate: AudioSessionDelegate?
 
     func configure() {
     }

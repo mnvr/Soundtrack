@@ -13,7 +13,7 @@ class AudioSessionIOS: NSObject, AudioSession {
 
     let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
 
-    var delegate: AudioSessionDelegate?
+    weak var delegate: AudioSessionDelegate?
 
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     private var wasPlaying: Bool = false

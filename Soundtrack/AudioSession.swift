@@ -16,7 +16,7 @@ protocol AudioSession {
 
 }
 
-protocol AudioSessionDelegate {
+protocol AudioSessionDelegate: class {
 
     func audioSessionWasInterrupted(_ audioSession: AudioSession)
     func audioSessionPlaybackShouldPause(_ audioSession: AudioSession)
