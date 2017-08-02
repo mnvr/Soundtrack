@@ -7,10 +7,10 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, AudioPlayerDelegate {
+class ViewController: UIViewController, PlaybackControllerDelegate {
 
     let session = AudioSessionIOS.shared
-    var player: AudioPlayer!
+    var playbackController: PlaybackController!
 
     var useRadio: Bool = false
 
@@ -23,19 +23,22 @@ class ViewController: UIViewController, AudioPlayerDelegate {
 
         indicatePlaybackUnavailability()
 
-        player = AudioPlayer.makeExampleFilePlayer(session: session, delegate: self)
+        let session = AudioSessionIOS.shared
+        playbackController = PlaybackController(session: session, delegate: self) {
+            return LocalAudioFilePlayer.makeExample()
+        }
     }
 
     @IBAction func changeSource(_ sender: UISegmentedControl) {
         useRadio = sender.selectedSegmentIndex == 1
         logInfo("User changed source; use radio = \(useRadio)")
 
-        player.pauseIfPlaying()
+        playbackController.pauseIfPlaying()
     }
 
     @IBAction func togglePlayPause(_ sender: UIButton) {
         logInfo("User toggled playback state")
-        player.togglePlayPause()
+        playbackController.togglePlayPause()
     }
 
     // MARK: UI Playback State
@@ -58,27 +61,27 @@ class ViewController: UIViewController, AudioPlayerDelegate {
         playButton.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
     }
 
-    // MARK: AudioPlayer Delegate
-
-    func audioPlayerDidBecomeAvailable(_ audioPlayer: AudioPlayer) {
+    // MARK: Playback Controller Delegate
+    
+    func playbackControllerDidBecomeAvailable(_ playbackController: PlaybackController) {
         DispatchQueue.main.async { [weak self] in
             self?.indicatePlaybackAvailability()
         }
     }
 
-    func audioPlayerDidBecomeUnavailable(_ audioPlayer: AudioPlayer) {
+    func playbackControllerDidBecomeUnavailable(_ playbackController: PlaybackController) {
         DispatchQueue.main.async { [weak self] in
             self?.indicatePlaybackUnavailability()
         }
     }
 
-    func audioPlayerDidPlay(_ audioPlayer: AudioPlayer) {
+    func playbackControllerDidPlay(_ playbackController: PlaybackController) {
         DispatchQueue.main.async { [weak self] in
             self?.indicatePlayback()
         }
     }
 
-    func audioPlayerDidPause(_ audioPlayer: AudioPlayer) {
+    func playbackControllerDidPause(_ playbackController: PlaybackController) {
         DispatchQueue.main.async { [weak self] in
             self?.indicatePlaybackReadiness()
         }
