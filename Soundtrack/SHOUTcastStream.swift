@@ -11,6 +11,8 @@ class SHOUTcastStream {
     let url: URL
     let expectedMimeType: String
 
+    weak var delegate: SHOUTcastStreamDelegate?
+
     private let queue = { () -> OperationQueue in
         var queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -21,11 +23,13 @@ class SHOUTcastStream {
 
     private let session: URLSession
 
-    private var dataTask: URLSessionDataTask?
-    private var streamTask: URLSessionStreamTask?
+    private var task: URLSessionDataTask?
 
     private var metadataInterval: Int?
     private var nextMetadataInterval: Int?
+
+    private var unprocessedMetadataCount: Int?
+    private var unprocessedMetadata: Data?
 
     init(url: URL, mimeType expectedMimeType: String) {
         self.url = url
@@ -50,26 +54,28 @@ class SHOUTcastStream {
     }
 
     private func connect_() {
-        if self.dataTask != nil || self.streamTask != nil {
+        if self.task != nil {
             print("Trying to connect to an stream with an existing task")
             disconnect_()
         }
 
         let task = session.dataTask(with: makeURLRequest())
-        self.dataTask = task
+        self.task = task
 
         task.resume()
         print("Created and resumed \(task) in \(session)")
     }
 
     private func disconnect_() {
-        let activeTask = streamTask
+        let activeTask = task
 
-        self.dataTask = nil
-        self.streamTask = nil
+        task = nil
 
-        self.metadataInterval = nil
-        self.nextMetadataInterval = nil
+        metadataInterval = nil
+        nextMetadataInterval = nil
+
+        unprocessedMetadataCount = nil
+        unprocessedMetadata = nil
 
         if let activeTask = activeTask {
             print("Cancelling \(activeTask)")
@@ -80,9 +86,8 @@ class SHOUTcastStream {
     }
 
     private func makeURLRequest() -> URLRequest {
-        let request = URLRequest(url: url)
-        // FIXME handle response
-        //request.setValue("1", forHTTPHeaderField: "icy-metadata")
+        var request = URLRequest(url: url)
+        request.setValue("1", forHTTPHeaderField: "icy-metadata")
         return request
     }
 
@@ -104,61 +109,180 @@ class SHOUTcastStream {
 
         let headers = httpResponse.allHeaderFields
 
-        if let string = headers["icy-metaint"] as? String, let int8 = Int8(string) {
-            metadataInterval = Int(int8) * 16
-            print("Metadata expected to be embedded every \(metadataInterval) bytes in the stream")
+        if let icyMetaInt = extractIntValue(fromHTTPHeaders: headers, forKey: "icy-metaint") {
+            metadataInterval = icyMetaInt
+            nextMetadataInterval = icyMetaInt
+            print("Metadata expected to be embedded every \(icyMetaInt) bytes in the stream")
         } else {
-            print("The stream contains no embedded metadata. Track titles will not be available")
+            print("The stream contains no embedded metadata; track titles will not be available")
         }
 
         return true
     }
 
-    private func imbibe(_ streamTask: URLSessionStreamTask) {
-        self.dataTask = nil
-        self.streamTask = streamTask
-
-        enqueueRead()
+    private func extractIntValue(fromHTTPHeaders headers: [AnyHashable: Any], forKey key: String) -> Int? {
+        guard let value: Any = headers[key] else {
+            return nil
+        }
+        let string = String(describing: value)
+        return Int(string)
     }
 
-    private func enqueueRead() {
-        guard let streamTask = streamTask else { return }
-
-        if streamTask.state == .canceling || streamTask.state == .completed {
-            print("Skipping read \(streamTask) in state \(streamTask.state.rawValue)")
+    private func process(data: Data) {
+        guard !data.isEmpty else {
+            print("Unexpected empty data")
             return
         }
 
-        let length = nextReadSize()
+        guard let nextMetadataInterval = nextMetadataInterval else {
+            return emit(data: data)
+        }
 
-        print("Enqueuing read of \(length) bytes on \(streamTask)")
+        print("Next metadata chunk expected after \(nextMetadataInterval) bytes")
 
-        streamTask.readData(ofMinLength: length, maxLength: 4 * length, timeout: 0) { [weak self] (data, atEOF, error) in
-            if let data = data {
-                self?.process(data)
-            }
+        if let unprocessedMetadata = unprocessedMetadata {
+            self.unprocessedMetadata = nil
+            return process(metadata: unprocessedMetadata + data)
+        }
 
-            if let error = error {
-                print("Read error: \(error)")
-            } else if atEOF {
-                print("Read encountered EOF")
-            } else {
-                self?.enqueueRead()
-            }
+        assert(unprocessedMetadataCount == nil)
+
+        if nextMetadataInterval >= data.count {
+            self.nextMetadataInterval = nextMetadataInterval - data.count
+            return emit(data: data)
+        }
+
+        if nextMetadataInterval == 0 {
+            return process(lengthPrefixedMetadata: data)
+        }
+
+        let (head, optionalTail) = safeSplit(data, at: nextMetadataInterval)
+
+        self.nextMetadataInterval = 0
+
+        emit(data: head)
+
+        if let tail = optionalTail {
+            process(lengthPrefixedMetadata: tail)
         }
     }
 
-    private func process(_ data: Data) {
-        print("Read \(data.count) bytes")
+    private func process(lengthPrefixedMetadata: Data) {
+        guard !lengthPrefixedMetadata.isEmpty else {
+            print("Unexpected empty length-prefixed metadata")
+            return
+        }
+
+        assert(unprocessedMetadata == nil)
+        assert(unprocessedMetadataCount == nil)
+        assert(nextMetadataInterval == 0)
+
+        let (lengthByte, optionalRemainder) = safeSplit(lengthPrefixedMetadata, at: 1)
+
+        let metadataLength = Int(lengthByte[0]) * 16
+
+        if metadataLength == 0 {
+            print("Empty metadata")
+
+            nextMetadataInterval = metadataInterval!
+
+            if let remainder = optionalRemainder {
+                return process(data: remainder)
+            } else {
+                return
+            }
+        }
+
+        unprocessedMetadataCount = metadataLength
+        if let remainder = optionalRemainder {
+            process(metadata: remainder)
+        }
+
     }
 
-    private func nextReadSize() -> Int {
-        // FIXME
-        return 1024 // AAC frame size?
+    private func process(metadata: Data) {
+        guard !metadata.isEmpty else {
+            print("Unexpected empty metadata")
+            return
+        }
+
+        assert(unprocessedMetadata == nil)
+        assert(nextMetadataInterval == 0)
+
+        guard let unprocessedMetadataCount = unprocessedMetadataCount else {
+            print("Trying to process metadata without a corresponding length")
+            return
+        }
+
+        if metadata.count < unprocessedMetadataCount {
+            unprocessedMetadata = metadata
+            return
+        }
+
+        let (onlyMetadata, optionalRemainder) = safeSplit(metadata, at: unprocessedMetadataCount)
+
+        self.unprocessedMetadataCount = nil
+        nextMetadataInterval = metadataInterval!
+
+        emit(metadata: onlyMetadata)
+
+        if let remainder = optionalRemainder {
+            process(data: remainder)
+        }
+    }
+
+    // Optimize?
+    private func safeSplit(_ data: Data, at index: Data.Index) -> (Data, Data?) {
+        let nsdata = data as NSData
+        var head: Data
+        var tail: Data?
+
+        if index >= data.count {
+            head = nsdata.subdata(with: NSMakeRange(0, data.count))
+        } else {
+            head = nsdata.subdata(with: NSMakeRange(0, index))
+            tail = nsdata.subdata(with: NSMakeRange(index, data.count - index))
+        }
+
+        return (head, tail)
+    }
+
+    private func emit(metadata: Data) {
+        guard let string = String(data: metadata, encoding: .utf8) else {
+            return
+        }
+
+        var title: String?
+
+        let singleQuote = CharacterSet(charactersIn: "'")
+
+        let trimmedString = string.trimmingCharacters(in: CharacterSet.whitespaces)
+        let fields = trimmedString.components(separatedBy: ";")
+        for field in fields {
+            let columns = field.components(separatedBy: "=")
+            if columns.count != 2 {
+                print("Ignoring unparseable field: \(field)")
+                continue
+            }
+            let (key, quotedValue) = (columns[0], columns[1])
+            let value = quotedValue.trimmingCharacters(in: singleQuote)
+            print("Parsed metadata: \(key) = [\(value)]")
+            if key == "StreamTitle" {
+                title = value
+            }
+        }
+
+        if let title = title {
+            delegate?.shoutcastStream(self, gotTitle: title)
+        }
+    }
+
+    private func emit(data: Data) {
+        delegate?.shoutcastStream(self, gotData: data)
     }
 
     private func endTask(_ task: URLSessionTask) {
-        if task == dataTask || task == streamTask {
+        if task == self.task {
             disconnect_()
         }
     }
@@ -168,52 +292,72 @@ class SHOUTcastStream {
         weak var stream: SHOUTcastStream?
 
         func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-            print("Did become invalid: \(session) became invalid with error \(error)")
+            print("Session did become invalid (\(session)) with error \(error)")
         }
 
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-            print("Did complete: \(task) completed with error \(error))")
+            if let error = error {
+                let nserror = error as NSError
+                if nserror.domain == NSURLErrorDomain, nserror.code == NSURLErrorCancelled {
+                    print("Cancelled \(task)")
+                } else {
+                    print("Completed \(task) with error \(error))")
+                }
+            } else {
+                print("Completed \(task)")
+            }
             stream?.endTask(task)
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-            print("Did receive response: \(dataTask) received \(response)")
+            print("Received response for \(dataTask): \(response)")
 
             if stream?.parse(response: response) == true {
-                completionHandler(.becomeStream)
+                completionHandler(.allow)
             } else {
+                print("Parsing of response headers failed; will cancel the task")
                 completionHandler(.cancel)
             }
         }
 
-        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
-            print("Did become: \(dataTask) became a \(streamTask)")
-            streamTask.closeWrite()
-            stream?.imbibe(streamTask)
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+            print("Received \(data.count) bytes for \(dataTask)")
+            stream?.process(data: data)
         }
 
     }
 
+}
+
+protocol SHOUTcastStreamDelegate: class {
+
+    func shoutcastStream(_ stream: SHOUTcastStream, gotTitle title: String)
+    func shoutcastStream(_ stream: SHOUTcastStream, gotData data: Data)
+
+}
+
+class StreamDelegate: SHOUTcastStreamDelegate {
+
+    func shoutcastStream(_ stream: SHOUTcastStream, gotTitle title: String) {
+        print("Got title: \(title)")
+    }
+
+    func shoutcastStream(_ stream: SHOUTcastStream, gotData data: Data) {
+        print("Got \(data.count) bytes")
+    }
+    
 }
 
 func testDrive(shoutcastServerEndpoint: String) {
     let url = URL(string: shoutcastServerEndpoint)!
     let aacMimeType = "audio/aac"
 
-    let stream: SHOUTcastStream? = SHOUTcastStream(url: url, mimeType: aacMimeType)
-    stream?.connect()
-
-    // API Bug
-    //
-    // NSURLSessionStreamTask cancel has no effect. The socket remains established.
-    //
-    // Reproducible on: macOS 10.11
-    //
-    // Someone else who also ran into the same thing: https://github.com/belkevich/stream-task
+    let stream: SHOUTcastStream = SHOUTcastStream(url: url, mimeType: aacMimeType)
+    let delegate = StreamDelegate()
+    stream.delegate = delegate
+    stream.connect()
 
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3.0) {
-        stream?.disconnect()
+        stream.disconnect()
     }
 }
-
-
