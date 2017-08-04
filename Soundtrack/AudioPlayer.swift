@@ -4,7 +4,7 @@
 //  Apache License, v2.0
 //
 
-protocol AudioPlayer {
+protocol AudioPlayer: class {
 
     func play() -> Bool
     func pause()

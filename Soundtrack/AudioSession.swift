@@ -6,13 +6,13 @@
 
 import Foundation
 
-protocol AudioSession {
-
-    var delegate: AudioSessionDelegate? { get set }
+protocol AudioSession: class {
 
     func configure()
     func activate() -> Bool
     func deactivate() -> Bool
+
+    var delegate: AudioSessionDelegate? { get set }
 
 }
 
