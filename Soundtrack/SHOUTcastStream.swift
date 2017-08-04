@@ -202,26 +202,29 @@ class SHOUTcastStream {
         let (onlyMetadata, remainder) = metadata.split(at: unprocessedMetadataCount)
         self.unprocessedMetadataCount = nil
         nextMetadataInterval = metadataInterval!
-        emit(metadata: onlyMetadata)
+        parse(metadata: onlyMetadata)
         process(data: remainder)
     }
 
-    private func emit(metadata: Data) {
+    private func parse(metadata: Data) {
         guard !metadata.isEmpty else {
             return
         }
 
-        guard let string = String(data: metadata, encoding: .utf8) else {
+        guard let paddedString = String(data: metadata, encoding: .utf8) else {
             return
         }
+
+        let string = paddedString.trimmingCharacters(in: CharacterSet(charactersIn: "\0 "))
+        log.debug("Raw metadata: [\(string)]")
 
         var title: String?
 
         let singleQuote = CharacterSet(charactersIn: "'")
-
-        let trimmedString = string.trimmingCharacters(in: CharacterSet.whitespaces)
-        let fields = trimmedString.components(separatedBy: ";")
-        for field in fields {
+        for field in string.components(separatedBy: ";") {
+            if field.isEmpty {
+                continue
+            }
             let columns = field.components(separatedBy: "=")
             if columns.count != 2 {
                 log.info("Ignoring unparseable field: \(field)")
@@ -230,11 +233,16 @@ class SHOUTcastStream {
             let (key, quotedValue) = (columns[0], columns[1])
             let value = quotedValue.trimmingCharacters(in: singleQuote)
             log.info("Parsed metadata: \(key) = [\(value)]")
+
             if key == "StreamTitle" {
                 title = value
             }
         }
 
+        emit(title: title)
+    }
+
+    private func emit(title: String?) {
         if let title = title {
             delegate?.shoutcastStream(self, gotTitle: title)
         }
