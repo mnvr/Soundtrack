@@ -19,6 +19,8 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        testConfiguration()
+
         indicatePlaybackUnavailability()
 
         let session = AudioSessionMacOS.shared
@@ -26,6 +28,24 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
             return LocalAudioFilePlayer.makeExample()
         }
     }
+
+    // WIP --
+
+    var shoutcastPlayer: SHOUTcastPlayer?
+
+    private func testConfiguration() {
+        observe(.ConfigurationDidChange, with: #selector(maybeTestConnection))
+        maybeTestConnection()
+    }
+
+    @objc private func maybeTestConnection() {
+        if let url = Configuration.shared.shoutcastURL, shoutcastPlayer == nil {
+            shoutcastPlayer = SHOUTcastPlayer(url: url)
+            shoutcastPlayer?.connect()
+        }
+    }
+
+    // WIP END --
 
     @IBAction func changeSource(_ sender: NSSegmentedControl) {
         useRadio = sender.selectedSegment == 1
