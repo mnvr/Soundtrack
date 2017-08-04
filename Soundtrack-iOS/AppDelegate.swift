@@ -14,42 +14,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: App Life Cycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        logInfo("Launch Options: \(launchOptions)")
-        logInfo("Application State: \(application.applicationState)")
-        logInfo("Note: All log message timestamps are in UTC")
+        log.info("Launch Options: \(launchOptions)")
+        log.info("Application State: \(application.applicationState)")
 
         if application.applicationState == .inactive {
-            logInfo("Application is launching into the foreground")
+            log.info("Application is launching into the foreground")
 
         } else if application.applicationState == .background {
-            logInfo("Application is launching into the background")
+            log.info("Application is launching into the background")
 
         } else {
-            logWarning("Unexpected application state \(application.applicationState) at launch")
+            log.warning("Unexpected application state \(application.applicationState) at launch")
         }
 
         return true
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        logInfo("Application State: \(application.applicationState)")
-        logWarningUnless(application.applicationState == .active)
+        log.info("Application State: \(application.applicationState)")
+        log.warningUnless(application.applicationState == .active)
 
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        logInfo("Application will transition to an inactive state")
+        log.info("Application will transition to an inactive state")
 
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        logInfo("Application State: \(application.applicationState)")
-        logWarningUnless(application.applicationState == .background)
+        log.info("Application State: \(application.applicationState)")
+        log.warningUnless(application.applicationState == .background)
 
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        logInfo("Application will transition to an inactive state")
+        log.info("Application will transition to an inactive state")
 
     }
 

@@ -31,13 +31,13 @@ class ViewController: UIViewController, PlaybackControllerDelegate {
 
     @IBAction func changeSource(_ sender: UISegmentedControl) {
         useRadio = sender.selectedSegmentIndex == 1
-        logInfo("User changed source; use radio = \(useRadio)")
+        log.info("User changed source; use radio = \(useRadio)")
 
         playbackController.pauseIfPlaying()
     }
 
     @IBAction func togglePlayPause(_ sender: UIButton) {
-        logInfo("User toggled playback state")
+        log.info("User toggled playback state")
         playbackController.togglePlayPause()
     }
 

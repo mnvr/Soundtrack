@@ -16,7 +16,7 @@ class LocalAudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
         do {
             player = try AVAudioPlayer(contentsOf: url)
         } catch {
-            logWarning("Could not create audio player: \(error)")
+            log.warning("Could not create audio player: \(error)")
             return nil
         }
 
@@ -25,7 +25,7 @@ class LocalAudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
         }
 
         if !player.prepareToPlay() {
-            logWarning("\(player) failed to prepare for playback")
+            log.warning("\(player) failed to prepare for playback")
             return nil
         }
 
@@ -49,11 +49,11 @@ class LocalAudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
     // MARK: Delegate
 
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        logInfo("\(player) decode error: \(error)")
+        log.info("\(player) decode error: \(error)")
     }
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        logInfo("\(player) finished playing (successfully = \(flag))")
+        log.info("\(player) finished playing (successfully = \(flag))")
         delegate?.audioPlayerDidStop(self, dueToError: flag)
     }
 }

@@ -85,7 +85,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         onQueuePrecondition()
 
         if player != nil {
-            return logWarning()
+            return log.warning()
         }
 
         session.configure()
@@ -95,10 +95,10 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         player?.delegate = self
 
         guard let player = player else {
-            return logWarning("Failed to create player")
+            return log.warning("Failed to create player")
         }
 
-        logInfo("Created \(player)")
+        log.info("Created \(player)")
 
         delegate?.playbackControllerDidBecomeAvailable(self)
     }
@@ -114,38 +114,38 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         onQueuePrecondition()
 
         guard let player = player else {
-            return logWarning()
+            return log.warning()
         }
 
         if player.isPlaying {
-            return logWarning()
+            return log.warning()
         }
 
         guard session.activate() else {
-            return logWarning()
+            return log.warning()
         }
 
         guard player.play() else {
             guard session.deactivate() else {
-                return logWarning()
+                return log.warning()
             }
-            return logWarning("Could not start playback")
+            return log.warning("Could not start playback")
         }
 
         isPlayingAccordingToUs = true
 
-        logInfo("Did begin playback")
+        log.info("Did begin playback")
 
         delegate?.playbackControllerDidPlay(self)
     }
 
     private func pause_() {
         guard let player = player else {
-            return logWarning()
+            return log.warning()
         }
 
         if !player.isPlaying {
-            return logWarning()
+            return log.warning()
         }
 
         player.pause()
@@ -158,10 +158,10 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
         isPlayingAccordingToUs = false
 
-        logInfo("Did end playback")
+        log.info("Did end playback")
 
         if !session.deactivate() {
-            logWarning()
+            log.warning()
         }
 
         delegate?.playbackControllerDidPause(self)
@@ -179,11 +179,11 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         onQueuePrecondition()
 
         guard let player = player else {
-            return logWarning()
+            return log.warning()
         }
 
         if player.isPlaying != isPlayingAccordingToUs {
-            logWarning("Playback out of sync (player.isPlaying = \(player.isPlaying), isPlayingAccordingToUs = \(isPlayingAccordingToUs)). We're probably going to trip on some assert soon.")
+            log.warning("Playback out of sync (player.isPlaying = \(player.isPlaying), isPlayingAccordingToUs = \(isPlayingAccordingToUs)). We're probably going to trip on some assert soon.")
         }
 
         if player.isPlaying {
@@ -196,7 +196,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
     // MARK: AudioPlayer Delegate
 
     func audioPlayerDidStop(_ audioPlayer: AudioPlayer, dueToError: Bool) {
-        logInfo("\(player) stopped (dueToError = \(dueToError))")
+        log.info("\(player) stopped (dueToError = \(dueToError))")
         unplay()
     }
 

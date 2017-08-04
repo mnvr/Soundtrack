@@ -25,38 +25,38 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     private func query(abridged: Bool = false) {
-        logInfo("Querying \(audioSession)...")
+        log.info("Querying \(audioSession)...")
 
-        logInfo("Current audio session category: \(audioSession.category)")
-        logInfo("Current audio session mode: \(audioSession.mode)")
-        logInfo("Audio session category options: \(audioSession.categoryOptions)")
+        log.info("Current audio session category: \(audioSession.category)")
+        log.info("Current audio session mode: \(audioSession.mode)")
+        log.info("Audio session category options: \(audioSession.categoryOptions)")
 
         if abridged {
             return
         }
 
-        logInfo("Current route: \(audioSession.currentRoute)")
+        log.info("Current route: \(audioSession.currentRoute)")
 
-        logInfo("Available output data sources for the current route: \(audioSession.outputDataSources)")
-        logInfo("Currently selected output data source: \(audioSession.outputDataSource)")
+        log.info("Available output data sources for the current route: \(audioSession.outputDataSources)")
+        log.info("Currently selected output data source: \(audioSession.outputDataSource)")
 
-        logInfo("Maximum number of output channels available for the current route: \(audioSession.maximumOutputNumberOfChannels)")
-        logInfo("Current number of output channels: \(audioSession.outputNumberOfChannels)")
+        log.info("Maximum number of output channels available for the current route: \(audioSession.maximumOutputNumberOfChannels)")
+        log.info("Current number of output channels: \(audioSession.outputNumberOfChannels)")
 
-        logInfo("System wide audio output volume set by the user: \(audioSession.outputVolume)")
+        log.info("System wide audio output volume set by the user: \(audioSession.outputVolume)")
 
         let ms = { Int($0 * 1000.0) }
-        logInfo("Output latency (ms): \(ms(audioSession.outputLatency))")
-        logInfo("I/O buffer duration (ms): \(ms(audioSession.ioBufferDuration))")
+        log.info("Output latency (ms): \(ms(audioSession.outputLatency))")
+        log.info("I/O buffer duration (ms): \(ms(audioSession.ioBufferDuration))")
 
-        logInfo("Sample rate (Hz): \(audioSession.sampleRate)")
+        log.info("Sample rate (Hz): \(audioSession.sampleRate)")
 
-        logInfo("Is another app currently playing (any) audio? \(audioSession.isOtherAudioPlaying)")
-        logInfo("Is another app currently playing (primary) audio? \(audioSession.secondaryAudioShouldBeSilencedHint)")
+        log.info("Is another app currently playing (any) audio? \(audioSession.isOtherAudioPlaying)")
+        log.info("Is another app currently playing (primary) audio? \(audioSession.secondaryAudioShouldBeSilencedHint)")
     }
 
     private func observeAudioSessionNotifications() {
-        logInfo("Attaching observers for audio session notifications")
+        log.info("Attaching observers for audio session notifications")
 
         // The documentation states that these notifications should be
         // delivered on the main thread. However, it was observed when
@@ -72,17 +72,17 @@ class AudioSessionIOS: NSObject, AudioSession {
     func configure() {
         query(abridged: true)
 
-        logInfo("Configuring \(audioSession) for music playback")
+        log.info("Configuring \(audioSession) for music playback")
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
         } catch {
-            return logWarning("Could not set audio session category: \(error)")
+            return log.warning("Could not set audio session category: \(error)")
         }
 
-        logInfo("Registering for receiving remote control events")
+        log.info("Registering for receiving remote control events")
         UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        logInfo("Re-querying audio session post configuration...")
+        log.info("Re-querying audio session post configuration...")
         query()
     }
 
@@ -93,7 +93,7 @@ class AudioSessionIOS: NSObject, AudioSession {
             try audioSession.setActive(true)
         } catch {
             endBackgroundTask()
-            logWarning(error)
+            log.warningerror)
             return false
         }
 
@@ -112,7 +112,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         do {
             try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
         } catch {
-            logWarning(error)
+            log.warningerror)
             return false
         }
 
@@ -123,20 +123,20 @@ class AudioSessionIOS: NSObject, AudioSession {
 
     private func beginBackgroundTask() {
         if backgroundTaskIdentifier != nil {
-            return logWarning()
+            return log.warning()
         }
         backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            logWarning("We were asked to relinquish our background task before playback ended")
+            log.warning("We were asked to relinquish our background task before playback ended")
         })
-        logInfo("Did begin background task with identifier \(backgroundTaskIdentifier)")
+        log.info("Did begin background task with identifier \(backgroundTaskIdentifier)")
     }
 
     private func endBackgroundTask() {
         guard let backgroundTaskIdentifier = backgroundTaskIdentifier else {
-            return logWarning()
+            return log.warning()
         }
 
-        logInfo("Will end background task with identifier \(backgroundTaskIdentifier)")
+        log.info("Will end background task with identifier \(backgroundTaskIdentifier)")
         UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
 
         self.backgroundTaskIdentifier = nil
@@ -145,30 +145,30 @@ class AudioSessionIOS: NSObject, AudioSession {
     // MARK: Audio Session Notifications
 
     func audioSessionInterruption(_ notification: Notification) {
-        logInfo("Audio session interruption: \(notification)")
+        log.info("Audio session interruption: \(notification)")
 
         guard let type: AVAudioSessionInterruptionType = notification.enumForKey( AVAudioSessionInterruptionTypeKey) else {
-            return logWarning()
+            return log.warning()
         }
 
         switch type {
         case .began:
-            logInfo("Interruption began")
+            log.info("Interruption began")
             if wasPlaying {
                 endBackgroundTask()
                 delegate?.audioSessionWasInterrupted(self)
             }
 
         case .ended:
-            logInfo("Interruption ended")
+            log.info("Interruption ended")
 
             guard let options: AVAudioSessionInterruptionOptions = notification.enumForKey(AVAudioSessionInterruptionOptionKey) else {
                 break
             }
 
-            logDebug("Interruption options: \(options)")
+            log.debug("Interruption options: \(options)")
             if options.contains(.shouldResume) {
-                logInfo("Interruption options mention that playback should resume")
+                log.info("Interruption options mention that playback should resume")
                 if wasPlaying {
                     delegate?.audioSessionPlaybackShouldResume(self)
                 }
@@ -177,15 +177,15 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     func audioSessionRouteChange(_ notification: Notification) {
-        logInfo("Audio route changed: \(notification)")
+        log.info("Audio route changed: \(notification)")
 
         if let reason: AVAudioSessionRouteChangeReason = notification.enumForKey(AVAudioSessionRouteChangeReasonKey) {
 
-            logDebug("Route change reason: \(reason.rawValue)")
+            log.debug("Route change reason: \(reason.rawValue)")
 
             if reason == .oldDeviceUnavailable {
                 // e.g. headset was unplugged.
-                logInfo("Route changed because old device became unavailable")
+                log.info("Route changed because old device became unavailable")
 
                 if wasPlaying {
                     delegate?.audioSessionPlaybackShouldPause(self)
@@ -195,14 +195,14 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     func audioSessionMediaServicesWereLost(_ notification: Notification) {
-        logInfo("Media services were lost: \(notification)")
+        log.info("Media services were lost: \(notification)")
         wasPlaying = false
         endBackgroundTask()
         delegate?.audioSessionMediaServicesWereLost(self)
     }
 
     func audioSessionMediaServicesWereReset(_ notification: Notification) {
-        logInfo("Media services were restarted: \(notification)")
+        log.info("Media services were restarted: \(notification)")
         delegate?.audioSessionMediaServicesWereReset(self)
     }
 

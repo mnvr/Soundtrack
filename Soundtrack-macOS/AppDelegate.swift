@@ -10,12 +10,11 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        logInfo("Launch notification: \(notification)")
-        logInfo("Note: All log message timestamps are in UTC")
+        log.info("Launch notification: \(notification)")
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        logInfo("Terminate notification: \(notification)")
+        log.info("Terminate notification: \(notification)")
     }
     
 }

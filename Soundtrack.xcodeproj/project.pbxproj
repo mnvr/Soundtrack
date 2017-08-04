@@ -39,12 +39,12 @@
 		F985E1821F29CDB20050285C /* AudioSessionMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */; };
 		F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
 		F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
-		F9C597381F1CEA15000B1A8B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Logging.swift */; };
+		F9C597381F1CEA15000B1A8B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Log.swift */; };
 		F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */; };
 		F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597411F1CEB90000B1A8B /* ViewController.swift */; };
 		F9C597441F1CEB90000B1A8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9C597431F1CEB90000B1A8B /* Assets.xcassets */; };
 		F9C597471F1CEB90000B1A8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C597451F1CEB90000B1A8B /* Main.storyboard */; };
-		F9C5974C1F1CECC0000B1A8B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Logging.swift */; };
+		F9C5974C1F1CECC0000B1A8B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Log.swift */; };
 		F9C5974D1F1CEE88000B1A8B /* MN - Going Down.wav in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9771F19A41000BFA8ED /* MN - Going Down.wav */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +74,7 @@
 		F985E17E1F2994D10050285C /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
 		F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionMacOS.swift; sourceTree = "<group>"; };
 		F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
-		F9C597371F1CEA15000B1A8B /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		F9C597371F1CEA15000B1A8B /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundtrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9C597411F1CEB90000B1A8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		F9C597361F1CE9E3000B1A8B /* Soundtrack */ = {
 			isa = PBXGroup;
 			children = (
-				F9C597371F1CEA15000B1A8B /* Logging.swift */,
+				F9C597371F1CEA15000B1A8B /* Log.swift */,
 				F90C3E031F302BFE009A3054 /* AudioPlayer.swift */,
 				F90C3E061F303026009A3054 /* LocalAudioFilePlayer.swift */,
 				F985E17E1F2994D10050285C /* AudioSession.swift */,
@@ -307,7 +307,7 @@
 				F90C3E041F302BFE009A3054 /* AudioPlayer.swift in Sources */,
 				F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */,
 				F9241FF51F32A82B001D56FD /* SHOUTcastStream.swift in Sources */,
-				F9C597381F1CEA15000B1A8B /* Logging.swift in Sources */,
+				F9C597381F1CEA15000B1A8B /* Log.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +320,7 @@
 				F905559E1F343042006FEAF5 /* OperationQueueExtensions.swift in Sources */,
 				F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
 				F90C3E081F303026009A3054 /* LocalAudioFilePlayer.swift in Sources */,
-				F9C5974C1F1CECC0000B1A8B /* Logging.swift in Sources */,
+				F9C5974C1F1CECC0000B1A8B /* Log.swift in Sources */,
 				F90C3E051F302BFE009A3054 /* AudioPlayer.swift in Sources */,
 				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
 				F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,

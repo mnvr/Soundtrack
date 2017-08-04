@@ -7,11 +7,13 @@
 import UIKit
 
 extension UIApplicationState: CustomStringConvertible {
-    public var description: String {
+
+    var description: String {
         switch self {
         case .active: return "Active"
         case .inactive: return "Inactive"
         case .background: return "Background"
         }
     }
+
 }

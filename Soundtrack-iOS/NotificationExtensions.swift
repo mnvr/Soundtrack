@@ -10,7 +10,7 @@ extension Notification {
 
     /// Extract an enum from the notification's user info dictionary.
 
-    public func enumForKey<E: RawRepresentable>(_ key: String) -> E? {
+    func enumForKey<E: RawRepresentable>(_ key: String) -> E? {
         guard
             let userInfo = userInfo,
             let value = userInfo[key],

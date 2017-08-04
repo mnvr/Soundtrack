@@ -50,8 +50,10 @@ class SHOUTcastStream {
     }
 
     private func connect_() {
+        log.info("Connecting to \(url)")
+
         if self.task != nil {
-            logWarning("Trying to connect to an stream with an existing task")
+            log.warning("Trying to connect to an stream with an existing task")
             disconnect_()
         }
 
@@ -59,7 +61,7 @@ class SHOUTcastStream {
         self.task = task
 
         task.resume()
-        logInfo("Created and resumed \(task) in \(session)")
+        log.info("Created and resumed \(task) in \(session)")
     }
 
     private func disconnect_() {
@@ -75,12 +77,14 @@ class SHOUTcastStream {
 
         if let activeTask = activeTask {
             if activeTask.state != .completed {
-                logInfo("Cancelling \(activeTask)")
+                log.info("Cancelling \(activeTask)")
                 activeTask.cancel()
             }
         } else {
-            logWarning("Trying to disconnect a stream without an existing task")
+            log.warning("Trying to disconnect a stream without an existing task")
         }
+
+        log.info("Disconnected from \(url)")
     }
 
     private func makeURLRequest() -> URLRequest {
@@ -91,17 +95,17 @@ class SHOUTcastStream {
 
     private func parse(response: URLResponse) -> Bool {
         guard response.mimeType == expectedMimeType else {
-            logInfo("Unexpected MIME type '\(response.mimeType)' received (we were expecting '\(expectedMimeType)')")
+            log.info("Unexpected MIME type '\(response.mimeType)' received (we were expecting '\(expectedMimeType)')")
             return false
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            logInfo("Unexpected \(response) when expecting a HTTP response")
+            log.info("Unexpected \(response) when expecting a HTTP response")
             return false
         }
 
         guard httpResponse.statusCode == 200 else {
-            logInfo("Unexpected HTTP response status \(httpResponse.statusCode)")
+            log.info("Unexpected HTTP response status \(httpResponse.statusCode)")
             return false
         }
 
@@ -110,9 +114,9 @@ class SHOUTcastStream {
         if let icyMetaInt = extractIntValue(fromHTTPHeaders: headers, forKey: "icy-metaint") {
             metadataInterval = icyMetaInt
             nextMetadataInterval = icyMetaInt
-            logInfo("Metadata expected to be embedded every \(icyMetaInt) bytes in the stream")
+            log.info("Metadata expected to be embedded every \(icyMetaInt) bytes in the stream")
         } else {
-            logInfo("The stream contains no embedded metadata; track titles will not be available")
+            log.info("The stream contains no embedded metadata; track titles will not be available")
         }
 
         return true
@@ -135,7 +139,7 @@ class SHOUTcastStream {
             return emit(data: data)
         }
 
-        logDebug("Next metadata chunk expected after \(nextMetadataInterval) bytes")
+        log.trace("Next metadata chunk expected after \(nextMetadataInterval) bytes")
 
         if let unprocessedMetadata = unprocessedMetadata {
             self.unprocessedMetadata = nil
@@ -186,7 +190,7 @@ class SHOUTcastStream {
         assert(nextMetadataInterval == 0)
 
         guard let unprocessedMetadataCount = unprocessedMetadataCount else {
-            logWarning("Trying to process metadata without a corresponding length")
+            log.warning("Trying to process metadata without a corresponding length")
             return
         }
 
@@ -220,12 +224,12 @@ class SHOUTcastStream {
         for field in fields {
             let columns = field.components(separatedBy: "=")
             if columns.count != 2 {
-                logInfo("Ignoring unparseable field: \(field)")
+                log.info("Ignoring unparseable field: \(field)")
                 continue
             }
             let (key, quotedValue) = (columns[0], columns[1])
             let value = quotedValue.trimmingCharacters(in: singleQuote)
-            logInfo("Parsed metadata: \(key) = [\(value)]")
+            log.info("Parsed metadata: \(key) = [\(value)]")
             if key == "StreamTitle" {
                 title = value
             }
@@ -253,36 +257,36 @@ class SHOUTcastStream {
         weak var stream: SHOUTcastStream?
 
         func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-            logInfo("Session did become invalid (\(session)) with error \(error)")
+            log.info("Session did become invalid (\(session)) with error \(error)")
         }
 
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
             if let error = error {
                 let nserror = error as NSError
                 if nserror.domain == NSURLErrorDomain, nserror.code == NSURLErrorCancelled {
-                    logInfo("Cancelled \(task)")
+                    log.info("Cancelled \(task)")
                 } else {
-                    logInfo("Completed \(task) with error \(error))")
+                    log.info("Completed \(task) with error \(error))")
                 }
             } else {
-                logInfo("Completed \(task)")
+                log.info("Completed \(task)")
             }
             stream?.endTask(task)
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-            logInfo("Received response for \(dataTask): \(response)")
+            log.info("Received response for \(dataTask): \(response)")
 
             if stream?.parse(response: response) == true {
                 completionHandler(.allow)
             } else {
-                logInfo("Parsing of response headers failed; will cancel the task")
+                log.info("Parsing of response headers failed; will cancel the task")
                 completionHandler(.cancel)
             }
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            logDebug("Received \(data.count) bytes for \(dataTask)")
+            log.trace("Received \(data.count) bytes for \(dataTask)")
             stream?.process(data: data)
         }
 

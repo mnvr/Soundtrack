@@ -46,12 +46,12 @@ class Configuration {
         // FIXME Retry on network errors
         URLSession.shared.dataTask(with: csvURL) { [weak self] (data, response, error) in
             if let error = error {
-                logInfo("Failed to update configuration from \(self?.csvURL); response = \(response); error = \(error)")
+                log.info("Failed to update configuration from \(self?.csvURL); response = \(response); error = \(error)")
             } else {
                 if let data = data, let string = String(data: data, encoding: .utf8) {
                     self?.update(with: string)
                 } else {
-                    logInfo("Skipping unexpected data when updating configuration from \(self?.csvURL); response = \(response); data = \(data)")
+                    log.info("Skipping unexpected data when updating configuration from \(self?.csvURL); response = \(response); data = \(data)")
                 }
             }
         }.resume()
@@ -66,23 +66,23 @@ class Configuration {
             }
             let columns = line.components(separatedBy: ",")
             if columns.count != 2 {
-                logInfo("Ignoring unexpected line [\(line)]")
+                log.info("Ignoring unexpected line [\(line)]")
                 continue
             }
             let (key, value) = (columns[0], columns[1])
-            logInfo("Received configuration item - [\(key)] = [\(value)]")
+            log.info("Received configuration item - [\(key)] = [\(value)]")
 
             if key == "shoutcastURL" {
                 if let url = URL(string: value) {
                     result.append(url)
                 } else {
-                    logInfo("Ignoring malformed URL string [\(value)]")
+                    log.info("Ignoring malformed URL string [\(value)]")
                 }
             }
         }
 
         if !result.isEmpty {
-            logInfo("Updating SHOUTcast URLs to \(result)")
+            log.info("Updating SHOUTcast URLs to \(result)")
             shoutcastURLs = result
         }
 

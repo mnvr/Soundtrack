@@ -9,11 +9,11 @@ import Foundation
 class StreamDelegate: SHOUTcastStreamDelegate {
 
     func shoutcastStream(_ stream: SHOUTcastStream, gotTitle title: String) {
-        logInfo("Got title: \(title)")
+        log.info("Got title: \(title)")
     }
 
     func shoutcastStream(_ stream: SHOUTcastStream, gotData data: Data) {
-        logInfo("Got \(data.count) bytes")
+        log.info("Got \(data.count) bytes")
     }
 
 }
