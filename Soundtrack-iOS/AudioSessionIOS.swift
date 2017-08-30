@@ -24,35 +24,18 @@ class AudioSessionIOS: NSObject, AudioSession {
         observeAudioSessionNotifications()
     }
 
-    private func query(abridged: Bool = false) {
-        log.info("Querying \(audioSession)...")
-
-        log.info("Current audio session category: \(audioSession.category)")
-        log.info("Current audio session mode: \(audioSession.mode)")
-        log.info("Audio session category options: \(audioSession.categoryOptions)")
-
-        if abridged {
-            return
-        }
-
-        log.info("Current route: \(audioSession.currentRoute)")
-
-        log.info("Available output data sources for the current route: \(audioSession.outputDataSources)")
-        log.info("Currently selected output data source: \(audioSession.outputDataSource)")
-
-        log.info("Maximum number of output channels available for the current route: \(audioSession.maximumOutputNumberOfChannels)")
-        log.info("Current number of output channels: \(audioSession.outputNumberOfChannels)")
-
-        log.info("System wide audio output volume set by the user: \(audioSession.outputVolume)")
-
+    private func printInfo() {
         let ms = { Int($0 * 1000.0) }
-        log.info("Output latency (ms): \(ms(audioSession.outputLatency))")
-        log.info("I/O buffer duration (ms): \(ms(audioSession.ioBufferDuration))")
 
-        log.info("Sample rate (Hz): \(audioSession.sampleRate)")
-
-        log.info("Is another app currently playing (any) audio? \(audioSession.isOtherAudioPlaying)")
-        log.info("Is another app currently playing (primary) audio? \(audioSession.secondaryAudioShouldBeSilencedHint)")
+        log.info("Querying \(audioSession):")
+        log.info("\tCategory: \(audioSession.category) [Options = \(audioSession.categoryOptions)]")
+        log.info("\tMode: \(audioSession.mode)")
+        log.info("\tCurrent Route: \(audioSession.currentRoute)")
+        log.info("\tOutput Channels: \(audioSession.outputNumberOfChannels) [max \(audioSession.maximumOutputNumberOfChannels)]")
+        log.info("\tVolume: \(audioSession.outputVolume)")
+        log.info("\tOutput Latency: \(ms(audioSession.outputLatency)) ms")
+        log.info("\tI/O Buffer: \(ms(audioSession.ioBufferDuration)) ms")
+        log.info("\tSample Rate: \(audioSession.sampleRate) hz")
     }
 
     private func observeAudioSessionNotifications() {
@@ -70,8 +53,6 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     func configure() {
-        query(abridged: true)
-
         log.info("Configuring \(audioSession) for music playback")
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
@@ -79,11 +60,10 @@ class AudioSessionIOS: NSObject, AudioSession {
             return log.warning("Could not set audio session category: \(error)")
         }
 
+        printInfo()
+
         log.info("Registering for receiving remote control events")
         UIApplication.shared.beginReceivingRemoteControlEvents()
-
-        log.info("Re-querying audio session post configuration...")
-        query()
     }
 
     func activate() -> Bool {
