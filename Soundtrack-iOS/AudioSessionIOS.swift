@@ -93,7 +93,7 @@ class AudioSessionIOS: NSObject, AudioSession {
             try audioSession.setActive(true)
         } catch {
             endBackgroundTask()
-            log.warningerror)
+            log.warning(error)
             return false
         }
 
@@ -112,7 +112,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         do {
             try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
         } catch {
-            log.warningerror)
+            log.warning(error)
             return false
         }
 
