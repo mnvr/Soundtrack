@@ -6,7 +6,7 @@
 
 import AVFoundation
 
-class LocalAudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
+class AudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
 
     weak var delegate: AudioPlayerDelegate?
 
@@ -56,20 +56,4 @@ class LocalAudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
         log.info("\(player) finished playing (successfully = \(flag))")
         delegate?.audioPlayerDidStop(self, dueToError: flag)
     }
-}
-
-extension LocalAudioFilePlayer {
-
-    private static func exampleFileURL() -> URL {
-        let fileName = "MN - Going Down.wav"
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: nil) else {
-            fatalError("Could not locate \(fileName) in the main bundle")
-        }
-        return url
-    }
-
-    static func makeExample() -> AudioPlayer? {
-        return LocalAudioFilePlayer(url: exampleFileURL(), loop: true)
-    }
-
 }

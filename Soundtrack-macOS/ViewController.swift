@@ -25,7 +25,7 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
 
         let session = AudioSessionMacOS.shared
         playbackController = PlaybackController(session: session, delegate: self) {
-            return LocalAudioFilePlayer.makeExample()
+            return AudioFilePlayer.makeDemo()
         }
     }
 
