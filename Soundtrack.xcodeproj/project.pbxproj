@@ -26,7 +26,6 @@
 		F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */; };
 		F92B47B01F2079B400FAFAA3 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */; };
 		F92B47B11F2079B400FAFAA3 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */; };
-		F92B47B31F207A9400FAFAA3 /* UIApplicationStateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */; };
 		F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */; };
 		F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9661F19A2EC00BFA8ED /* ViewController.swift */; };
 		F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9681F19A2EC00BFA8ED /* Main.storyboard */; };
@@ -60,7 +59,6 @@
 		F9241FF71F3327C4001D56FD /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
-		F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationStateExtensions.swift; sourceTree = "<group>"; };
 		F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundtrack.entitlements; sourceTree = "<group>"; };
 		F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,12 +126,11 @@
 				F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */,
 				F94DD9661F19A2EC00BFA8ED /* ViewController.swift */,
 				F91EBFDF1F26D4880046E642 /* AudioSessionIOS.swift */,
+				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
 				F94DD9681F19A2EC00BFA8ED /* Main.storyboard */,
 				F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */,
 				F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */,
 				F94DD9701F19A2EC00BFA8ED /* Info.plist */,
-				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
-				F92B47B21F207A9400FAFAA3 /* UIApplicationStateExtensions.swift */,
 			);
 			path = "Soundtrack-iOS";
 			sourceTree = "<group>";
@@ -297,7 +294,6 @@
 				F90C3E071F303026009A3054 /* LocalAudioFilePlayer.swift in Sources */,
 				F91E42EB1F34A39B00A003E2 /* SHOUTcastPlayer.swift in Sources */,
 				F985E17F1F2994D10050285C /* AudioSession.swift in Sources */,
-				F92B47B31F207A9400FAFAA3 /* UIApplicationStateExtensions.swift in Sources */,
 				F91EBFE01F26D4880046E642 /* AudioSessionIOS.swift in Sources */,
 				F92B47B01F2079B400FAFAA3 /* PlaybackController.swift in Sources */,
 				F9241FF81F3327C4001D56FD /* Configuration.swift in Sources */,

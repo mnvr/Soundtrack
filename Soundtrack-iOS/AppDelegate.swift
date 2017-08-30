@@ -15,41 +15,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         log.info("Launch Options: \(launchOptions)")
-        log.info("Application State: \(application.applicationState)")
 
         if application.applicationState == .inactive {
             log.info("Application is launching into the foreground")
-
         } else if application.applicationState == .background {
             log.info("Application is launching into the background")
-
-        } else {
-            log.warning("Unexpected application state \(application.applicationState) at launch")
         }
 
         return true
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        log.info("Application State: \(application.applicationState)")
-        log.warningUnless(application.applicationState == .active)
-
+        log.info("Application did become active")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        log.info("Application will transition to an inactive state")
-
+        log.info("Application will resign active")
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        log.info("Application State: \(application.applicationState)")
-        log.warningUnless(application.applicationState == .background)
-
+        log.info("Application did enter background")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        log.info("Application will transition to an inactive state")
-
+        log.info("Application will enter foreground")
     }
 
 }
