@@ -195,8 +195,8 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
     // MARK: AudioPlayer Delegate
 
-    func audioPlayerDidStop(_ audioPlayer: AudioPlayer, dueToError: Bool) {
-        log.info("\(player) stopped (dueToError = \(dueToError))")
+    func audioPlayerDidStop(_ audioPlayer: AudioPlayer) {
+        log.info("\(player) stopped")
         unplay()
     }
 

@@ -54,6 +54,6 @@ class AudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         log.info("\(player) finished playing (successfully = \(flag))")
-        delegate?.audioPlayerDidStop(self, dueToError: flag)
+        delegate?.audioPlayerDidStop(self)
     }
 }

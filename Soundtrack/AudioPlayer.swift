@@ -17,6 +17,6 @@ protocol AudioPlayer: class {
 
 protocol AudioPlayerDelegate: class {
 
-    func audioPlayerDidStop(_ audioPlayer: AudioPlayer, dueToError: Bool)
+    func audioPlayerDidStop(_ audioPlayer: AudioPlayer)
 
 }

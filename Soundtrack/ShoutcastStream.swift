@@ -6,14 +6,34 @@
 
 import Foundation
 
-class SHOUTcastStream {
+// A SHOUTcast endpoint is an HTTP endpoint.
+//
+// - SHOUTcast specific HTTP headers are prefixed with "icy" (I Can Yell).
+//
+// - The HTTP response body contains the raw audio data, whose MIME type
+//   specified by the "Content-Type" header of the HTTP response.
+//
+// - You can get the server to embed titles by sending it the
+//
+//       "icy-metadata": 1
+//
+//   HTTP header in the request. The server will then respond with the
+//   "icy-metaint" header in the response, which tell the client how many
+//   bytes of data to read from the beginning of the stream before it can
+//   expect the beginning of the metadata.
+//
+//   The first byte of the metadata contains the length of the metadata
+//   (divided by 16). The rest of the metadata contains the title, right
+//   padded by spaces or nulls if necessary.
+
+class ShoutcastStream {
 
     let url: URL
     let expectedMimeType: String
 
-    weak var delegate: SHOUTcastStreamDelegate?
+    weak var delegate: ShoutcastStreamDelegate?
 
-    private let queue = OperationQueue.serial
+    private let queue: OperationQueue
 
     private let configuration = URLSessionConfiguration.default
 
@@ -27,9 +47,15 @@ class SHOUTcastStream {
     private var unprocessedMetadataCount: Int?
     private var unprocessedMetadata: Data?
 
-    init(url: URL, mimeType expectedMimeType: String) {
+    /// - Parameter queue: A serial operation queue which is used to serialize
+    ///   the internal functioning of the stream object (this allows the
+    ///   stream's public methods to be invoked from any execution context).
+    ///   The delegate methods will also be invoked on this queue.
+
+    init(url: URL, mimeType expectedMimeType: String, queue: OperationQueue = OperationQueue.serial) {
         self.url = url
         self.expectedMimeType = expectedMimeType
+        self.queue = queue
 
         let sessionDelegate = SessionDelegate()
         session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: queue)
@@ -64,6 +90,10 @@ class SHOUTcastStream {
         log.info("Created and resumed \(task) in \(session)")
     }
 
+    private func didConnect() {
+        delegate?.shoutcastStreamDidConnect(self)
+    }
+
     private func disconnect_() {
         let activeTask = task
 
@@ -85,6 +115,8 @@ class SHOUTcastStream {
         }
 
         log.info("Disconnected from \(url)")
+
+        delegate?.shoutcastStreamDidDisconnect(self)
     }
 
     private func makeURLRequest() -> URLRequest {
@@ -262,7 +294,24 @@ class SHOUTcastStream {
 
     class SessionDelegate: NSObject, URLSessionDataDelegate {
 
-        weak var stream: SHOUTcastStream?
+        weak var stream: ShoutcastStream?
+
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+            log.info("Received response for \(dataTask): \(response)")
+
+            if stream?.parse(response: response) == true {
+                stream?.didConnect()
+                completionHandler(.allow)
+            } else {
+                log.info("Parsing of response headers failed; will cancel the task")
+                completionHandler(.cancel)
+            }
+        }
+
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+            log.trace("Received \(data.count) bytes for \(dataTask)")
+            stream?.process(data: data)
+        }
 
         func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
             log.info("Session did become invalid (\(session)) with error \(error)")
@@ -281,30 +330,16 @@ class SHOUTcastStream {
             }
             stream?.endTask(task)
         }
-
-        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-            log.info("Received response for \(dataTask): \(response)")
-
-            if stream?.parse(response: response) == true {
-                completionHandler(.allow)
-            } else {
-                log.info("Parsing of response headers failed; will cancel the task")
-                completionHandler(.cancel)
-            }
-        }
-
-        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            log.trace("Received \(data.count) bytes for \(dataTask)")
-            stream?.process(data: data)
-        }
-
     }
 
 }
 
-protocol SHOUTcastStreamDelegate: class {
+protocol ShoutcastStreamDelegate: class {
 
-    func shoutcastStream(_ stream: SHOUTcastStream, gotTitle title: String)
-    func shoutcastStream(_ stream: SHOUTcastStream, gotData data: Data)
+    func shoutcastStreamDidConnect(_ stream: ShoutcastStream)
+    func shoutcastStreamDidDisconnect(_ stream: ShoutcastStream)
+
+    func shoutcastStream(_ stream: ShoutcastStream, gotTitle title: String)
+    func shoutcastStream(_ stream: ShoutcastStream, gotData data: Data)
 
 }

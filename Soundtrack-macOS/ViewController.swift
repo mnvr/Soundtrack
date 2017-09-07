@@ -19,19 +19,21 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        testConfiguration()
-
         indicatePlaybackUnavailability()
 
-        let session = AudioSessionMacOS.shared
+
+        testConfiguration()
+
+        /*
         playbackController = PlaybackController(session: session, delegate: self) {
             return AudioFilePlayer.makeDemo()
         }
+         */
     }
 
     // WIP --
 
-    var shoutcastPlayer: SHOUTcastPlayer?
+    //var shoutcastPlayer: SHOUTcastPlayer?
 
     private func testConfiguration() {
         observe(.ConfigurationDidChange, with: #selector(maybeTestConnection))
@@ -39,9 +41,14 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
     }
 
     @objc private func maybeTestConnection() {
-        if let url = Configuration.shared.shoutcastURL, shoutcastPlayer == nil {
-            shoutcastPlayer = SHOUTcastPlayer(url: url)
-            shoutcastPlayer?.connect()
+        if let url = Configuration.shared.shoutcastURL, playbackController == nil {
+            let session = AudioSessionMacOS.shared
+
+            playbackController = PlaybackController(session: session, delegate: self) {
+                return AACShoutcastStreamPlayer(url: url)
+            }
+            //shoutcastPlayer = SHOUTcastPlayer(url: url)
+            //shoutcastPlayer?.connect()
         }
     }
 
