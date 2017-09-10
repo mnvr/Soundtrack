@@ -9,33 +9,32 @@ import AVFoundation
 
 class AudioSessionIOS: NSObject, AudioSession {
 
-    static let shared = AudioSessionIOS()
-
-    let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
+    let queue: DispatchQueue
 
     weak var delegate: AudioSessionDelegate?
+
+    private let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
+    static var count = 0
 
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     private var wasPlaying: Bool = false
 
-    override init() {
+    init(queue: DispatchQueue) {
+        if AudioSessionIOS.count != 0 {
+            fatalError("We can only have one instance of Audio Session on iOS at a time, because they share the underlying singleton instance of AVAudioSession")
+        }
+        AudioSessionIOS.count += 1
+
+        self.queue = queue
+
         super.init()
         
         observeAudioSessionNotifications()
+        configure()
     }
 
-    private func printInfo() {
-        let ms = { Int($0 * 1000.0) }
-
-        log.info("Querying \(audioSession):")
-        log.info("\tCategory: \(audioSession.category) [Options = \(audioSession.categoryOptions)]")
-        log.info("\tMode: \(audioSession.mode)")
-        log.info("\tCurrent Route: \(audioSession.currentRoute)")
-        log.info("\tOutput Channels: \(audioSession.outputNumberOfChannels) [max \(audioSession.maximumOutputNumberOfChannels)]")
-        log.info("\tVolume: \(audioSession.outputVolume)")
-        log.info("\tOutput Latency: \(ms(audioSession.outputLatency)) ms")
-        log.info("\tI/O Buffer: \(ms(audioSession.ioBufferDuration)) ms")
-        log.info("\tSample Rate: \(audioSession.sampleRate) hz")
+    deinit {
+        AudioSessionIOS.count -= 1
     }
 
     private func observeAudioSessionNotifications() {
@@ -46,13 +45,14 @@ class AudioSessionIOS: NSObject, AudioSession {
         // running on a device (iPhone 4S, iOS 9.3) that they are instead
         // delivered on a thread named "AVAudioSession Notify Thread".
 
-        observe(.AVAudioSessionInterruption, with: #selector(audioSessionInterruption(_:)))
-        observe(.AVAudioSessionRouteChange, with: #selector(audioSessionRouteChange(_:)))
-        observe(.AVAudioSessionMediaServicesWereLost, with: #selector(audioSessionMediaServicesWereLost(_:)))
-        observe(.AVAudioSessionMediaServicesWereReset, with: #selector(audioSessionMediaServicesWereReset(_:)))
+        observeOnQueue(.AVAudioSessionInterruption, with: #selector(audioSessionInterruption(_:)))
+        observeOnQueue(.AVAudioSessionRouteChange, with: #selector(audioSessionRouteChange(_:)))
+        observeOnQueue(.AVAudioSessionMediaServicesWereLost, with: #selector(audioSessionMediaServicesWereLost(_:)))
+        observeOnQueue(.AVAudioSessionMediaServicesWereReset, with: #selector(audioSessionMediaServicesWereReset(_:)))
     }
 
-    func configure() {
+
+    private func configure() {
         log.info("Configuring \(audioSession) for music playback")
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
@@ -60,10 +60,25 @@ class AudioSessionIOS: NSObject, AudioSession {
             return log.warning("Could not set audio session category: \(error)")
         }
 
-        printInfo()
+        logAudioSessionState()
 
         log.info("Registering for receiving remote control events")
         UIApplication.shared.beginReceivingRemoteControlEvents()
+    }
+
+    private func logAudioSessionState() {
+        log.info("Querying \(audioSession):")
+
+        let ms = { Int($0 * 1000.0) }
+
+        log.info("\tCategory: \(audioSession.category) [Options = \(audioSession.categoryOptions)]")
+        log.info("\tMode: \(audioSession.mode)")
+        log.info("\tCurrent Route: \(audioSession.currentRoute)")
+        log.info("\tOutput Channels: \(audioSession.outputNumberOfChannels) [max \(audioSession.maximumOutputNumberOfChannels)]")
+        log.info("\tVolume: \(audioSession.outputVolume)")
+        log.info("\tOutput Latency: \(ms(audioSession.outputLatency)) ms")
+        log.info("\tI/O Buffer: \(ms(audioSession.ioBufferDuration)) ms")
+        log.info("\tSample Rate: \(audioSession.sampleRate) hz")
     }
 
     func activate() -> Bool {
@@ -186,4 +201,25 @@ class AudioSessionIOS: NSObject, AudioSession {
         delegate?.audioSessionMediaServicesWereReset(self)
     }
 
+
+    // MARK: Forwarding Notifications
+
+    private var selectorForNotificationName = Dictionary<Notification.Name, Selector>()
+
+    private func observeOnQueue(_ name: Notification.Name, with selector: Selector) {
+        if selectorForNotificationName.isEmpty {
+            let forwarder = #selector(_observeForwarder(_:))
+            NotificationCenter.default.addObserver(self, selector: forwarder, name: name, object: nil)
+        }
+
+        selectorForNotificationName[name] = selector
+    }
+
+    @objc private func _observeForwarder(_ notification: Notification) {
+        if let selector = selectorForNotificationName[notification.name] {
+            queue.async { [weak self] in
+                _ = self?.perform(selector, with: notification)
+            }
+        }
+    }
 }

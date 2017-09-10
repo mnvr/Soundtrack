@@ -10,18 +10,22 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
     private let queue: DispatchQueue
 
-    private var session: AudioSession
-    private let makePlayer: () -> AudioPlayer?
-
-    private var player: AudioPlayer?
-
     private weak var delegate: PlaybackControllerDelegate?
 
-    init(session: AudioSession, delegate: PlaybackControllerDelegate? = nil, make makePlayer: @escaping () -> AudioPlayer?) {
-        queue = DispatchQueue(label: String(describing: type(of: self)))
+    typealias MakeSession = (_ queue: DispatchQueue) -> AudioSession?
+    private let makeSession: MakeSession
+    private var session: AudioSession?
 
-        self.session = session
+    typealias MakePlayer = (_ queue: DispatchQueue) -> AudioPlayer?
+    private let makePlayer: MakePlayer
+    private var player: AudioPlayer?
+
+    init(delegate: PlaybackControllerDelegate? = nil, makeSession: @escaping MakeSession, makePlayer: @escaping MakePlayer) {
+        queue = DispatchQueue(label: "Audio Subsytem")
+
         self.delegate = delegate
+
+        self.makeSession = makeSession
         self.makePlayer = makePlayer
 
         super.init()
@@ -29,17 +33,11 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         prepare()
     }
 
-    // MARK: Queue Dispatchers
+    // MARK: Queue Forwarders
 
     private func prepare() {
         queue.async { [weak self] in
             self?.prepare_()
-        }
-    }
-
-    private func unprepare() {
-        queue.async { [weak self] in
-            self?.unprepare_()
         }
     }
 
@@ -75,7 +73,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
     // MARK: Serially Queued Implementation
 
-    private func onQueuePrecondition() {
+    func onQueuePrecondition() {
         if #available(iOS 10, OSX 10.12, *) {
             dispatchPrecondition(condition: .onQueue(queue))
         }
@@ -88,10 +86,11 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
             return log.warning()
         }
 
-        session.configure()
+        session = makeSession(queue)
+        guard let session = session else { fatalError() }
         session.delegate = self
 
-        player = makePlayer()
+        player = makePlayer(queue)
         player?.delegate = self
 
         guard let player = player else {
@@ -103,7 +102,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
         delegate?.playbackControllerDidBecomeAvailable(self)
     }
 
-    private func unprepare_() {
+    private func stopPlayback() {
         player = nil
         isPlayingAccordingToUs = false
 
@@ -112,6 +111,10 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
     private func play_() {
         onQueuePrecondition()
+
+        guard let session = session else {
+            return log.warning()
+        }
 
         guard let player = player else {
             return log.warning()
@@ -140,6 +143,8 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
     }
 
     private func pause_() {
+        onQueuePrecondition()
+
         guard let player = player else {
             return log.warning()
         }
@@ -160,7 +165,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
         log.info("Did end playback")
 
-        if !session.deactivate() {
+        if session?.deactivate() != true {
             log.warning()
         }
 
@@ -195,9 +200,11 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
 
     // MARK: AudioPlayer Delegate
 
-    func audioPlayerDidStop(_ audioPlayer: AudioPlayer) {
-        log.info("\(player) stopped")
-        unplay()
+    func audioPlayerDidFinishPlaying(_ audioPlayer: AudioPlayer) {
+        onQueuePrecondition()
+
+        log.info("\(player) finished playing")
+        unplay_()
     }
 
     // MARK: Audio Session Delegate
@@ -216,7 +223,12 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
     }
 
     func audioSessionMediaServicesWereLost(_ audioSession: AudioSession) {
-        unprepare()
+        // We do not let go of the session at this time because it will
+        // subsequently tell us when the reset completes (in the media
+        // services were reset notification below); and that point, we
+        // let go of the current session and create a new one.
+
+        stopPlayback()
     }
 
     func audioSessionMediaServicesWereReset(_ audioSession: AudioSession) {

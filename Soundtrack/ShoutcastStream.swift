@@ -26,10 +26,15 @@ import Foundation
 //   (divided by 16). The rest of the metadata contains the title, right
 //   padded by spaces or nulls if necessary.
 
+/// A socket to a SHOUTcast server
+///
+/// Connect to a SHOUTcast endpoint, and inform the delegate when
+/// we receive song titles and audio packets.
+
 class ShoutcastStream {
 
     let url: URL
-    let expectedMimeType: String
+    let expectedMIMEType: String
 
     weak var delegate: ShoutcastStreamDelegate?
 
@@ -47,18 +52,33 @@ class ShoutcastStream {
     private var unprocessedMetadataCount: Int?
     private var unprocessedMetadata: Data?
 
-    /// - Parameter queue: A serial operation queue which is used to serialize
+    /// - Parameter url: The URL of the SHOUTcast server. Note that this is
+    ///   not the URL of the M3U or PLS playlist, but rather the contents
+    ///   of such a playlist.
+    ///
+    /// - Parameter mimeType: A SHOUTcast server informs us of the MIME type
+    ///   of the audio packet that it will be sending us. That value is checked
+    ///   against this parameter to make sure we're all on the same page.
+    ///   An example and common MIME type is "audio/aac".
+    ///
+    /// - Parameter queue: A serial dispatch queue which is used to serialize
     ///   the internal functioning of the stream object (this allows the
     ///   stream's public methods to be invoked from any execution context).
     ///   The delegate methods will also be invoked on this queue.
+    ///   If the value of this parameter is `nil`, then a serial queue will
+    ///   be created and used by the initializer.
 
-    init(url: URL, mimeType expectedMimeType: String, queue: OperationQueue = OperationQueue.serial) {
+    init(url: URL, mimeType expectedMIMEType: String, queue dispatchQueue: DispatchQueue? = nil) {
         self.url = url
-        self.expectedMimeType = expectedMimeType
-        self.queue = queue
+        self.expectedMIMEType = expectedMIMEType
+
+        queue = OperationQueue.serial
 
         let sessionDelegate = SessionDelegate()
         session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: queue)
+
+        queue.underlyingQueue = dispatchQueue ??
+            DispatchQueue(label: String(describing: type(of: self)))
 
         sessionDelegate.stream = self
     }
@@ -126,8 +146,8 @@ class ShoutcastStream {
     }
 
     private func parse(response: URLResponse) -> Bool {
-        guard response.mimeType == expectedMimeType else {
-            log.info("Unexpected MIME type '\(response.mimeType)' received (we were expecting '\(expectedMimeType)')")
+        guard response.mimeType == expectedMIMEType else {
+            log.info("Unexpected MIME type '\(response.mimeType)' received (we were expecting '\(expectedMIMEType)')")
             return false
         }
 

@@ -16,8 +16,8 @@ extension AudioFilePlayer {
         return url
     }
 
-    static func makeDemo() -> AudioPlayer? {
-        return AudioFilePlayer(url: demoFileURL(), loop: true)
+    static func makeDemo(queue: DispatchQueue) -> AudioPlayer? {
+        return AudioFilePlayer(url: demoFileURL(), queue: queue, loop: true)
     }
     
 }

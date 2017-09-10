@@ -21,38 +21,28 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
 
         indicatePlaybackUnavailability()
 
-
-        testConfiguration()
-
-        /*
-        playbackController = PlaybackController(session: session, delegate: self) {
-            return AudioFilePlayer.makeDemo()
-        }
-         */
+        makePlaybackController()
+        observeConfigurationChange()
     }
 
-    // WIP --
-
-    //var shoutcastPlayer: SHOUTcastPlayer?
-
-    private func testConfiguration() {
-        observe(.ConfigurationDidChange, with: #selector(maybeTestConnection))
-        maybeTestConnection()
+    private func observeConfigurationChange() {
+        observe(.ConfigurationDidChange, with: #selector(makePlaybackController))
     }
 
-    @objc private func maybeTestConnection() {
+    @objc private func makePlaybackController() {
         if let url = Configuration.shared.shoutcastURL, playbackController == nil {
-            let session = AudioSessionMacOS.shared
-
-            playbackController = PlaybackController(session: session, delegate: self) {
-                return AACShoutcastStreamPlayer(url: url)
+            let makeSession = { queue in
+                return AudioSessionMacOS(queue: queue)
             }
-            //shoutcastPlayer = SHOUTcastPlayer(url: url)
-            //shoutcastPlayer?.connect()
+
+            let makePlayer = { queue in
+                //return AudioFilePlayer.makeDemo()
+                return AACShoutcastStreamPlayer(url: url, queue: queue)
+            }
+
+            playbackController = PlaybackController(delegate: self, makeSession: makeSession, makePlayer: makePlayer)
         }
     }
-
-    // WIP END --
 
     @IBAction func changeSource(_ sender: NSSegmentedControl) {
         useRadio = sender.selectedSegment == 1

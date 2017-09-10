@@ -8,11 +8,15 @@ import AVFoundation
 
 class AudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
 
+    let queue: DispatchQueue
+
     weak var delegate: AudioPlayerDelegate?
 
     private let player: AVAudioPlayer
 
-    init?(url: URL, loop: Bool = false) {
+    init?(url: URL, queue: DispatchQueue, loop: Bool = false) {
+        self.queue = queue
+
         do {
             player = try AVAudioPlayer(contentsOf: url)
         } catch {
@@ -54,6 +58,11 @@ class AudioFilePlayer: NSObject, AudioPlayer, AVAudioPlayerDelegate {
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         log.info("\(player) finished playing (successfully = \(flag))")
-        delegate?.audioPlayerDidStop(self)
+        queue.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.audioPlayerDidFinishPlaying(strongSelf)
+            }
+        }
     }
+
 }

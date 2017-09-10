@@ -7,10 +7,12 @@
 import AVFoundation
 import AudioToolbox
 
-// An AAC SHOUTcast stream data consists of ADTS (Audio Data Transport Stream)
-// frames. Each such frame consists of a header followed by the AAC audio data.
-//
-// The ADTS format is described in the MPEG-4 Audio standard (ISO/IEC 14496-3).
+/// Convert AAC to PCM
+///
+/// An AAC SHOUTcast stream data consists of ADTS (Audio Data Transport Stream)
+/// frames. Each such frame consists of a header followed by the AAC audio data.
+///
+/// The ADTS format is described in the MPEG-4 Audio standard (ISO/IEC 14496-3).
 
 class ADTSParser {
 

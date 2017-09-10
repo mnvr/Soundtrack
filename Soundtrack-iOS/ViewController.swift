@@ -7,9 +7,10 @@
 import UIKit
 import AVFoundation
 
+// FIXME: This is mostly a verbatim copy of the macOS view controller.
+
 class ViewController: UIViewController, PlaybackControllerDelegate {
 
-    let session = AudioSessionIOS.shared
     var playbackController: PlaybackController!
 
     var useRadio: Bool = false
@@ -23,9 +24,26 @@ class ViewController: UIViewController, PlaybackControllerDelegate {
 
         indicatePlaybackUnavailability()
 
-        let session = AudioSessionIOS.shared
-        playbackController = PlaybackController(session: session, delegate: self) {
-            return AudioFilePlayer.makeDemo()
+        makePlaybackController()
+        observeConfigurationChange()
+    }
+
+    private func observeConfigurationChange() {
+        observe(.ConfigurationDidChange, with: #selector(makePlaybackController))
+    }
+
+    @objc private func makePlaybackController() {
+        if let url = Configuration.shared.shoutcastURL, playbackController == nil {
+            let makeSession = { queue in
+                return AudioSessionIOS(queue: queue)
+            }
+
+            let makePlayer = { queue in
+                //return AudioFilePlayer.makeDemo()
+                return AACShoutcastStreamPlayer(url: url, queue: queue)
+            }
+
+            playbackController = PlaybackController(delegate: self, makeSession: makeSession, makePlayer: makePlayer)
         }
     }
 
