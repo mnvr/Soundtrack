@@ -153,6 +153,29 @@ class ADTSParser {
 
         var frameCount = packetCount * framesPerPacket
         let outputBuffer = AVAudioPCMBuffer(pcmFormat: pcmFormat, frameCapacity: frameCount)
+
+        // AudioConverterFillComplexBuffer returns OSStatus -50 on iOS, without
+        // even calling our inputDataProc. The very same code works on macOS.
+        //
+        // This was observed on the simulator that comes with Xcode 8, and
+        // maybe this occurs in other conditions too.
+        //
+        // This workaround was taken from
+        // https://forums.developer.apple.com/thread/65901
+
+        do {
+            let bufferList = outputBuffer.audioBufferList
+            // Changes made to outputBuffer.mutableAudioBufferList do not persist.
+            let mutableBufferList = UnsafeMutablePointer(mutating: bufferList)
+            let outputBufferList = UnsafeMutableAudioBufferListPointer(mutableBufferList)
+            let bytesPerFrame = outputBuffer.format.streamDescription.pointee.mBytesPerFrame
+            let bytesPerChannel = frameCount * bytesPerFrame
+            assert(!outputBuffer.format.isInterleaved)
+            for i in 0..<outputBuffer.format.channelCount {
+                outputBufferList[Int(i)].mDataByteSize = bytesPerChannel
+            }
+        }
+
         let status = AudioConverterFillComplexBuffer(converter!, inputDataProc, context, &frameCount, outputBuffer.mutableAudioBufferList, nil)
         if status != 0 {
             log.warning("AAC->PCM conversion failed: \(osStatusDescription(status))")
@@ -178,6 +201,9 @@ class ADTSParser {
 }
 
 private func osStatusDescription(_ status: OSStatus) -> String {
+    if status < 0 {
+        return "OSStatus \(status)"
+    }
     return "OSStatus \(fourCharCodeDescription(UInt32(status)))"
 }
 
