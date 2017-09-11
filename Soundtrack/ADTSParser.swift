@@ -17,7 +17,6 @@ import AudioToolbox
 class ADTSParser {
 
     let pcmFormat: AVAudioFormat
-    let bufferDuration: TimeInterval
 
     weak var delegate: ADTSParserDelegate?
 
@@ -28,36 +27,17 @@ class ADTSParser {
 
     private var framesPerPacket: Int = 0
 
-    private var maximumPendingBytesCount: Int = 0
-    private var maximumPendingPacketsCount: Int = 0
-
-    private var pendingBytes: UnsafeMutablePointer<UInt8>!
-    private var pendingAudioBuffers: UnsafeMutablePointer<AudioBuffer>!
-    private var pendingPacketDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>!
-
-    private var pendingBytesCount: Int = 0
-    private var pendingAudioBuffersCount = 0
-    private var pendingPacketsCount: Int = 0
-
     /// Create a new ADTS parser.
     ///
-    /// - Parameter pcmFormat: Output format of the buffers vended by the
-    ///   delegate methods. This must be a standard format. The parser uses
-    ///   it to determine the other varying parameters like sample rate.
+    /// - Parameter pcmFormat: Format of the converted buffers provided
+    ///   to the delegate.
     ///
     /// - Precondition: `pcmFormat` should be a standard format.
-    ///
-    /// - Parameter bufferDuration: The parser will buffer input until it has
-    ///   sufficient data to produce an output PCM buffer that is at least
-    ///   `bufferDuration` long. Note that this is a best effort contract
-    ///   and might be violated (i.e. smaller buffers may be emitted in
-    ///   certain scenarios).
 
-    init(pcmFormat: AVAudioFormat, bufferDuration: TimeInterval = 1.0) {
+    init(pcmFormat: AVAudioFormat) {
         precondition(pcmFormat.isStandard, "This class only supports conversion to PCM")
 
         self.pcmFormat = pcmFormat
-        self.bufferDuration = bufferDuration
 
         let context = Unmanaged.passUnretained(self).toOpaque()
 
@@ -95,8 +75,6 @@ class ADTSParser {
                 log.warning("Ignoring error when trying to dispose audio converter: \(osStatusDescription(status))")
             }
         }
-
-        deallocateBuffers()
     }
 
     /// The delegate methods are called synchronously during
@@ -170,51 +148,7 @@ class ADTSParser {
         framesPerPacket = Int(inputStreamDescription.mFramesPerPacket)
         log.info("Each input packet contains \(framesPerPacket) frames of audio")
 
-        let maximumPendingFramesCount = Int(bufferDuration * pcmFormat.sampleRate)
-        maximumPendingPacketsCount = maximumPendingFramesCount / framesPerPacket
-        maximumPendingBytesCount = maximumPendingPacketsCount * maximumInputPacketBytesCount()
-
-        log.info("Buffer size: \(maximumPendingPacketsCount) packets / \(maximumPendingFramesCount) frames / \(maximumPendingBytesCount) bytes")
-
-        allocateBuffers()
-
         return true
-    }
-
-    private func maximumInputPacketBytesCount() -> Int {
-        let maximumPacketBytesCount: Int
-        do {
-            var maximumPacketSize: UInt32 = 0
-            if !getProperty(kAudioFileStreamProperty_MaximumPacketSize, &maximumPacketSize) || maximumPacketSize == 0 {
-                let pcmBytesPerFrame = pcmFormat.streamDescription.pointee.mBytesPerFrame
-                maximumPacketSize = UInt32(framesPerPacket) * pcmBytesPerFrame
-                log.info("Cannot determine the maximum size of an input packet; falling back to using the maximum size of an equivalent number of PCM frames")
-            }
-            maximumPacketBytesCount = Int(maximumPacketSize)
-        }
-        log.info("The maximum size of an input packet is expected to be \(maximumPacketBytesCount) bytes")
-        return maximumPacketBytesCount
-    }
-
-    private func allocateBuffers() {
-        pendingBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: maximumPendingBytesCount)
-        pendingAudioBuffers = UnsafeMutablePointer<AudioBuffer>.allocate(capacity: maximumPendingPacketsCount)
-        pendingPacketDescriptions = UnsafeMutablePointer<AudioStreamPacketDescription>.allocate(capacity: maximumPendingPacketsCount)
-    }
-
-    private func deallocateBuffers() {
-        if let bytes = pendingBytes {
-            bytes.deallocate(capacity: maximumPendingBytesCount)
-            pendingBytes = nil
-        }
-        if let audioBuffers = pendingAudioBuffers {
-            audioBuffers.deallocate(capacity: maximumPendingPacketsCount)
-            pendingAudioBuffers = nil
-        }
-        if let packetDescriptions = pendingPacketDescriptions {
-            packetDescriptions.deallocate(capacity: maximumPendingPacketsCount)
-            pendingPacketDescriptions = nil
-        }
     }
 
     private func didParsePackets(_ byteCountUInt32: UInt32, _ packetCountUInt32: UInt32, _ audioDataPointer: UnsafeRawPointer, _ packetDescriptionsPointer: UnsafeMutablePointer<AudioStreamPacketDescription>) {
@@ -230,95 +164,14 @@ class ADTSParser {
         let bytes = UnsafeMutableBufferPointer<UInt8>(start: audioDataBytesPointer, count: byteCount)
         let packetDescriptions = UnsafeMutableBufferPointer<AudioStreamPacketDescription>(start: packetDescriptionsPointer, count: packetCount)
 
-        if !didParse(bytes: bytes, packetDescriptions: packetDescriptions) {
-            errorOut()
-        }
-    }
-
-    // The input arguments will remain valid only for the duration of this
-    // function, so we need to copy them if they're going to be needed later.
-
-    private func didParse(bytes: UnsafeMutableBufferPointer<UInt8>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) -> Bool {
-
-        return convert(bytes: bytes, packetDescriptions: packetDescriptions)
-/*
-        if pendingBytesCount + bytes.count > maximumPendingBytesCount ||
-            pendingPacketsCount + packetDescriptions.count > maximumPendingPacketsCount {
-            if !convertPending() {
-                return false
-            }
-        }
-
-        if bytes.count > maximumPendingBytesCount ||
-            packetDescriptions.count > maximumPendingPacketsCount {
-            return convert(bytes: bytes, packetDescriptions: packetDescriptions)
-        }
-
-        buffer(bytes: bytes, packetDescriptions: packetDescriptions)
-        return true */
-
-    }
-
-    private func convertPending() -> Bool {
-        if pendingPacketsCount == 0 {
-            return true
-        }
-        
-        let audioBuffers = UnsafeMutableBufferPointer<AudioBuffer>(start: pendingAudioBuffers, count: pendingAudioBuffersCount)
-        let packetDescriptions = UnsafeMutableBufferPointer<AudioStreamPacketDescription>(start: pendingPacketDescriptions, count: pendingPacketsCount)
-
-        let pcmBuffer = convert(audioBuffers: audioBuffers, packetDescriptions: packetDescriptions)
-
-        pendingBytesCount = 0
-        pendingAudioBuffersCount = 0
-        pendingPacketsCount = 0
-
-        if pcmBuffer == nil {
-            return false
-        }
-
-        delegate?.adtsParser(self, didParsePCMBuffer: pcmBuffer!)
-        return true
-    }
-
-    private func convert(bytes: UnsafeMutableBufferPointer<UInt8>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) -> Bool {
-
-        var audioBuffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(bytes.count), mData: bytes.baseAddress)
-        let audioBuffers = UnsafeMutableBufferPointer(start: &audioBuffer, count: 1)
-
-        guard let pcmBuffer = convert(audioBuffers: audioBuffers, packetDescriptions: packetDescriptions) else {
-            return false
+        guard let pcmBuffer = convert(bytes: bytes, packetDescriptions: packetDescriptions) else {
+            return errorOut()
         }
 
         delegate?.adtsParser(self, didParsePCMBuffer: pcmBuffer)
-        return true
     }
 
-
-    private func buffer(bytes: UnsafeMutableBufferPointer<UInt8>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) {
-
-        assert(pendingBytesCount + bytes.count <= maximumPendingBytesCount)
-        assert(pendingAudioBuffersCount + 1 <= maximumPendingPacketsCount)
-        assert(pendingPacketsCount + packetDescriptions.count <= maximumPendingPacketsCount)
-
-        let nextPendingBytes = pendingBytes.advanced(by: pendingBytesCount)
-        let nextPendingAudioBuffers = pendingAudioBuffers.advanced(by: pendingAudioBuffersCount)
-        let nextPendingPacketDescriptions = pendingPacketDescriptions.advanced(by: pendingPacketsCount)
-
-        var audioBuffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(bytes.count), mData: nextPendingBytes)
-
-        nextPendingBytes.initialize(from: bytes.baseAddress!, count: bytes.count)
-        nextPendingAudioBuffers.initialize(from: &audioBuffer, count: 1)
-        nextPendingPacketDescriptions.initialize(from: packetDescriptions.baseAddress!, count: packetDescriptions.count)
-
-        pendingBytesCount += bytes.count
-        pendingAudioBuffersCount += 1
-        pendingPacketsCount += packetDescriptions.count
-
-    }
-
-
-    private func convert(audioBuffers: UnsafeMutableBufferPointer<AudioBuffer>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) -> AVAudioPCMBuffer? {
+    private func convert(bytes: UnsafeMutableBufferPointer<UInt8>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) -> AVAudioPCMBuffer? {
 
         guard let converter = converter else {
             log.warning("The audio stream is trying to convert audio packets without informing us about the audio format")
@@ -330,14 +183,20 @@ class ADTSParser {
             let audioBufferList: AudioBufferList
             let packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>
 
-            init(audioBuffers: UnsafeMutableBufferPointer<AudioBuffer>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) {
+            private var audioBuffer: AudioBuffer
+
+            init(bytes: UnsafeMutableBufferPointer<UInt8>, packetDescriptions: UnsafeMutableBufferPointer<AudioStreamPacketDescription>) {
+
                 packetCount = UInt32(packetDescriptions.count)
-                audioBufferList = AudioBufferList(mNumberBuffers: UInt32(audioBuffers.count), mBuffers: audioBuffers[0])
+
+                audioBuffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(bytes.count), mData: bytes.baseAddress)
+                audioBufferList = AudioBufferList(mNumberBuffers: 1, mBuffers: audioBuffer)
+
                 self.packetDescriptions = packetDescriptions
             }
         }
 
-        let context = InputProcContext(audioBuffers: audioBuffers, packetDescriptions: packetDescriptions)
+        let context = InputProcContext(bytes: bytes, packetDescriptions: packetDescriptions)
         let contextPointer = Unmanaged.passUnretained(context).toOpaque()
 
         let inputDataProc: AudioConverterComplexInputDataProc
@@ -360,8 +219,10 @@ class ADTSParser {
             return nil
         }
 
-        // TODO FIXME is this required?
-         outputBuffer.frameLength = outputBuffer.frameCapacity
+        // AudioConverterFillComplexBuffer does not know about the
+        // AVAudioPCMBuffer, and we must update its state ourselves.
+
+        outputBuffer.frameLength = outputBuffer.frameCapacity
 
         log.trace("Converted \(frameCount) frames from AAC to PCM")
 
