@@ -96,10 +96,8 @@ class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParser
     }
 
     func shoutcastStreamDidDisconnect(_ stream: ShoutcastStream) {
-        adtsParser = nil
-
+        disconnect()
         stopAudio()
-
         delegate?.audioPlayerDidFinishPlaying(self)
     }
 
