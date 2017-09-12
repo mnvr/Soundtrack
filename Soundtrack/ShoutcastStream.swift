@@ -30,21 +30,22 @@ import Foundation
 ///
 /// Connect to a SHOUTcast endpoint, and inform the delegate when
 /// we receive song titles and audio packets.
+///
+/// The lifetime of the connection is tied to the lifetime of an
+/// instance of this class. i.e. the connection is initiated when
+/// an instance of the stream is created, and is disconnected when
+/// the corresponding instance is let go.
 
-class ShoutcastStream {
-
-    let url: URL
-    let expectedMIMEType: String
+final class ShoutcastStream {
 
     weak var delegate: ShoutcastStreamDelegate?
 
-    private let queue: OperationQueue
+    private let expectedMIMEType: String
 
     private let configuration = URLSessionConfiguration.default
-
     private let session: URLSession
 
-    private var task: URLSessionDataTask?
+    private let task: URLSessionDataTask
 
     private var metadataInterval: Int?
     private var nextMetadataInterval: Int?
@@ -52,6 +53,12 @@ class ShoutcastStream {
     private var unprocessedMetadataCount: Int?
     private var unprocessedMetadata: Data?
 
+    private var lastTitle: String?
+
+    /// Initiate a new connection to a SHOUTcast server.
+    ///
+    /// To disconnect, simply let go of this instance.
+    ///
     /// - Parameter url: The URL of the SHOUTcast server. Note that this is
     ///   not the URL of the M3U or PLS playlist, but rather the contents
     ///   of such a playlist.
@@ -59,87 +66,36 @@ class ShoutcastStream {
     /// - Parameter mimeType: A SHOUTcast server informs us of the MIME type
     ///   of the audio packet that it will be sending us. That value is checked
     ///   against this parameter to make sure we're all on the same page.
-    ///   An example and common MIME type is "audio/aac".
+    ///   For example, "audio/aac".
     ///
-    /// - Parameter queue: A serial dispatch queue which is used to serialize
-    ///   the internal functioning of the stream object (this allows the
-    ///   stream's public methods to be invoked from any execution context).
-    ///   The delegate methods will also be invoked on this queue.
-    ///   If the value of this parameter is `nil`, then a serial queue will
-    ///   be created and used by the initializer.
+    /// - Parameter queue: A serial queue for scheduling delegate callbacks.
+    ///   This should be a serial queue so as to ensure the correct ordering
+    ///   of callbacks.
 
-    init(url: URL, mimeType expectedMIMEType: String, queue dispatchQueue: DispatchQueue? = nil) {
-        self.url = url
-        self.expectedMIMEType = expectedMIMEType
-
-        queue = OperationQueue.serial
+    init(url: URL, mimeType: String, queue: DispatchQueue) {
+        expectedMIMEType = mimeType
 
         let sessionDelegate = SessionDelegate()
-        session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: queue)
+        session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
 
-        queue.underlyingQueue = dispatchQueue ??
-            DispatchQueue(label: String(describing: type(of: self)))
+        task = session.dataTask(with: ShoutcastStream.makeRequest(url: url))
 
         sessionDelegate.stream = self
-    }
-
-    func connect() {
-        queue.addOperation { [weak self] in
-            self?.connect_()
-        }
-    }
-
-    func disconnect() {
-        queue.addOperation { [weak self] in
-            self?.disconnect_()
-        }
-    }
-
-    private func connect_() {
-        log.info("Connecting to \(url)")
-
-        if self.task != nil {
-            log.warning("Trying to connect to an stream with an existing task")
-            disconnect_()
-        }
-
-        let task = session.dataTask(with: makeURLRequest())
-        self.task = task
+        session.delegateQueue.underlyingQueue = queue
 
         task.resume()
-        log.info("Created and resumed \(task) in \(session)")
+        log.info("Created task for connecting to \(url): \(task)")
     }
 
-    private func didConnect() {
+    deinit {
+        session.invalidateAndCancel()
+    }
+
+    private func taskDidReceiveValidResponse() {
         delegate?.shoutcastStreamDidConnect(self)
     }
 
-    private func disconnect_() {
-        let activeTask = task
-
-        task = nil
-
-        metadataInterval = nil
-        nextMetadataInterval = nil
-
-        unprocessedMetadataCount = nil
-        unprocessedMetadata = nil
-
-        if let activeTask = activeTask {
-            if activeTask.state != .completed {
-                log.info("Cancelling \(activeTask)")
-                activeTask.cancel()
-            }
-        } else {
-            log.warning("Trying to disconnect a stream without an existing task")
-        }
-
-        log.info("Disconnected from \(url)")
-
-        delegate?.shoutcastStreamDidDisconnect(self)
-    }
-
-    private func makeURLRequest() -> URLRequest {
+    private static func makeRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("1", forHTTPHeaderField: "icy-metadata")
         return request
@@ -284,7 +240,7 @@ class ShoutcastStream {
             }
             let (key, quotedValue) = (columns[0], columns[1])
             let value = quotedValue.trimmingCharacters(in: singleQuote)
-            log.info("Parsed metadata: \(key) = [\(value)]")
+            log.trace("Parsed metadata: \(key) = [\(value)]")
 
             if key == "StreamTitle" {
                 title = value
@@ -295,8 +251,9 @@ class ShoutcastStream {
     }
 
     private func emit(title: String?) {
-        if let title = title {
+        if let title = title, title != lastTitle {
             delegate?.shoutcastStream(self, gotTitle: title)
+            lastTitle = title
         }
     }
 
@@ -306,10 +263,8 @@ class ShoutcastStream {
         }
     }
 
-    private func endTask(_ task: URLSessionTask) {
-        if task == self.task {
-            disconnect_()
-        }
+    private func taskDidCompleteWithoutCancellation() {
+        delegate?.shoutcastStreamDidDisconnect(self)
     }
 
     class SessionDelegate: NSObject, URLSessionDataDelegate {
@@ -320,7 +275,7 @@ class ShoutcastStream {
             log.info("Received response for \(dataTask): \(response)")
 
             if stream?.parse(response: response) == true {
-                stream?.didConnect()
+                stream?.taskDidReceiveValidResponse()
                 completionHandler(.allow)
             } else {
                 log.info("Parsing of response headers failed; will cancel the task")
@@ -329,27 +284,29 @@ class ShoutcastStream {
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            log.trace("Received \(data.count) bytes for \(dataTask)")
+            log.trace("Received \(data.count) bytes")
             stream?.process(data: data)
         }
 
-        func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-            log.info("Session did become invalid (\(session)) with error \(error)")
-        }
-
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+            var wasCancelled = false
             if let error = error {
                 let nserror = error as NSError
                 if nserror.domain == NSURLErrorDomain, nserror.code == NSURLErrorCancelled {
                     log.info("Cancelled \(task)")
+                    wasCancelled = true
                 } else {
-                    log.info("Completed \(task) with error \(error))")
+                    log.info("Completed \(task) with error \(error)")
                 }
             } else {
                 log.info("Completed \(task)")
             }
-            stream?.endTask(task)
+
+            if !wasCancelled {
+                stream?.taskDidCompleteWithoutCancellation()
+            }
         }
+
     }
 
 }
@@ -357,9 +314,20 @@ class ShoutcastStream {
 protocol ShoutcastStreamDelegate: class {
 
     func shoutcastStreamDidConnect(_ stream: ShoutcastStream)
+
+    /// Invoked when the stream was broken due to an error.
+    ///
+    /// Subsequently, the stream is effectively unusable and will not emit
+    /// any more messages. The client should let go of this instance and
+    /// create a new one.
+    
     func shoutcastStreamDidDisconnect(_ stream: ShoutcastStream)
-
+    
+    /// This method is only called when the stream gets a title that is
+    /// different from the last title it received over the network.
+    
     func shoutcastStream(_ stream: ShoutcastStream, gotTitle title: String)
+    
     func shoutcastStream(_ stream: ShoutcastStream, gotData data: Data)
-
+    
 }

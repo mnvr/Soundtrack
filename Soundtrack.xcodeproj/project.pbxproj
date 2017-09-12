@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F905559D1F343042006FEAF5 /* OperationQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559C1F343042006FEAF5 /* OperationQueueExtensions.swift */; };
-		F905559E1F343042006FEAF5 /* OperationQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559C1F343042006FEAF5 /* OperationQueueExtensions.swift */; };
 		F90555A01F34745A006FEAF5 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559F1F34745A006FEAF5 /* DataExtensions.swift */; };
 		F90555A11F34745A006FEAF5 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559F1F34745A006FEAF5 /* DataExtensions.swift */; };
 		F90C3E041F302BFE009A3054 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90C3E031F302BFE009A3054 /* AudioPlayer.swift */; };
@@ -52,7 +50,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F905559C1F343042006FEAF5 /* OperationQueueExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueueExtensions.swift; sourceTree = "<group>"; };
 		F905559F1F34745A006FEAF5 /* DataExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtensions.swift; sourceTree = "<group>"; };
 		F90C3E031F302BFE009A3054 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		F90C3E061F303026009A3054 /* AudioFilePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFilePlayer.swift; sourceTree = "<group>"; };
@@ -162,7 +159,6 @@
 				F9241FF71F3327C4001D56FD /* Configuration.swift */,
 				F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */,
 				F905559F1F34745A006FEAF5 /* DataExtensions.swift */,
-				F905559C1F343042006FEAF5 /* OperationQueueExtensions.swift */,
 				F90E27331F5ED10800F092DA /* ShoutcastStream.swift */,
 				F90E27321F5ED10800F092DA /* AACShoutcastStreamPlayer.swift */,
 				F90E273B1F5EF18F00F092DA /* ADTSParser.swift */,
@@ -296,7 +292,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F905559D1F343042006FEAF5 /* OperationQueueExtensions.swift in Sources */,
 				F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */,
 				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
 				F90C3E071F303026009A3054 /* AudioFilePlayer.swift in Sources */,
@@ -322,7 +317,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */,
-				F905559E1F343042006FEAF5 /* OperationQueueExtensions.swift in Sources */,
 				F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
 				F90C3E081F303026009A3054 /* AudioFilePlayer.swift in Sources */,
 				F993377F1F56D772009C706F /* AudioFilePlayerDemo.swift in Sources */,

@@ -119,7 +119,7 @@ class ADTSParser {
             }
 
         default:
-            log.debug("Parsed audio stream property \(fourCharCodeDescription(propertyID))")
+            log.trace("Parsed audio stream property \(fourCharCodeDescription(propertyID))")
         }
     }
 

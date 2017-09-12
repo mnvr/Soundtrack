@@ -15,37 +15,43 @@ import AudioToolbox
 
 class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParserDelegate {
 
+    let url: URL
     let queue: DispatchQueue
 
     weak var delegate: AudioPlayerDelegate?
 
-    private let stream: ShoutcastStream
-
     private let engine = AVAudioEngine()
     private let playerNode = AVAudioPlayerNode()
 
+    private var stream: ShoutcastStream?
     private var adtsParser: ADTSParser?
 
     init(url: URL, queue: DispatchQueue) {
+        self.url = url
         self.queue = queue
-
-        stream = ShoutcastStream(url: url, mimeType: "audio/aac", queue: queue)
 
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: nil)
 
         engine.prepare()
-
-        stream.delegate = self
     }
 
     func play() -> Bool {
-        startStream()
+        connect()
         return true
     }
 
+    /// To maintain the invariant that `isPlaying` returns `true` after
+    /// `play` but before `pause`, we track the state of the underlying
+    /// audio stream instead of audio playback.
+    ///
+    /// So `isPlaying` is true without there being any corresponding audio
+    /// output in the time window between after when we have initiated a
+    /// network connection in response to `play` but before the network
+    /// connection has been established.
+
     var isPlaying: Bool {
-        return (adtsParser != nil)
+        return (stream != nil)
     }
 
     func pause() {
@@ -54,17 +60,19 @@ class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParser
         }
 
         stopAudio()
-        stopStream()
+        disconnect()
     }
 
-    private func startStream() {
+    private func connect() {
         adtsParser = ADTSParser(pcmFormat: playerNode.outputFormat(forBus: 0))
-        adtsParser!.delegate = self
-        stream.connect()
+        adtsParser?.delegate = self
+
+        stream = ShoutcastStream(url: url, mimeType: "audio/aac", queue: queue)
+        stream?.delegate = self
     }
 
-    private func stopStream() {
-        stream.disconnect()
+    private func disconnect() {
+        stream = nil
         adtsParser = nil
     }
 
@@ -82,18 +90,17 @@ class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParser
         do {
             try startAudio()
         } catch {
-            stopStream()
+            disconnect()
             log.warning(error)
         }
     }
 
     func shoutcastStreamDidDisconnect(_ stream: ShoutcastStream) {
-        if isPlaying { // the stream disconnected on its own
-            stopAudio()
-            adtsParser = nil
+        adtsParser = nil
 
-            delegate?.audioPlayerDidFinishPlaying(self)
-        }
+        stopAudio()
+
+        delegate?.audioPlayerDidFinishPlaying(self)
     }
 
     func shoutcastStream(_ stream: ShoutcastStream, gotTitle title: String) {
@@ -102,15 +109,14 @@ class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParser
 
     func shoutcastStream(_ stream: ShoutcastStream, gotData data: Data) {
         guard let adtsParser = adtsParser else {
-            // FIXME This happens
-            //return log.warning()
-            return
+            return log.warning()
         }
+
         adtsParser.parse(data)
     }
 
     func adtsParserDidEncounterError(_ adtsParser: ADTSParser) {
-        return pause()
+        pause()
     }
 
     func adtsParser(_ adtsParser: ADTSParser, didParsePCMBuffer buffer: AVAudioPCMBuffer) {
