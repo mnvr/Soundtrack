@@ -10,8 +10,6 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
 
     var playbackController: PlaybackController!
 
-    var useRadio: Bool = false
-
     // MARK: UI
 
     @IBOutlet weak var playButton: NSButton!
@@ -21,34 +19,30 @@ class ViewController: NSViewController, PlaybackControllerDelegate {
 
         indicatePlaybackUnavailability()
 
-        makePlaybackController()
+        maybeMakePlaybackController()
         observeConfigurationChange()
     }
 
     private func observeConfigurationChange() {
-        observe(.ConfigurationDidChange, with: #selector(makePlaybackController))
+        observe(.ConfigurationDidChange, with: #selector(maybeMakePlaybackController))
     }
 
-    @objc private func makePlaybackController() {
+    @objc private func maybeMakePlaybackController() {
         if let url = Configuration.shared.shoutcastURL, playbackController == nil {
-            let makeSession = { queue in
-                return AudioSessionMacOS(queue: queue)
-            }
-
-            let makePlayer = { queue in
-                //return AudioFilePlayer.makeDemo()
-                return AACShoutcastStreamPlayer(url: url, queue: queue)
-            }
-
-            playbackController = PlaybackController(delegate: self, makeSession: makeSession, makePlayer: makePlayer)
+            playbackController = makePlaybackController(url: url)
         }
     }
 
-    @IBAction func changeSource(_ sender: NSSegmentedControl) {
-        useRadio = sender.selectedSegment == 1
-        log.info("User changed source; use radio = \(useRadio)")
+    private func makePlaybackController(url: URL) -> PlaybackController {
+        let makeSession = { queue in
+            return AudioSessionMacOS(queue: queue)
+        }
 
-        playbackController.pauseIfPlaying()
+        let makePlayer = { queue in
+            return AACShoutcastStreamPlayer(url: url, queue: queue)
+        }
+
+        return PlaybackController(delegate: self, makeSession: makeSession, makePlayer: makePlayer)
     }
 
     @IBAction func togglePlayPause(_ sender: NSButton) {

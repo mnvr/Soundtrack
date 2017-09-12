@@ -146,7 +146,7 @@ class ADTSParser {
         }
 
         framesPerPacket = Int(inputStreamDescription.mFramesPerPacket)
-        log.info("Each input packet contains \(framesPerPacket) frames of audio")
+        log.debug("Each input packet contains \(framesPerPacket) frames of audio")
 
         return true
     }
