@@ -91,7 +91,7 @@ class AACShoutcastStreamPlayer: AudioPlayer, ShoutcastStreamDelegate, ADTSParser
             try startAudio()
         } catch {
             disconnect()
-            log.warning(error)
+            log.warning("Could not start audio playback: \(error)")
         }
     }
 
