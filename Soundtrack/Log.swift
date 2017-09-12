@@ -64,19 +64,4 @@ class Log {
         assertionFailure("\(function) \(message)", file: file, line: line)
     }
 
-    /// Invokes `warning` when `condition` is `true`.
-
-    func warningIf(_ condition: Bool, _ item: @autoclosure () -> Any = String(), file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
-        if condition {
-            warning(item, file: file, line: line, function: function)
-        }
-    }
-
-    /// Invokes `warning` when `condition` is `false`.
-
-    func warningUnless(_ condition: Bool, _ item: @autoclosure () -> Any = String(), file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
-        if !condition {
-            warning(item, file: file, line: line, function: function)
-        }
-    }
 }

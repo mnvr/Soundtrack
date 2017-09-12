@@ -10,11 +10,11 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        log.info("Launch notification: \(notification)")
+        log.info("Launched: \(notification.userInfo ?? [:])")
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        log.info("Terminate notification: \(notification)")
+        log.info("Terminated: \(notification.userInfo ?? [:])")
     }
     
 }
