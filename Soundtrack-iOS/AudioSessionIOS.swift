@@ -38,8 +38,6 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     private func observeAudioSessionNotifications() {
-        log.info("Attaching observers for audio session notifications")
-
         // The documentation states that these notifications should be
         // delivered on the main thread. However, it was observed when
         // running on a device (iPhone 4S, iOS 9.3) that they are instead
@@ -53,7 +51,6 @@ class AudioSessionIOS: NSObject, AudioSession {
 
 
     private func configure() {
-        log.info("Configuring \(audioSession) for music playback")
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
         } catch {
@@ -62,7 +59,6 @@ class AudioSessionIOS: NSObject, AudioSession {
 
         logAudioSessionState()
 
-        log.info("Registering for receiving remote control events")
         UIApplication.shared.beginReceivingRemoteControlEvents()
     }
 
@@ -88,7 +84,7 @@ class AudioSessionIOS: NSObject, AudioSession {
             try audioSession.setActive(true)
         } catch {
             endBackgroundTask()
-            log.warning(error)
+            log.warning("Could not activate audio session: \(error)")
             return false
         }
 
@@ -107,7 +103,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         do {
             try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
         } catch {
-            log.warning(error)
+            log.warning("Could not deactivate audio session: \(error)")
             return false
         }
 
@@ -123,7 +119,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: {
             log.warning("We were asked to relinquish our background task before playback ended")
         })
-        log.info("Did begin background task with identifier \(backgroundTaskIdentifier)")
+        log.debug("Did begin background task with identifier \(backgroundTaskIdentifier)")
     }
 
     private func endBackgroundTask() {
@@ -131,7 +127,7 @@ class AudioSessionIOS: NSObject, AudioSession {
             return log.warning()
         }
 
-        log.info("Will end background task with identifier \(backgroundTaskIdentifier)")
+        log.debug("Will end background task with identifier \(backgroundTaskIdentifier)")
         UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
 
         self.backgroundTaskIdentifier = nil
@@ -140,7 +136,7 @@ class AudioSessionIOS: NSObject, AudioSession {
     // MARK: Audio Session Notifications
 
     func audioSessionInterruption(_ notification: Notification) {
-        log.info("Audio session interruption: \(notification)")
+        log.debug("Audio session interruption: \(notification)")
 
         guard let type: AVAudioSessionInterruptionType = notification.enumForKey( AVAudioSessionInterruptionTypeKey) else {
             return log.warning()
@@ -172,7 +168,7 @@ class AudioSessionIOS: NSObject, AudioSession {
     }
 
     func audioSessionRouteChange(_ notification: Notification) {
-        log.info("Audio route changed: \(notification)")
+        log.debug("Audio route changed: \(notification)")
 
         if let reason: AVAudioSessionRouteChangeReason = notification.enumForKey(AVAudioSessionRouteChangeReasonKey) {
 

@@ -68,12 +68,12 @@ final class ShoutcastStream {
     ///   against this parameter to make sure we're all on the same page.
     ///   For example, "audio/aac".
     ///
-    /// - Parameter queue: A serial queue for scheduling delegate callbacks.
-    ///   This should be a serial queue so as to ensure the correct ordering
-    ///   of callbacks.
+    /// - Parameter delegateQueue: A serial queue on which the delegate
+    ///   methods will be invoked.
 
-    init(url: URL, mimeType: String, queue: DispatchQueue) {
+    init(url: URL, mimeType: String, delegate: ShoutcastStreamDelegate, delegateQueue: DispatchQueue) {
         expectedMIMEType = mimeType
+        self.delegate = delegate
 
         let sessionDelegate = SessionDelegate()
         session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
@@ -81,7 +81,7 @@ final class ShoutcastStream {
         task = session.dataTask(with: ShoutcastStream.makeRequest(url: url))
 
         sessionDelegate.stream = self
-        session.delegateQueue.underlyingQueue = queue
+        session.delegateQueue.underlyingQueue = delegateQueue
 
         task.resume()
         log.info("Connecting to \(url)")
@@ -252,7 +252,7 @@ final class ShoutcastStream {
 
     private func emit(title: String?) {
         if let title = title, title != lastTitle {
-            delegate?.shoutcastStream(self, gotTitle: title)
+            delegate?.shoutcastStream(self, gotNewTitle: title)
             lastTitle = title
         }
     }
@@ -272,7 +272,7 @@ final class ShoutcastStream {
         weak var stream: ShoutcastStream?
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-            log.info("Stream connected: \(response)")
+            log.debug("Stream connected: \(response)")
 
             if stream?.parse(response: response) == true {
                 stream?.taskDidReceiveValidResponse()
@@ -340,7 +340,7 @@ protocol ShoutcastStreamDelegate: class {
     /// This method is only called when the stream gets a title that is
     /// different from the last title it received over the network.
     
-    func shoutcastStream(_ stream: ShoutcastStream, gotTitle title: String)
+    func shoutcastStream(_ stream: ShoutcastStream, gotNewTitle title: String)
     
     func shoutcastStream(_ stream: ShoutcastStream, gotData data: Data)
     

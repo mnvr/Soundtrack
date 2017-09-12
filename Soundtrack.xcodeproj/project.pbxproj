@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		F90555A01F34745A006FEAF5 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559F1F34745A006FEAF5 /* DataExtensions.swift */; };
 		F90555A11F34745A006FEAF5 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F905559F1F34745A006FEAF5 /* DataExtensions.swift */; };
-		F90C3E041F302BFE009A3054 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90C3E031F302BFE009A3054 /* AudioPlayer.swift */; };
-		F90C3E051F302BFE009A3054 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90C3E031F302BFE009A3054 /* AudioPlayer.swift */; };
 		F90E27341F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E27321F5ED10800F092DA /* AACShoutcastStreamPlayer.swift */; };
 		F90E27351F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E27321F5ED10800F092DA /* AACShoutcastStreamPlayer.swift */; };
 		F90E27361F5ED10800F092DA /* ShoutcastStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E27331F5ED10800F092DA /* ShoutcastStream.swift */; };
@@ -22,8 +20,8 @@
 		F9241FF91F3327C4001D56FD /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9241FF71F3327C4001D56FD /* Configuration.swift */; };
 		F92994D91F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */; };
 		F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */; };
-		F92B47B01F2079B400FAFAA3 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */; };
-		F92B47B11F2079B400FAFAA3 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */; };
+		F92B47B01F2079B400FAFAA3 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* AudioController.swift */; };
+		F92B47B11F2079B400FAFAA3 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B47AF1F2079B400FAFAA3 /* AudioController.swift */; };
 		F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */; };
 		F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD9661F19A2EC00BFA8ED /* ViewController.swift */; };
 		F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9681F19A2EC00BFA8ED /* Main.storyboard */; };
@@ -33,6 +31,8 @@
 		F985E17F1F2994D10050285C /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E17E1F2994D10050285C /* AudioSession.swift */; };
 		F985E1801F2994D10050285C /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E17E1F2994D10050285C /* AudioSession.swift */; };
 		F985E1821F29CDB20050285C /* AudioSessionMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */; };
+		F98AADB71F67E826000294F6 /* StreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98AADB61F67E826000294F6 /* StreamPlayer.swift */; };
+		F98AADB81F67E82B000294F6 /* StreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98AADB61F67E826000294F6 /* StreamPlayer.swift */; };
 		F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
 		F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
 		F9C597381F1CEA15000B1A8B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Log.swift */; };
@@ -45,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		F905559F1F34745A006FEAF5 /* DataExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtensions.swift; sourceTree = "<group>"; };
-		F90C3E031F302BFE009A3054 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		F90E27321F5ED10800F092DA /* AACShoutcastStreamPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AACShoutcastStreamPlayer.swift; sourceTree = "<group>"; };
 		F90E27331F5ED10800F092DA /* ShoutcastStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoutcastStream.swift; sourceTree = "<group>"; };
 		F90E273B1F5EF18F00F092DA /* ADTSParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADTSParser.swift; sourceTree = "<group>"; };
@@ -53,7 +52,7 @@
 		F91EBFDF1F26D4880046E642 /* AudioSessionIOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionIOS.swift; sourceTree = "<group>"; };
 		F9241FF71F3327C4001D56FD /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
-		F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
+		F92B47AF1F2079B400FAFAA3 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundtrack.entitlements; sourceTree = "<group>"; };
 		F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +64,7 @@
 		F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		F985E17E1F2994D10050285C /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
 		F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionMacOS.swift; sourceTree = "<group>"; };
+		F98AADB61F67E826000294F6 /* StreamPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamPlayer.swift; sourceTree = "<group>"; };
 		F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		F9C597371F1CEA15000B1A8B /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundtrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,15 +132,15 @@
 			isa = PBXGroup;
 			children = (
 				F9C597371F1CEA15000B1A8B /* Log.swift */,
-				F90C3E031F302BFE009A3054 /* AudioPlayer.swift */,
+				F92B47AF1F2079B400FAFAA3 /* AudioController.swift */,
 				F985E17E1F2994D10050285C /* AudioSession.swift */,
-				F92B47AF1F2079B400FAFAA3 /* PlaybackController.swift */,
+				F98AADB61F67E826000294F6 /* StreamPlayer.swift */,
 				F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */,
 				F9241FF71F3327C4001D56FD /* Configuration.swift */,
 				F92994D81F334DFC00B5BF6A /* ArrayExtensions.swift */,
-				F905559F1F34745A006FEAF5 /* DataExtensions.swift */,
-				F90E27331F5ED10800F092DA /* ShoutcastStream.swift */,
 				F90E27321F5ED10800F092DA /* AACShoutcastStreamPlayer.swift */,
+				F90E27331F5ED10800F092DA /* ShoutcastStream.swift */,
+				F905559F1F34745A006FEAF5 /* DataExtensions.swift */,
 				F90E273B1F5EF18F00F092DA /* ADTSParser.swift */,
 			);
 			path = Soundtrack;
@@ -271,17 +271,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */,
+				F98AADB71F67E826000294F6 /* StreamPlayer.swift in Sources */,
 				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
 				F985E17F1F2994D10050285C /* AudioSession.swift in Sources */,
 				F90E27341F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */,
 				F91EBFE01F26D4880046E642 /* AudioSessionIOS.swift in Sources */,
 				F90E27361F5ED10800F092DA /* ShoutcastStream.swift in Sources */,
-				F92B47B01F2079B400FAFAA3 /* PlaybackController.swift in Sources */,
+				F92B47B01F2079B400FAFAA3 /* AudioController.swift in Sources */,
 				F9241FF81F3327C4001D56FD /* Configuration.swift in Sources */,
 				F90555A01F34745A006FEAF5 /* DataExtensions.swift in Sources */,
 				F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
 				F92994D91F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,
-				F90C3E041F302BFE009A3054 /* AudioPlayer.swift in Sources */,
 				F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */,
 				F90E273C1F5EF18F00F092DA /* ADTSParser.swift in Sources */,
 				F9C597381F1CEA15000B1A8B /* Log.swift in Sources */,
@@ -295,12 +295,12 @@
 				F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */,
 				F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
 				F9C5974C1F1CECC0000B1A8B /* Log.swift in Sources */,
-				F90C3E051F302BFE009A3054 /* AudioPlayer.swift in Sources */,
 				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
 				F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,
 				F90E27351F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */,
 				F90E27371F5ED10800F092DA /* ShoutcastStream.swift in Sources */,
-				F92B47B11F2079B400FAFAA3 /* PlaybackController.swift in Sources */,
+				F92B47B11F2079B400FAFAA3 /* AudioController.swift in Sources */,
+				F98AADB81F67E82B000294F6 /* StreamPlayer.swift in Sources */,
 				F985E1821F29CDB20050285C /* AudioSessionMacOS.swift in Sources */,
 				F90E273D1F5EF18F00F092DA /* ADTSParser.swift in Sources */,
 				F90555A11F34745A006FEAF5 /* DataExtensions.swift in Sources */,

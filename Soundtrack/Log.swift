@@ -10,7 +10,7 @@ let log = Log()
 
 class Log {
 
-    /// Writes a "human readable" log entry.
+    /// Writes a log entry.
 
     func info(_ message: String) {
         NSLog(message)
