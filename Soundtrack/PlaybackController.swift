@@ -97,7 +97,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
             return log.warning("Failed to create player")
         }
 
-        log.info("Created \(player)")
+        log.debug("Created \(player)")
 
         delegate?.playbackControllerDidBecomeAvailable(self)
     }
@@ -203,7 +203,7 @@ class PlaybackController: NSObject, AudioPlayerDelegate, AudioSessionDelegate {
     func audioPlayerDidFinishPlaying(_ audioPlayer: AudioPlayer) {
         onQueuePrecondition()
 
-        log.info("\(player) finished playing")
+        log.debug("\(player) finished playing")
         unplay_()
     }
 

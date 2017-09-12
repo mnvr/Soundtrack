@@ -113,7 +113,9 @@ class ADTSParser {
             if !getProperty(propertyID, &asbd) {
                 return errorOut()
             }
-            log.info("Audio stream basic description: \(asbd)")
+            log.trace("Audio stream basic description: \(asbd)")
+            let ch = asbd.mChannelsPerFrame == 2 ? "stereo" : "\(asbd.mChannelsPerFrame) channels"
+            log.info("Audio data is \(fourCharCode(asbd.mFormatID) ?? "unkn") @ \(asbd.mSampleRate) hz \(ch)")
             if !createConverter(inputStreamDescription: &asbd) {
                 return errorOut()
             }
@@ -278,12 +280,16 @@ private func osStatusDescription(_ status: OSStatus) -> String {
     return "OSStatus \(fourCharCodeDescription(UInt32(status)))"
 }
 
-private func fourCharCodeDescription(_ code: UInt32) -> String {
+private func fourCharCode(_ code: UInt32) -> String? {
     let chars = [(code & 0xff000000) >> 24,
                  (code & 0xff0000) >> 16,
                  (code & 0xff00) >> 8,
                  (code & 0xff)].map { UInt8($0) }
-    if let fourCharCode = String(bytes: chars, encoding: .ascii), !fourCharCode.isEmpty {
+    return String(bytes: chars, encoding: .ascii)
+}
+
+private func fourCharCodeDescription(_ code: UInt32) -> String {
+    if let string = fourCharCode(code), !string.isEmpty {
         return "'\(fourCharCode)' [\(code)]"
     } else {
         return "[\(code)]"

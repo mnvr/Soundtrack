@@ -84,7 +84,7 @@ final class ShoutcastStream {
         session.delegateQueue.underlyingQueue = queue
 
         task.resume()
-        log.info("Created task for connecting to \(url): \(task)")
+        log.info("Connecting to \(url)")
     }
 
     deinit {
@@ -122,7 +122,7 @@ final class ShoutcastStream {
         if let icyMetaInt = extractIntValue(fromHTTPHeaders: headers, forKey: "icy-metaint") {
             metadataInterval = icyMetaInt
             nextMetadataInterval = icyMetaInt
-            log.info("Metadata expected to be embedded every \(icyMetaInt) bytes in the stream")
+            log.debug("Metadata expected to be embedded every \(icyMetaInt) bytes in the stream")
         } else {
             log.info("The stream contains no embedded metadata; track titles will not be available")
         }
@@ -272,7 +272,7 @@ final class ShoutcastStream {
         weak var stream: ShoutcastStream?
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-            log.info("Received response for \(dataTask): \(response)")
+            log.info("Stream connected: \(response)")
 
             if stream?.parse(response: response) == true {
                 stream?.taskDidReceiveValidResponse()
@@ -290,13 +290,27 @@ final class ShoutcastStream {
 
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
             var wasCancelled = false
+
             if let error = error {
                 let nserror = error as NSError
-                if nserror.domain == NSURLErrorDomain, nserror.code == NSURLErrorCancelled {
-                    log.info("Cancelled \(task)")
-                    wasCancelled = true
+                if nserror.domain == NSURLErrorDomain {
+
+                    switch nserror.code {
+                    case NSURLErrorCancelled:
+                        log.debug("Cancelled \(task)")
+                        wasCancelled = true
+
+                    case NSURLErrorNetworkConnectionLost:
+                        fallthrough
+                    case NSURLErrorNotConnectedToInternet:
+                        log.info("Stream disconnected: \(error.localizedDescription)")
+
+                    default:
+                        log.info("Ended \(task): \(error)")
+                    }
+
                 } else {
-                    log.info("Completed \(task) with error \(error)")
+                    log.info("Ended \(task): \(error)")
                 }
             } else {
                 log.info("Completed \(task)")
