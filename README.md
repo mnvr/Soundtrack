@@ -9,7 +9,7 @@ programming, designing, writing; or just thinking), some people, some
 times, are hampered by the mind's tendency to fidget.
 
 There is a certain genre of music that helps some of those people, at
-some of those times, to get in the "zone".
+some of those some times, to get in the "zone".
 
 Soundtrack plays such music.
 
