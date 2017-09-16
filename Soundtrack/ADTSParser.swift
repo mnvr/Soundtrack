@@ -114,8 +114,7 @@ class ADTSParser {
                 return errorOut()
             }
             log.trace("Audio stream basic description: \(asbd)")
-            let ch = asbd.mChannelsPerFrame == 2 ? "stereo" : "\(asbd.mChannelsPerFrame) channels"
-            log.info("Audio data is \(fourCharCode(asbd.mFormatID) ?? "unkn") @ \(asbd.mSampleRate) hz \(ch)")
+            log.info("Audio data is \(asbd.mChannelsPerFrame) ch, \(Int(asbd.mSampleRate)) Hz, '\(fourCharCode(asbd.mFormatID) ?? "unkn")', \(asbd.mFramesPerPacket) frames/packet")
             if !createConverter(inputStreamDescription: &asbd) {
                 return errorOut()
             }
@@ -148,7 +147,6 @@ class ADTSParser {
         }
 
         framesPerPacket = Int(inputStreamDescription.mFramesPerPacket)
-        log.debug("Each input packet contains \(framesPerPacket) frames of audio")
 
         return true
     }
