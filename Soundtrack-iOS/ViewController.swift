@@ -18,16 +18,8 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         playButton.setTitle(NSLocalizedString("Loading", comment: ""), for: .normal)
         playButton.isEnabled = false
 
-        maybeMakePlaybackController()
-        observe(.ConfigurationDidChange, with: #selector(maybeMakePlaybackController))
-    }
-
-    // MARK: Audio Controller
-
-    @objc private func maybeMakePlaybackController() {
-        if let url = Configuration.shared.shoutcastURL, audioController == nil {
-            audioController = makePlaybackController(url: url)
-        }
+        let url = Configuration.shared.shoutcastURL
+        audioController = makePlaybackController(url: url)
     }
 
     private func makePlaybackController(url: URL) -> AudioController {
