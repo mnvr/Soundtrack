@@ -9,6 +9,7 @@ import Cocoa
 class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDelegate {
 
     var audioController: AudioController!
+    var defaultWindowTitle: String!
 
     @IBOutlet weak var playButton: NSButton!
 
@@ -20,6 +21,14 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         let url = Configuration.shared.shoutcastURL
         audioController = makePlaybackController(url: url)
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        if defaultWindowTitle == nil {
+            defaultWindowTitle = view.window!.title
+        }
     }
 
     private func makePlaybackController(url: URL) -> AudioController {
@@ -51,9 +60,21 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
         playButton.title = NSLocalizedString("Play", comment: "")
+        resetWindowTitle()
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
+        setWindowTitle(title)
+    }
+
+    // MARK: Window Title
+
+    private func setWindowTitle(_ title: String) {
+        view.window!.title = title
+    }
+
+    private func resetWindowTitle() {
+        view.window!.title = defaultWindowTitle
     }
 
 }
