@@ -3,51 +3,61 @@
     {
       "idiom" : "mac",
       "size" : "16x16",
+      "filename" : "benzene-16.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "16x16",
+      "filename" : "benzene-32.png",
       "scale" : "2x"
     },
     {
       "idiom" : "mac",
       "size" : "32x32",
+      "filename" : "benzene-32.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
       "size" : "32x32",
+      "idiom" : "mac",
+      "filename" : "benzene-64.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "128x128",
+      "idiom" : "mac",
+      "filename" : "benzene-128.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "128x128",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "mac",
-      "size" : "128x128",
+      "filename" : "benzene-256.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "mac",
       "size" : "256x256",
+      "idiom" : "mac",
+      "filename" : "benzene-256.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
       "size" : "256x256",
+      "filename" : "benzene-512.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "mac",
       "size" : "512x512",
+      "idiom" : "mac",
+      "filename" : "benzene-512.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
       "size" : "512x512",
+      "idiom" : "mac",
+      "filename" : "benzene-1024.png",
       "scale" : "2x"
     }
   ],

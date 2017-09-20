@@ -14,7 +14,7 @@ z
     />
 
     <path
-        style="stroke:black;stroke-width:24;stroke-linecap:square;fill:none;"
+        style="stroke:black;stroke-width:40;stroke-linecap:square;fill:none;"
         d="
 M 512,192 m -277.12,160  l 0,320
 M 512,832 l 277.12,-160  m 0,-320
