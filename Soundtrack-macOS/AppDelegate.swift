@@ -17,5 +17,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         log.info("Terminated: \(notification.userInfo ?? [:])")
     }
     
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows: Bool) -> Bool {
+        if !hasVisibleWindows {
+            sender.windows.first?.makeKeyAndOrderFront(self)
+        }
+        return true
+    }
+
 }
 
