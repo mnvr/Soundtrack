@@ -2,6 +2,8 @@
 
 Music that helps you get in the flow.
 
+[Download for macOS][zip]
+
 ## About
 
 When doing tasks that require primarily mental movements (for example,
@@ -29,3 +31,8 @@ Soundtrack runs on macOS and iOS.
 There are no external dependencies. You can download the source code,
 double click the Xcode project file to open it in Xcode, and click the
 Xcode's "Build and Run" button to, well, build and run.
+
+There is also a [pre-built binary][release] available for macOS.
+
+[zip]: https://github.com/mnvr/Soundtrack/releases/download/0.1.1/Soundtrack.zip
+[release]: https://github.com/mnvr/Soundtrack/releases/tag/0.1.1
