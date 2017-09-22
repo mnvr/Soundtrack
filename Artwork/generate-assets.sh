@@ -18,6 +18,7 @@ function gen_png () {
     local sz=${2:-1024}
 
     ${INKSCAPE} \
+        --without-gui \
         --file=${input_file} \
         --export-png=${dest_dir}/${output_base_name}-${sz}.png \
         --export-width=${sz} \
@@ -30,6 +31,7 @@ function gen_template_pdf () {
     
     local output_file=${dest_dir}/${output_base_name}-Template.pdf
     ${INKSCAPE} \
+        --without-gui \
         --file=${input_file} \
         --export-pdf=${output_file}
 
