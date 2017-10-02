@@ -15,8 +15,7 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        playButton.setTitle(NSLocalizedString("Loading", comment: ""), for: .normal)
-        playButton.isEnabled = false
+        indicateUnavailability()
 
         let url = Configuration.shared.shoutcastURL
         audioController = makePlaybackController(url: url)
@@ -32,28 +31,48 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
     @IBAction func togglePlayPause(_ sender: UIButton) {
         log.info("User toggled playback state")
+        indicateUnavailability()
         audioController.playPause()
     }
 
-    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
+    private func indicatePlaybackReadiness() {
         playButton.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
         playButton.isEnabled = true
     }
 
-    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
-        playButton.setTitle(NSLocalizedString("...", comment: ""), for: .normal)
+    private func indicateUnavailability() {
+        playButton.setTitle(NSLocalizedString("Loading", comment: ""), for: .normal)
         playButton.isEnabled = false
     }
 
-    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
+    private func indicatePauseability() {
         playButton.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
+        playButton.isEnabled = true
+    }
+
+    // MARK: Audio Controller
+
+    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
+        indicatePlaybackReadiness()
+    }
+
+    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
+        indicateUnavailability()
+    }
+
+    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
+        indicatePauseability()
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
-        playButton.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
+        indicatePlaybackReadiness()
+        // TODO:
+        // resetWindowTitle()
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
+        // TODO:
+        // setWindowTitle(title)
     }
 
     // MARK: Page View Controller - Children
