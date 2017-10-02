@@ -655,17 +655,17 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController id="B8D-0N-5wS" customClass="WindowController" customModule="Soundtrack" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Soundtrack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Main" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -686,20 +686,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
-                                <rect key="frame" x="208" y="118" width="66" height="32"/>
-                                <buttonCell key="cell" type="push" title="Play" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="togglePlayPause:" target="XfG-lQ-9wD" id="ofR-GT-OtC"/>
-                                </connections>
-                            </button>
+                            <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="PuU-OJ-Edb">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
+                                        <rect key="frame" x="226" y="125" width="28" height="19"/>
+                                        <buttonCell key="cell" type="roundRect" title="Play" bezelStyle="roundedRect" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="cellTitle"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="togglePlayPause:" target="XfG-lQ-9wD" id="ofR-GT-OtC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="PuU-OJ-Edb" secondAttribute="centerY" id="ZWi-hh-S0s"/>
+                                    <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerX" secondItem="PuU-OJ-Edb" secondAttribute="centerX" id="j8U-XK-6ip"/>
+                                </constraints>
+                            </visualEffectView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="XUw-WE-jCB"/>
-                            <constraint firstItem="1hl-U6-7Wv" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="214" id="l0c-Of-IyE"/>
+                            <constraint firstAttribute="bottom" secondItem="PuU-OJ-Edb" secondAttribute="bottom" id="6HC-RR-aSg"/>
+                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Qbj-PX-Jbh"/>
+                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="SeU-XI-A7E"/>
+                            <constraint firstAttribute="trailing" secondItem="PuU-OJ-Edb" secondAttribute="trailing" id="YZ2-RD-l03"/>
                         </constraints>
                     </view>
                     <connections>
