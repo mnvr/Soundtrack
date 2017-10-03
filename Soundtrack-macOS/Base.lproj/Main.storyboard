@@ -664,7 +664,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="WindowController" customModule="Soundtrack" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Soundtrack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Main" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Main" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -696,25 +696,50 @@
                                             <font key="font" metaFont="cellTitle"/>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="togglePlayPause:" target="XfG-lQ-9wD" id="ofR-GT-OtC"/>
+                                            <action selector="play:" target="XfG-lQ-9wD" id="Xsd-p6-a4P"/>
                                         </connections>
                                     </button>
+                                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-ne-KBI">
+                                        <rect key="frame" x="232" y="127" width="16" height="16"/>
+                                    </progressIndicator>
+                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jqa-Cq-ILO">
+                                        <rect key="frame" x="207" y="126" width="66" height="17"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" title="Song Title" id="KYF-om-SOx">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="PuU-OJ-Edb" secondAttribute="centerY" id="ZWi-hh-S0s"/>
-                                    <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerX" secondItem="PuU-OJ-Edb" secondAttribute="centerX" id="j8U-XK-6ip"/>
+                                    <constraint firstItem="Jqa-Cq-ILO" firstAttribute="centerX" secondItem="NGX-ne-KBI" secondAttribute="centerX" id="2Dd-oG-dgT"/>
+                                    <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="NGX-ne-KBI" secondAttribute="centerY" id="8fa-0I-wEv"/>
+                                    <constraint firstItem="NGX-ne-KBI" firstAttribute="centerX" secondItem="PuU-OJ-Edb" secondAttribute="centerX" id="B1D-Yi-3cP"/>
+                                    <constraint firstItem="NGX-ne-KBI" firstAttribute="centerX" secondItem="1hl-U6-7Wv" secondAttribute="centerX" id="fgU-Tj-LjW"/>
+                                    <constraint firstItem="Jqa-Cq-ILO" firstAttribute="centerY" secondItem="NGX-ne-KBI" secondAttribute="centerY" id="jVt-uQ-NrF"/>
+                                    <constraint firstItem="NGX-ne-KBI" firstAttribute="centerY" secondItem="PuU-OJ-Edb" secondAttribute="centerY" id="zil-29-zoj"/>
                                 </constraints>
+                                <gestureRecognizers>
+                                    <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="F6H-Rp-KUk">
+                                        <connections>
+                                            <action selector="click:" target="XfG-lQ-9wD" id="Z8a-EU-PVM"/>
+                                        </connections>
+                                    </clickGestureRecognizer>
+                                </gestureRecognizers>
                             </visualEffectView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="PuU-OJ-Edb" secondAttribute="bottom" id="6HC-RR-aSg"/>
-                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Qbj-PX-Jbh"/>
-                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="SeU-XI-A7E"/>
-                            <constraint firstAttribute="trailing" secondItem="PuU-OJ-Edb" secondAttribute="trailing" id="YZ2-RD-l03"/>
+                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="N1D-MW-APU"/>
+                            <constraint firstAttribute="trailing" secondItem="PuU-OJ-Edb" secondAttribute="trailing" id="UPo-U3-1zB"/>
+                            <constraint firstAttribute="bottom" secondItem="PuU-OJ-Edb" secondAttribute="bottom" id="hte-Uo-22S"/>
+                            <constraint firstItem="PuU-OJ-Edb" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="iZy-q2-hDo"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="clickGestureRecognizer" destination="F6H-Rp-KUk" id="LEH-jd-AL0"/>
                         <outlet property="playButton" destination="1hl-U6-7Wv" id="jFu-Gw-FHq"/>
+                        <outlet property="progressIndicator" destination="NGX-ne-KBI" id="7cZ-77-Yju"/>
+                        <outlet property="titleTextField" destination="Jqa-Cq-ILO" id="6Zk-zi-iyZ"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

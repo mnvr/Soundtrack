@@ -8,10 +8,12 @@ import Cocoa
 
 class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDelegate {
 
-    var audioController: AudioController!
-    var defaultWindowTitle: String!
-
     @IBOutlet weak var playButton: NSButton!
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
+    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
+
+    private var audioController: AudioController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +24,6 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         audioController = makePlaybackController(url: url)
     }
 
-    override func viewDidAppear() {
-        super.viewDidAppear()
-
-        if defaultWindowTitle == nil {
-            defaultWindowTitle = view.window!.title
-        }
-    }
-
     private func makePlaybackController(url: URL) -> AudioController {
         let makeSession = { queue in
             return AudioSessionMacOS(queue: queue)
@@ -38,25 +32,54 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         return AudioController(url: url, delegate: self, delegateQueue: DispatchQueue.main, makeSession: makeSession)
     }
 
-    @IBAction func togglePlayPause(_ sender: NSButton) {
-        log.info("User toggled playback state")
+    @IBAction func play(_ sender: NSButton) {
+        log.info("User pressed play")
         indicateUnavailability()
         audioController.playPause()
     }
 
+    @IBAction func click(_ sender: NSGestureRecognizer) {
+        log.info("User clicked inside the window")
+        indicateUnavailability()
+        audioController.playPause()
+    }
+
+    // MARK: State Changes
+
     private func indicatePlaybackReadiness() {
-        playButton.title = NSLocalizedString("Play", comment: "")
         playButton.isEnabled = true
+        playButton.isHidden = false
+        progressIndicator.stopAnimation(self)
+        titleTextField.isHidden = true
+        resetTitle()
+        clickGestureRecognizer.isEnabled = false
+
     }
 
     private func indicateUnavailability() {
-        playButton.title = NSLocalizedString("Loading", comment: "")
         playButton.isEnabled = false
+        playButton.isHidden = true
+        progressIndicator.startAnimation(self)
+        titleTextField.isHidden = true
+        resetTitle()
+        clickGestureRecognizer.isEnabled = false
     }
 
-    private func indicatePauseability() {
-        playButton.title = NSLocalizedString("Pause", comment: "")
-        playButton.isEnabled = true
+    private func indicatePlayback() {
+        playButton.isEnabled = false
+        playButton.isHidden = true
+        progressIndicator.stopAnimation(self)
+        resetTitle()
+        titleTextField.isHidden = false
+        clickGestureRecognizer.isEnabled = true
+    }
+
+    private func setTitle(_ title: String) {
+        titleTextField.stringValue = title
+    }
+
+    private func resetTitle() {
+        setTitle("")
     }
 
     // MARK: Audio Controller
@@ -70,26 +93,15 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     }
 
     func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
-        indicatePauseability()
+        indicatePlayback()
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
         indicatePlaybackReadiness()
-        resetWindowTitle()
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
-        setWindowTitle(title)
-    }
-
-    // MARK: Window Title
-
-    private func setWindowTitle(_ title: String) {
-        view.window!.title = title
-    }
-
-    private func resetWindowTitle() {
-        view.window!.title = defaultWindowTitle
+        setTitle(title)
     }
 
 }
