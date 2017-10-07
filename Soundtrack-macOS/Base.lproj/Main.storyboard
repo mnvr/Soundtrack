@@ -690,10 +690,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
-                                        <rect key="frame" x="226" y="125" width="28" height="19"/>
-                                        <buttonCell key="cell" type="roundRect" title="Play" bezelStyle="roundedRect" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="cellTitle"/>
+                                        <rect key="frame" x="232" y="126" width="16" height="17"/>
+                                        <buttonCell key="cell" type="square" title="▶︎" bezelStyle="shadowlessSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="play:" target="XfG-lQ-9wD" id="Xsd-p6-a4P"/>
