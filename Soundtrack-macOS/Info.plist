@@ -43,5 +43,9 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>Soundtrack.help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>Soundtrack-Help</string>
 </dict>
 </plist>
