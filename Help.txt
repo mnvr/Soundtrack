@@ -1,0 +1,32 @@
+Using Soundtrack
+----------------
+
+The Soundtrack window appears when you open Soundtrack (either by
+clicking its icon in Finder or in your Dock).
+
+Click on the "Play" button.  You will see an activity indicator as
+Soundtrack tunes into the radio station.
+
+Once the music starts playing, the title of the currently playing song
+will appear in the Soundtrack window.
+
+To pause the music, click anywhere in the Soundtrack window.
+
+You can move the Soundtrack window around in your screen by clicking
+and dragging anywhere inside the window.  You can resize the
+Soundtrack window by dragging the edges.
+
+Click the "zoom" button (the green button in the button set at the top
+left of the Soundtrack window) to make Soundtrack full screen;
+clicking it again will make Soundtrack into a window again.
+
+Option-clicking the zoom button will toggle between the default size
+and any resizing that you've done.
+
+Click the "close" button (the red button in the button set at the top
+left of the Soundtrack window) to hide the Soundtrack window.  To make
+it visible again, click on the Soundtrack icon in the Dock.
+
+There are keyboard shortcuts for some common tasks:
+
+    Command-H    Hide the Soundtrack window
