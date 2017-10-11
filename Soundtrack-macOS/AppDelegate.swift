@@ -9,6 +9,8 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.info("Launched: \(notification.userInfo ?? [:])")
     }
