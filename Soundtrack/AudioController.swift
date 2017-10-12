@@ -151,7 +151,7 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
             isSessionActive = false
         }
 
-        canPause = true
+        canPause = false
 
         log.info("Playback stopped")
 

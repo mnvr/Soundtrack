@@ -26,6 +26,8 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
     private var stream: ShoutcastStream?
     private var adtsParser: ADTSParser?
 
+    private var activeVolumeRamp: VolumeRamp?
+
     /// - Parameter url: The URL of the SHOUTcast stream server that
     ///   emits an AAC audio stream.
     ///
@@ -47,8 +49,10 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
     }
 
     func pause() {
-        stopPlayback()
-        disconnect()
+        fadeOut { [weak self] in
+            self?.stopPlayback()
+            self?.disconnect()
+        }
     }
 
     private func connect() {
@@ -65,7 +69,9 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
 
     private func startPlayback() throws {
         try engine.start()
+        playerNode.volume = 0
         playerNode.play()
+        fadeIn()
         delegate?.streamPlayerDidStartPlayback(self)
     }
 
@@ -103,6 +109,72 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
 
     func adtsParser(_ adtsParser: ADTSParser, didParsePCMBuffer buffer: AVAudioPCMBuffer) {
         playerNode.scheduleBuffer(buffer)
+    }
+
+    private func fadeIn() {
+        ramp(toVolume: 1, duration: 1)
+    }
+
+    private func fadeOut(completionHandler: @escaping () -> Void) {
+        ramp(toVolume: 0, duration: 0.25, completionHandler: completionHandler)
+    }
+
+    private func ramp(toVolume: Double, duration: Double, completionHandler: (() -> Void)? = nil) {
+        activeVolumeRamp = VolumeRamp(playerNode: playerNode, toVolume: toVolume, duration: duration, queue: delegateQueue) { [weak self] in
+            self?.activeVolumeRamp = nil
+            if let handler = completionHandler {
+                handler()
+            }
+        }
+    }
+}
+
+private class VolumeRamp {
+
+    let playerNode: AVAudioPlayerNode
+    var pendingSteps = 10
+    let duration: Double
+    let timeDelta: Double
+    let volumeDelta: Double
+    let queue: DispatchQueue
+    let completionHandler: () -> Void
+
+    init(playerNode: AVAudioPlayerNode, toVolume: Double, duration: Double, queue: DispatchQueue, completionHandler: @escaping () -> Void) {
+        self.playerNode = playerNode
+        self.duration = duration
+        timeDelta = duration / Double(pendingSteps)
+        volumeDelta = (toVolume - Double(playerNode.volume)) / Double(pendingSteps)
+        self.queue = queue
+        self.completionHandler = completionHandler
+
+        ramp()
+    }
+
+    private func ramp() {
+        if pendingSteps > 0 {
+            let nextVolume = Double(playerNode.volume) + volumeDelta
+            playerNode.volume = Float(clamp(nextVolume, between: 0, and: 1))
+
+            pendingSteps -= 1
+
+            queue.asyncAfter(deadline: DispatchTime.now() + timeDelta) { [weak self] in
+                self?.ramp()
+            }
+        } else {
+            completionHandler()
+        }
+    }
+
+    private func clamp(_ x: Double, between a: Double, and b: Double) -> Double {
+        let min_x = min(a, b)
+        let max_x = max(a, b)
+        if x < min_x {
+            return min_x
+        }
+        if x > max_x {
+            return max_x
+        }
+        return x
     }
 
 }
