@@ -8,9 +8,17 @@ import UIKit
 
 class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDelegate, UIPageViewControllerDataSource {
 
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
+
     var audioController: AudioController!
 
-    @IBOutlet weak var playButton: UIButton!
+    private var isPlaying: Bool = false
+    private var currentPlaybackAttempt: Int = 0
+
+    // MARK: -
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,25 +37,118 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         return AudioController(url: url, delegate: self, delegateQueue: DispatchQueue.main, makeSession: makeSession)
     }
 
-    @IBAction func togglePlayPause(_ sender: UIButton) {
-        log.info("User toggled playback state")
-        indicateUnavailability()
+    // MARK: -
+
+    @IBAction func play(_ sender: UIButton) {
+        log.info("User pressed play")
+        initiatePlayback()
         audioController.playPause()
     }
 
-    private func indicatePlaybackReadiness() {
-        playButton.setTitle(NSLocalizedString("Play", comment: ""), for: .normal)
-        playButton.isEnabled = true
+    @IBAction func pause(_ sender: UITapGestureRecognizer) {
+        log.info("User tapped inside the window")
+        initiatePause()
+        audioController.playPause()
     }
+
+    // MARK: -
 
     private func indicateUnavailability() {
-        playButton.setTitle(NSLocalizedString("Loading", comment: ""), for: .normal)
+        isPlaying = false
+
         playButton.isEnabled = false
+        playButton.isHidden = false
+
+        activityIndicator.stopAnimating()
+
+        titleLabel.isHidden = true
+
+        tapGestureRecognizer.isEnabled = false
     }
 
-    private func indicatePauseability() {
-        playButton.setTitle(NSLocalizedString("Pause", comment: ""), for: .normal)
+    private func indicatePlaybackReadiness() {
         playButton.isEnabled = true
+    }
+
+    private func initiatePlayback() {
+        playButton.isEnabled = false
+
+        currentPlaybackAttempt += 1
+        let playbackAttempt = currentPlaybackAttempt
+
+        fadeOut(playButton) { [weak self] in
+            self?.maybeShowProgressIndicatorForPlaybackAttempt(playbackAttempt)
+        }
+    }
+
+    private func maybeShowProgressIndicatorForPlaybackAttempt(_ playbackAttempt: Int) {
+        if !isPlaying {
+            if playbackAttempt == currentPlaybackAttempt {
+                activityIndicator.startAnimating()
+            }
+        }
+    }
+
+    private func indicatePlayback() {
+        isPlaying = true
+
+        activityIndicator.stopAnimating()
+
+        tapGestureRecognizer.isEnabled = true
+    }
+
+    private func initiatePause() {
+        isPlaying = false
+
+        fadeOut(titleLabel)
+
+        tapGestureRecognizer.isEnabled = false
+    }
+
+    private func indicatePause() {
+        playButton.isEnabled = true
+        fadeIn(playButton)
+    }
+
+    private func setTitle(_ title: String) {
+        let maybeFadeInTitle = { [weak self] in
+            if !title.isEmpty {
+                if let strongSelf = self, let titleLabel = strongSelf.titleLabel {
+                    titleLabel.text = title
+                    strongSelf.fadeIn(titleLabel)
+                }
+            }
+        }
+
+        if titleLabel.isHidden {
+            maybeFadeInTitle()
+        } else {
+            fadeOut(titleLabel) {
+                maybeFadeInTitle()
+            }
+        }
+    }
+
+    // MARK: -
+
+    private func fadeOut(_ view: UIView, duration: TimeInterval = 2, then: (() -> Void)? = nil) {
+        UIView.transition(with: view, duration: duration, options: .transitionCrossDissolve, animations: {
+            view.isHidden = true
+        }, completion: { completed in
+            if let then = then {
+                then()
+            }
+        })
+    }
+
+    private func fadeIn(_ view: UIView, duration: TimeInterval = 2, then: (() -> Void)? = nil) {
+        UIView.transition(with: view, duration: duration, options: .transitionCrossDissolve, animations: {
+            view.isHidden = false
+        }, completion: { completed in
+            if let then = then {
+                then()
+            }
+        })
     }
 
     // MARK: Audio Controller
@@ -61,18 +162,18 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     }
 
     func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
-        indicatePauseability()
+        indicatePlayback()
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
-        indicatePlaybackReadiness()
-        // TODO:
-        // resetWindowTitle()
+        if isPlaying {
+            initiatePause()
+        }
+        indicatePause()
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
-        // TODO:
-        // setWindowTitle(title)
+        setTitle(title)
     }
 
     // MARK: Page View Controller - Children

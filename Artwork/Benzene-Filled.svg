@@ -1,0 +1,41 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1024" height="1024"
+    viewBox="0 0 1024 1024"
+>
+    <defs>
+      <style type="text/css"><![CDATA[
+        rect {
+          fill: #ebebeb; /* Mercury */
+          stroke: none;
+        }
+        path {
+          fill: none;
+          stroke: black;
+          stroke-width: 24;
+          stroke-linejoin: miter;
+        }
+      ]]></style>
+    </defs>
+
+    <rect x="0" y="0" width="1024" height="1024"/>
+
+    <path
+        style="stroke-width:24;"
+        d="
+M 512,64  l -388,224  l 0,448
+L 512,960 l 388,-224  l 0,-448
+z
+"
+    />
+
+    <path
+        style="stroke-width:40;"
+        d="
+M 512,192 m -277.12,160  l 0,320
+M 512,832 l 277.12,-160  m 0,-320
+L 512,192
+"
+    />
+
+</svg>

@@ -89,8 +89,8 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     private func initiatePlayback() {
         playButton.isEnabled = false
 
-        let playbackAttempt = currentPlaybackAttempt
         currentPlaybackAttempt += 1
+        let playbackAttempt = currentPlaybackAttempt
 
         fadeOut(playButton) { [weak self] in
             self?.maybeShowProgressIndicatorForPlaybackAttempt(playbackAttempt)

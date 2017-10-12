@@ -3,86 +3,103 @@
     {
       "idiom" : "iphone",
       "size" : "20x20",
+      "filename" : "Benzene-40.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "20x20",
+      "filename" : "Benzene-60.png",
       "scale" : "3x"
     },
     {
       "idiom" : "iphone",
       "size" : "29x29",
+      "filename" : "Benzene-58.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "29x29",
+      "filename" : "Benzene-87.png",
       "scale" : "3x"
     },
     {
       "idiom" : "iphone",
       "size" : "40x40",
+      "filename" : "Benzene-80.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "40x40",
+      "filename" : "Benzene-120.png",
       "scale" : "3x"
     },
     {
       "idiom" : "iphone",
       "size" : "60x60",
+      "filename" : "Benzene-120.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "60x60",
+      "filename" : "Benzene-180.png",
       "scale" : "3x"
     },
     {
       "idiom" : "ipad",
       "size" : "20x20",
+      "filename" : "Benzene-20.png",
       "scale" : "1x"
     },
     {
       "idiom" : "ipad",
       "size" : "20x20",
+      "filename" : "Benzene-87.png",
       "scale" : "2x"
     },
     {
       "idiom" : "ipad",
       "size" : "29x29",
+      "filename" : "Benzene-29.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "Benzene-58.png",
       "scale" : "2x"
     },
     {
       "idiom" : "ipad",
       "size" : "40x40",
+      "filename" : "Benzene-40.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "Benzene-80.png",
       "scale" : "2x"
     },
     {
       "idiom" : "ipad",
       "size" : "76x76",
+      "filename" : "Benzene-76.png",
       "scale" : "1x"
     },
     {
       "idiom" : "ipad",
       "size" : "76x76",
+      "filename" : "Benzene-152.png",
       "scale" : "2x"
     },
     {
       "idiom" : "ipad",
       "size" : "83.5x83.5",
+      "filename" : "Benzene-167.png",
       "scale" : "2x"
     }
   ],

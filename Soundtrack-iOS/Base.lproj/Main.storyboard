@@ -27,34 +27,55 @@
                                     <segue destination="fck-Hm-XeM" kind="embed" identifier="" id="nhv-Hm-e0i"/>
                                 </connections>
                             </containerView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vb2-oN-5mq">
-                                <rect key="frame" x="173" y="319" width="30" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-ti-8ml">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                        <state key="normal" title="Play"/>
-                                        <connections>
-                                            <action selector="togglePlayPause:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8uG-ab-2Yb"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-ti-8ml">
+                                <rect key="frame" x="172" y="318" width="30" height="30"/>
+                                <state key="normal" title="▶︎"/>
+                                <connections>
+                                    <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aic-A5-L3R"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="esV-fN-xSA">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSa-ia-tBa">
+                                <rect key="frame" x="148" y="322" width="78" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.95535339765100669" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="SmV-Mn-nCD" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="Kzr-os-BgY"/>
-                            <constraint firstItem="SmV-Mn-nCD" firstAttribute="centerY" secondItem="vb2-oN-5mq" secondAttribute="centerY" id="PiR-HP-7sA"/>
+                            <constraint firstItem="SmV-Mn-nCD" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="DRB-Av-PKv"/>
+                            <constraint firstItem="UIc-ti-8ml" firstAttribute="centerX" secondItem="SmV-Mn-nCD" secondAttribute="centerX" id="Hj6-e8-XP5"/>
+                            <constraint firstItem="zSa-ia-tBa" firstAttribute="centerX" secondItem="UIc-ti-8ml" secondAttribute="centerX" id="JLW-OY-FOh"/>
+                            <constraint firstItem="esV-fN-xSA" firstAttribute="centerX" secondItem="UIc-ti-8ml" secondAttribute="centerX" id="a0G-qJ-WS3"/>
                             <constraint firstItem="SmV-Mn-nCD" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bnY-bs-mO4"/>
-                            <constraint firstItem="SmV-Mn-nCD" firstAttribute="centerX" secondItem="vb2-oN-5mq" secondAttribute="centerX" id="g1W-Oi-14e"/>
+                            <constraint firstItem="esV-fN-xSA" firstAttribute="centerY" secondItem="UIc-ti-8ml" secondAttribute="centerY" id="cHp-0m-Qae"/>
+                            <constraint firstItem="UIc-ti-8ml" firstAttribute="centerY" secondItem="SmV-Mn-nCD" secondAttribute="centerY" id="g6Y-ad-ZGQ"/>
                             <constraint firstAttribute="trailing" secondItem="SmV-Mn-nCD" secondAttribute="trailing" id="hkR-9h-Lsn"/>
+                            <constraint firstItem="zSa-ia-tBa" firstAttribute="centerY" secondItem="UIc-ti-8ml" secondAttribute="centerY" id="iPm-Ov-Xti"/>
                             <constraint firstItem="SmV-Mn-nCD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="mh8-8y-oI6"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="lg6-f4-GUW" appends="YES" id="758-wt-Szh"/>
+                        </connections>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="esV-fN-xSA" id="0oi-3k-RlJ"/>
                         <outlet property="playButton" destination="UIc-ti-8ml" id="UaT-Z4-PIQ"/>
+                        <outlet property="tapGestureRecognizer" destination="lg6-f4-GUW" id="Qtd-Me-pMo"/>
+                        <outlet property="titleLabel" destination="zSa-ia-tBa" id="bC2-mh-cIz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="lg6-f4-GUW">
+                    <connections>
+                        <action selector="pause:" destination="BYZ-38-t0r" id="SDY-be-4cx"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="184.80000000000001" y="102.99850074962519"/>
         </scene>
