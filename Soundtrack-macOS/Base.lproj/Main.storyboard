@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -167,8 +168,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
-                                        <rect key="frame" x="232" y="126" width="16" height="17"/>
-                                        <buttonCell key="cell" type="square" title="▶︎" bezelStyle="shadowlessSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                        <rect key="frame" x="192" y="87" width="96" height="96"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1hl-U6-7Wv" secondAttribute="height" id="0a1-AB-6Uj"/>
+                                            <constraint firstAttribute="width" constant="96" id="9TA-1s-3YN"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Benzene" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -224,4 +229,7 @@
             <point key="canvasLocation" x="75" y="655"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Benzene" width="768" height="768"/>
+    </resources>
 </document>
