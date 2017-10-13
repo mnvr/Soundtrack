@@ -10,7 +10,9 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleStackView: UIStackView!
+    @IBOutlet weak var songLabel: UILabel!
+    @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
 
     var audioController: AudioController!
@@ -61,7 +63,7 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
         activityIndicator.stopAnimating()
 
-        titleLabel.isHidden = true
+        titleStackView.isHidden = true
 
         tapGestureRecognizer.isEnabled = false
     }
@@ -122,7 +124,7 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
         isPlaying = false
 
-        fadeOut(titleLabel)
+        fadeOut(titleStackView)
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
@@ -137,20 +139,26 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     private func setTitle(_ title: String) {
         let maybeFadeInTitle = { [weak self] in
             if !title.isEmpty {
-                if let strongSelf = self, let titleLabel = strongSelf.titleLabel {
-                    titleLabel.text = title
-                    strongSelf.fadeIn(titleLabel)
+                if let strongSelf = self {
+                    strongSelf.setTitleComponents(title)
+                    strongSelf.fadeIn(strongSelf.titleStackView)
                 }
             }
         }
 
-        if titleLabel.isHidden {
+        if titleStackView.isHidden {
             maybeFadeInTitle()
         } else {
-            fadeOut(titleLabel) {
+            fadeOut(titleStackView) {
                 maybeFadeInTitle()
             }
         }
+    }
+
+    private func setTitleComponents(_ title: String) {
+        let titleComponents = TitleComponents(title)
+        songLabel.text = titleComponents.song
+        artistLabel.text = titleComponents.artist
     }
 
     // MARK: -

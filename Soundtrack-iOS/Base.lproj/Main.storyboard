@@ -42,12 +42,23 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="esV-fN-xSA">
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSa-ia-tBa">
-                                <rect key="frame" x="148" y="322" width="78" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="nAp-Fw-aTN">
+                                <rect key="frame" x="167.5" y="313" width="40" height="40.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSa-ia-tBa">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nd-yd-4LB">
+                                        <rect key="frame" x="4" y="24.5" width="32.5" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -55,13 +66,13 @@
                         <constraints>
                             <constraint firstItem="SmV-Mn-nCD" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="DRB-Av-PKv"/>
                             <constraint firstItem="UIc-ti-8ml" firstAttribute="centerX" secondItem="SmV-Mn-nCD" secondAttribute="centerX" id="Hj6-e8-XP5"/>
-                            <constraint firstItem="zSa-ia-tBa" firstAttribute="centerX" secondItem="UIc-ti-8ml" secondAttribute="centerX" id="JLW-OY-FOh"/>
+                            <constraint firstItem="nAp-Fw-aTN" firstAttribute="centerY" secondItem="esV-fN-xSA" secondAttribute="centerY" id="MCP-CY-O4L"/>
                             <constraint firstItem="esV-fN-xSA" firstAttribute="centerX" secondItem="UIc-ti-8ml" secondAttribute="centerX" id="a0G-qJ-WS3"/>
                             <constraint firstItem="SmV-Mn-nCD" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bnY-bs-mO4"/>
                             <constraint firstItem="esV-fN-xSA" firstAttribute="centerY" secondItem="UIc-ti-8ml" secondAttribute="centerY" id="cHp-0m-Qae"/>
                             <constraint firstItem="UIc-ti-8ml" firstAttribute="centerY" secondItem="SmV-Mn-nCD" secondAttribute="centerY" id="g6Y-ad-ZGQ"/>
                             <constraint firstAttribute="trailing" secondItem="SmV-Mn-nCD" secondAttribute="trailing" id="hkR-9h-Lsn"/>
-                            <constraint firstItem="zSa-ia-tBa" firstAttribute="centerY" secondItem="UIc-ti-8ml" secondAttribute="centerY" id="iPm-Ov-Xti"/>
+                            <constraint firstItem="nAp-Fw-aTN" firstAttribute="centerX" secondItem="esV-fN-xSA" secondAttribute="centerX" id="maf-wS-D4o"/>
                             <constraint firstItem="SmV-Mn-nCD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="mh8-8y-oI6"/>
                         </constraints>
                         <connections>
@@ -70,9 +81,11 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="esV-fN-xSA" id="0oi-3k-RlJ"/>
+                        <outlet property="artistLabel" destination="3nd-yd-4LB" id="G5L-sv-Dh9"/>
                         <outlet property="playButton" destination="UIc-ti-8ml" id="UaT-Z4-PIQ"/>
+                        <outlet property="songLabel" destination="zSa-ia-tBa" id="XUy-WO-BOi"/>
                         <outlet property="tapGestureRecognizer" destination="lg6-f4-GUW" id="Qtd-Me-pMo"/>
-                        <outlet property="titleLabel" destination="zSa-ia-tBa" id="bC2-mh-cIz"/>
+                        <outlet property="titleStackView" destination="nAp-Fw-aTN" id="vEC-aH-Z4Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
