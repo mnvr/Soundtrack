@@ -47,19 +47,25 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
     @IBAction func play(_ sender: NSButton) {
         log.info("User pressed play")
-        initiatePlayback()
+        prepareForPlaybackStart()
         audioController.playPause()
     }
 
-    @IBAction func click(_ sender: NSGestureRecognizer) {
+    @IBAction func pause(_ sender: NSGestureRecognizer) {
         log.info("User clicked inside the window")
-        initiatePause()
+        prepareForPlaybackStop()
         audioController.playPause()
     }
 
     @IBAction func togglePlayback(_ sender: NSMenuItem) {
+        guard togglePlaybackMenuItemIsEnabled == true else {
+            log.warning("Ignoring menu toggle because menu is currently intended to be disabled")
+            return
+        }
+
         log.info("User invoked menu toggle")
-        isPlaying ? initiatePause() : initiatePlayback()
+
+        isPlaying ? prepareForPlaybackStop() : prepareForPlaybackStart()
         audioController.playPause()
     }
 
@@ -81,13 +87,23 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         togglePlaybackMenuItemIsEnabled = false
     }
 
-    private func indicatePlaybackReadiness() {
+    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
         playButton.isEnabled = true
         togglePlaybackMenuItemIsEnabled = true
     }
 
-    private func initiatePlayback() {
+    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
+        indicateUnavailability()
+    }
+
+    private func prepareForPlaybackStart() {
         playButton.isEnabled = false
+
+        togglePlaybackMenuItemIsEnabled = false
+    }
+
+    func audioControllerWillStartPlayback(_ audioController: AudioController) {
+        prepareForPlaybackStart()
 
         currentPlaybackAttempt += 1
         let playbackAttempt = currentPlaybackAttempt
@@ -95,8 +111,6 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         fadeOut(playButton) { [weak self] in
             self?.maybeShowProgressIndicatorForPlaybackAttempt(playbackAttempt)
         }
-
-        togglePlaybackMenuItemIsEnabled = false
     }
 
     private func maybeShowProgressIndicatorForPlaybackAttempt(_ playbackAttempt: Int) {
@@ -107,10 +121,16 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }
     }
 
-    private func indicatePlayback() {
-        isPlaying = true
+    private func maybeCancelProgressIndicator() {
+        currentPlaybackAttempt += 1
 
         progressIndicator.stopAnimation(self)
+    }
+
+    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
+        isPlaying = true
+
+        maybeCancelProgressIndicator()
 
         clickGestureRecognizer.isEnabled = true
 
@@ -118,22 +138,32 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         togglePlaybackMenuItemIsEnabled = true
     }
 
-    private func initiatePause() {
-        isPlaying = false
-
-        fadeOut(titleTextField)
-
+    private func prepareForPlaybackStop() {
         clickGestureRecognizer.isEnabled = false
 
         togglePlaybackMenuItemIsEnabled = false
     }
 
-    private func indicatePause() {
+    func audioControllerWillStopPlayback(_ audioController: AudioController) {
+        prepareForPlaybackStop()
+
+        maybeCancelProgressIndicator()
+
+        isPlaying = false
+
+        fadeOut(titleTextField)
+    }
+
+    func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
         playButton.isEnabled = true
         fadeIn(playButton)
 
         togglePlaybackMenuItemTitle = menuTitlePlay()
         togglePlaybackMenuItemIsEnabled = true
+    }
+
+    func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
+        setTitle(title)
     }
 
     private func setTitle(_ title: String) {
@@ -169,31 +199,6 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
             context.duration = duration
             view.animator().isHidden = false
         }, completionHandler: then)
-    }
-
-    // MARK: Audio Controller
-
-    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
-        indicatePlaybackReadiness()
-    }
-
-    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
-        indicateUnavailability()
-    }
-
-    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
-        indicatePlayback()
-    }
-
-    func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
-        if isPlaying {
-            initiatePause()
-        }
-        indicatePause()
-    }
-
-    func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
-        setTitle(title)
     }
 
     // MARK: -

@@ -12,6 +12,8 @@ protocol StreamPlayer {
 
 protocol StreamPlayerDelegate: class {
 
+    /// This method is invoked after playback has started.
+
     func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer)
 
     /// This method is invoked both in case the client explicitly

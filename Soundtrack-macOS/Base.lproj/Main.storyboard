@@ -199,7 +199,7 @@
                                 <gestureRecognizers>
                                     <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="F6H-Rp-KUk">
                                         <connections>
-                                            <action selector="click:" target="XfG-lQ-9wD" id="Z8a-EU-PVM"/>
+                                            <action selector="pause:" target="XfG-lQ-9wD" id="FzI-fl-6JC"/>
                                         </connections>
                                     </clickGestureRecognizer>
                                 </gestureRecognizers>

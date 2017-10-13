@@ -41,13 +41,13 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
     @IBAction func play(_ sender: UIButton) {
         log.info("User pressed play")
-        initiatePlayback()
+        prepareForPlaybackStart()
         audioController.playPause()
     }
 
     @IBAction func pause(_ sender: UITapGestureRecognizer) {
         log.info("User tapped inside the window")
-        initiatePause()
+        prepareForPlaybackStop()
         audioController.playPause()
     }
 
@@ -66,12 +66,20 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         tapGestureRecognizer.isEnabled = false
     }
 
-    private func indicatePlaybackReadiness() {
+    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
         playButton.isEnabled = true
     }
 
-    private func initiatePlayback() {
+    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
+        indicateUnavailability()
+    }
+
+    private func prepareForPlaybackStart() {
         playButton.isEnabled = false
+    }
+
+    func audioControllerWillStartPlayback(_ audioController: AudioController) {
+        prepareForPlaybackStart()
 
         currentPlaybackAttempt += 1
         let playbackAttempt = currentPlaybackAttempt
@@ -89,25 +97,41 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         }
     }
 
-    private func indicatePlayback() {
-        isPlaying = true
+    private func maybeCancelProgressIndicator() {
+        currentPlaybackAttempt += 1
 
         activityIndicator.stopAnimating()
+    }
+
+    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
+        isPlaying = true
+
+        maybeCancelProgressIndicator()
 
         tapGestureRecognizer.isEnabled = true
     }
 
-    private func initiatePause() {
-        isPlaying = false
-
-        fadeOut(titleLabel)
-
+    private func prepareForPlaybackStop() {
         tapGestureRecognizer.isEnabled = false
     }
 
-    private func indicatePause() {
+    func audioControllerWillStopPlayback(_ audioController: AudioController) {
+        prepareForPlaybackStop()
+
+        maybeCancelProgressIndicator()
+
+        isPlaying = false
+
+        fadeOut(titleLabel)
+    }
+
+    func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
         playButton.isEnabled = true
         fadeIn(playButton)
+    }
+
+    func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
+        setTitle(title)
     }
 
     private func setTitle(_ title: String) {
@@ -149,31 +173,6 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
                 then()
             }
         })
-    }
-
-    // MARK: Audio Controller
-
-    func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
-        indicatePlaybackReadiness()
-    }
-
-    func audioControllerDidBecomeUnavailable(_ audioController: AudioController) {
-        indicateUnavailability()
-    }
-
-    func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
-        indicatePlayback()
-    }
-
-    func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
-        if isPlaying {
-            initiatePause()
-        }
-        indicatePause()
-    }
-
-    func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
-        setTitle(title)
     }
 
     // MARK: Page View Controller - Children

@@ -8,7 +8,7 @@ import Foundation
 
 /// The funnel between the UI and the rest of the audio hierarchy.
 
-class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlayerDelegate {
+class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlayerDelegate, RemoteCommandCenterDelegate {
 
     let url: URL
     weak var delegate: (AudioControllerDelegate & StreamPlayerDelegate)?
@@ -18,6 +18,7 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
     private let queue: DispatchQueue
     private var session: AudioSession?
     private var player: AACShoutcastStreamPlayer?
+    private var remoteCommandCenter: RemoteCommandCenter?
 
     private var canPause: Bool = false
     private var isSessionActive: Bool = false
@@ -78,11 +79,10 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
         player = AACShoutcastStreamPlayer(url: url, delegateQueue: queue)
         player!.delegate = self
 
-        delegateQueue.async { [weak self] in
-            if let strongSelf = self {
-                strongSelf.delegate?.audioControllerDidBecomeAvailable(strongSelf)
-            }
-        }
+        remoteCommandCenter = RemoteCommandCenter()
+        remoteCommandCenter?.delegate = self
+
+        audioControllerDidBecomeAvailable()
     }
 
     private func discardPlayer() {
@@ -93,11 +93,7 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
         player = nil
         canPause = false
 
-        delegateQueue.async { [weak self] in
-            if let strongSelf = self {
-                strongSelf.delegate?.audioControllerDidBecomeUnavailable(strongSelf)
-            }
-        }
+        audioControllerDidBecomeUnavailable()
     }
 
     private func whatever() {
@@ -122,6 +118,8 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
 
         player!.play()
         canPause = true
+
+        audioControllerWillStartPlayback()
     }
 
     private func pause() {
@@ -129,12 +127,48 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
 
         player!.pause()
         canPause = false
+
+        audioControllerWillStopPlayback()
+    }
+
+    // MARK: Delegate
+
+    private func audioControllerDidBecomeAvailable() {
+        delegateQueue.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.audioControllerDidBecomeAvailable(strongSelf)
+            }
+        }
+    }
+
+    private func audioControllerDidBecomeUnavailable() {
+        delegateQueue.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.audioControllerDidBecomeUnavailable(strongSelf)
+            }
+        }
+    }
+
+    private func audioControllerWillStartPlayback() {
+        delegateQueue.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.audioControllerWillStartPlayback(strongSelf)
+            }
+        }
+    }
+
+    private func audioControllerWillStopPlayback() {
+        delegateQueue.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.audioControllerWillStopPlayback(strongSelf)
+            }
+        }
     }
 
     // MARK: Stream Player
 
     func streamPlayerDidStartPlayback(_ streamPlayer: StreamPlayer) {
-        log.info("Playback will start")
+        log.info("Playback did start")
 
         delegateQueue.async { [weak self] in
             if let strongSelf = self {
@@ -151,7 +185,11 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
             isSessionActive = false
         }
 
-        canPause = false
+        if canPause {
+            canPause = false
+
+            audioControllerWillStopPlayback()
+        }
 
         log.info("Playback stopped")
 
@@ -200,12 +238,28 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
         reset()
     }
 
+    // MARK: Remote Command Center
+
+    func remoteCommandCenterDidTogglePlayPause(_ remoteCommandCenter: RemoteCommandCenter) {
+        playPause()
+    }
+
 }
 
 protocol AudioControllerDelegate: class {
 
     func audioControllerDidBecomeUnavailable(_ audioController: AudioController)
     func audioControllerDidBecomeAvailable(_ audioController: AudioController)
+
+    /// This method is invoked when the playback is initiated potentially
+    /// without the knowledge of the delegate.
+
+    func audioControllerWillStartPlayback(_ audioController: AudioController)
+
+    /// This method is invoked when the playback is initiated potentially
+    /// without the knowledge of the delegate.
+
+    func audioControllerWillStopPlayback(_ audioController: AudioController)
 
 }
 

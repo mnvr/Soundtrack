@@ -50,9 +50,13 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
 
     func pause() {
         fadeOut { [weak self] in
-            self?.stopPlayback()
-            self?.disconnect()
+            self?.pauseImmediately()
         }
+    }
+
+    private func pauseImmediately() {
+        stopPlayback()
+        disconnect()
     }
 
     private func connect() {
@@ -91,8 +95,7 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
     }
 
     func shoutcastStreamDidDisconnect(_ stream: ShoutcastStream) {
-        disconnect()
-        stopPlayback()
+        pause()
     }
 
     func shoutcastStream(_ stream: ShoutcastStream, gotNewTitle title: String) {
@@ -104,7 +107,7 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
     }
 
     func adtsParserDidEncounterError(_ adtsParser: ADTSParser) {
-        pause()
+        pauseImmediately()
     }
 
     func adtsParser(_ adtsParser: ADTSParser, didParsePCMBuffer buffer: AVAudioPCMBuffer) {
