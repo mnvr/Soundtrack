@@ -32,6 +32,8 @@
 		F95A432C1F6BB12E00D2A429 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */; };
 		F97FE5731F905A0C0040883A /* RemoteCommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */; };
 		F97FE5741F905A0C0040883A /* RemoteCommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */; };
+		F97FE5761F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */; };
+		F97FE5771F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */; };
 		F985E17F1F2994D10050285C /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E17E1F2994D10050285C /* AudioSession.swift */; };
 		F985E1801F2994D10050285C /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E17E1F2994D10050285C /* AudioSession.swift */; };
 		F985E1821F29CDB20050285C /* AudioSessionMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */; };
@@ -42,6 +44,8 @@
 		F9A3FD1D1F8B95EE0091D20C /* Soundtrack.help in Resources */ = {isa = PBXBuildFile; fileRef = F9A3FD1C1F8B95EE0091D20C /* Soundtrack.help */; };
 		F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
 		F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
+		F9B339C11F910C16001E9FAD /* TitleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B339C01F910C16001E9FAD /* TitleComponents.swift */; };
+		F9B339C21F910C16001E9FAD /* TitleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B339C01F910C16001E9FAD /* TitleComponents.swift */; };
 		F9C597381F1CEA15000B1A8B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597371F1CEA15000B1A8B /* Log.swift */; };
 		F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */; };
 		F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C597411F1CEB90000B1A8B /* ViewController.swift */; };
@@ -74,12 +78,14 @@
 		F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandCenter.swift; sourceTree = "<group>"; };
+		F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoCenter.swift; sourceTree = "<group>"; };
 		F985E17E1F2994D10050285C /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
 		F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSessionMacOS.swift; sourceTree = "<group>"; };
 		F98AADB61F67E826000294F6 /* StreamPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamPlayer.swift; sourceTree = "<group>"; };
 		F99CEAAB1F827AEE0064FDCB /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		F9A3FD1C1F8B95EE0091D20C /* Soundtrack.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Soundtrack.help; sourceTree = "<group>"; };
 		F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
+		F9B339C01F910C16001E9FAD /* TitleComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleComponents.swift; sourceTree = "<group>"; };
 		F9C597371F1CEA15000B1A8B /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F9C5973D1F1CEB90000B1A8B /* Soundtrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundtrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9C5973F1F1CEB90000B1A8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +166,8 @@
 				F905559F1F34745A006FEAF5 /* DataExtensions.swift */,
 				F90E273B1F5EF18F00F092DA /* ADTSParser.swift */,
 				F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */,
+				F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */,
+				F9B339C01F910C16001E9FAD /* TitleComponents.swift */,
 			);
 			path = Soundtrack;
 			sourceTree = "<group>";
@@ -297,11 +305,13 @@
 				F98AADB71F67E826000294F6 /* StreamPlayer.swift in Sources */,
 				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
 				F985E17F1F2994D10050285C /* AudioSession.swift in Sources */,
+				F9B339C11F910C16001E9FAD /* TitleComponents.swift in Sources */,
 				F97FE5731F905A0C0040883A /* RemoteCommandCenter.swift in Sources */,
 				F90E27341F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */,
 				F91EBFE01F26D4880046E642 /* AudioSessionIOS.swift in Sources */,
 				F90E27361F5ED10800F092DA /* ShoutcastStream.swift in Sources */,
 				F92B47B01F2079B400FAFAA3 /* AudioController.swift in Sources */,
+				F97FE5761F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */,
 				F95A432C1F6BB12E00D2A429 /* BundleExtensions.swift in Sources */,
 				F9241FF81F3327C4001D56FD /* Configuration.swift in Sources */,
 				F90555A01F34745A006FEAF5 /* DataExtensions.swift in Sources */,
@@ -322,6 +332,7 @@
 				F9C597421F1CEB90000B1A8B /* ViewController.swift in Sources */,
 				F99CEAAC1F827AEE0064FDCB /* WindowController.swift in Sources */,
 				F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
+				F9B339C21F910C16001E9FAD /* TitleComponents.swift in Sources */,
 				F9C5974C1F1CECC0000B1A8B /* Log.swift in Sources */,
 				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
 				F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,
@@ -331,6 +342,7 @@
 				F98AADB81F67E82B000294F6 /* StreamPlayer.swift in Sources */,
 				F985E1821F29CDB20050285C /* AudioSessionMacOS.swift in Sources */,
 				F90E273D1F5EF18F00F092DA /* ADTSParser.swift in Sources */,
+				F97FE5771F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */,
 				F90555A11F34745A006FEAF5 /* DataExtensions.swift in Sources */,
 				F985E1801F2994D10050285C /* AudioSession.swift in Sources */,
 				F9241FF91F3327C4001D56FD /* Configuration.swift in Sources */,

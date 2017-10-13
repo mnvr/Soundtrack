@@ -19,6 +19,7 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
     private var session: AudioSession?
     private var player: AACShoutcastStreamPlayer?
     private var remoteCommandCenter: RemoteCommandCenter?
+    private var nowPlayingInfoCenter: NowPlayingInfoCenter?
 
     private var canPause: Bool = false
     private var isSessionActive: Bool = false
@@ -81,6 +82,8 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
 
         remoteCommandCenter = RemoteCommandCenter()
         remoteCommandCenter?.delegate = self
+
+        nowPlayingInfoCenter = NowPlayingInfoCenter()
 
         audioControllerDidBecomeAvailable()
     }
@@ -191,6 +194,8 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
             audioControllerWillStopPlayback()
         }
 
+        nowPlayingInfoCenter?.clear()
+
         log.info("Playback stopped")
 
         delegateQueue.async { [weak self] in
@@ -202,6 +207,8 @@ class AudioController: NSObject, StreamPlayer, AudioSessionDelegate, StreamPlaye
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
         log.info("Song: \(title)")
+
+        nowPlayingInfoCenter?.setTitle(title)
 
         delegateQueue.async { [weak self] in
             if let strongSelf = self {
