@@ -10,7 +10,9 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
     @IBOutlet weak var playButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
-    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var titleStackView: NSStackView!
+    @IBOutlet weak var songTextField: NSTextField!
+    @IBOutlet weak var artistTextField: NSTextField!
     @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
     @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
 
@@ -79,7 +81,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         progressIndicator.stopAnimation(self)
 
-        titleTextField.isHidden = true
+        titleStackView.isHidden = true
 
         clickGestureRecognizer.isEnabled = false
 
@@ -151,7 +153,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         isPlaying = false
 
-        fadeOut(titleTextField)
+        fadeOut(titleStackView)
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
@@ -169,20 +171,25 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     private func setTitle(_ title: String) {
         let maybeFadeInTitle = { [weak self] in
             if !title.isEmpty {
-                if let strongSelf = self, let titleTextField = strongSelf.titleTextField {
-                    titleTextField.stringValue = title
-                    strongSelf.fadeIn(titleTextField)
-                }
+                self?.setTitleComponents(title)
             }
         }
 
-        if titleTextField.isHidden {
+        if titleStackView.isHidden {
             maybeFadeInTitle()
         } else {
-            fadeOut(titleTextField) {
+            fadeOut(titleStackView) {
                 maybeFadeInTitle()
             }
         }
+    }
+
+    private func setTitleComponents(_ title: String) {
+        let titleComponents = TitleComponents(title)
+        songTextField.stringValue = titleComponents.song
+        artistTextField.stringValue = titleComponents.artist
+
+        fadeIn(titleStackView)
     }
 
     // MARK: -

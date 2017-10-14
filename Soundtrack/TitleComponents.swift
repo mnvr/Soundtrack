@@ -11,8 +11,8 @@ struct TitleComponents {
     let song: String
 
     init(_ title: String) {
-        let components = title.components(separatedBy: "-")
-        artist = components.count > 0 ? components[0].trimmingCharacters(in: CharacterSet.whitespaces) : ""
-        song = components.count > 1 ? components[1].trimmingCharacters(in: CharacterSet.whitespaces) : ""
+        let components = title.components(separatedBy: " - ")
+        artist = components.count > 0 ? components[0] : ""
+        song = components.count > 1 ? components[1] : ""
     }
 }
