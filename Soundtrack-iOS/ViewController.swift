@@ -124,7 +124,7 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
         isPlaying = false
 
-        fadeOut(titleStackView)
+        fadeOutTitleComponents()
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
@@ -139,17 +139,14 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     private func setTitle(_ title: String) {
         let maybeFadeInTitle = { [weak self] in
             if !title.isEmpty {
-                if let strongSelf = self {
-                    strongSelf.setTitleComponents(title)
-                    strongSelf.fadeIn(strongSelf.titleStackView)
-                }
+                self?.setTitleComponents(title)
             }
         }
 
         if titleStackView.isHidden {
             maybeFadeInTitle()
         } else {
-            fadeOut(titleStackView) {
+            fadeOutTitleComponents() {
                 maybeFadeInTitle()
             }
         }
@@ -159,6 +156,8 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         let titleComponents = TitleComponents(title)
         songLabel.text = titleComponents.song
         artistLabel.text = titleComponents.artist
+
+        fadeInTitleComponents()
     }
 
     // MARK: -
@@ -173,14 +172,34 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         })
     }
 
-    private func fadeIn(_ view: UIView, duration: TimeInterval = 2, then: (() -> Void)? = nil) {
+    private func fadeIn(_ view: UIView, duration: TimeInterval = 2) {
         UIView.transition(with: view, duration: duration, options: .transitionCrossDissolve, animations: {
             view.isHidden = false
+        }, completion: nil)
+    }
+
+    // Animations did not work when we directly modify the hidden property of
+    // the UIStackView. As a workaround, we embed the stack view inside an
+    // empty container, and pass the superview to `UIView.transition`.
+
+    private func fadeOutTitleComponents(duration: TimeInterval = 2, then: (() -> Void)? = nil) {
+        let containerView = titleStackView.superview!
+        let stackView = titleStackView!
+        UIView.transition(with: containerView, duration: duration, options: .transitionCrossDissolve, animations: {
+            stackView.isHidden = true
         }, completion: { completed in
             if let then = then {
                 then()
             }
         })
+    }
+
+    private func fadeInTitleComponents(duration: TimeInterval = 2) {
+        let containerView = titleStackView.superview!
+        let stackView = titleStackView!
+        UIView.transition(with: containerView, duration: duration, options: .transitionCrossDissolve, animations: {
+            stackView.isHidden = false
+        }, completion: nil)
     }
 
     // MARK: Page View Controller - Children
