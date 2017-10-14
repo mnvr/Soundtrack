@@ -65,7 +65,7 @@
                                     <constraint firstAttribute="width" constant="128" id="9Iw-H5-Aqd"/>
                                     <constraint firstAttribute="width" secondItem="UIc-ti-8ml" secondAttribute="height" multiplier="1:1" id="RUt-Fm-e76"/>
                                 </constraints>
-                                <state key="normal" image="Benzene"/>
+                                <state key="normal" image="PlayButton"/>
                                 <connections>
                                     <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aic-A5-L3R"/>
                                 </connections>
@@ -241,6 +241,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Benzene" width="768" height="768"/>
+        <image name="PlayButton" width="768" height="768"/>
     </resources>
 </document>

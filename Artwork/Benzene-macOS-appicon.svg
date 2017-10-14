@@ -1,0 +1,33 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1024" height="1024"
+    viewBox="0 0 1024 1024"
+>
+    <defs>
+      <style type="text/css"><![CDATA[
+        path {
+          fill: none;
+          stroke: black;
+          stroke-width: 40;
+          stroke-linejoin: miter;
+        }
+      ]]></style>
+    </defs>
+
+    <path
+        d="
+M 512,192  l -278,160  l 0,320
+L 512,832  l 278,-160  l 0,-320
+z
+"
+    />
+
+    <path
+        d="
+M 512,320 m -166.27,96  l 0,192
+M 512,704 l 166.27,-96  m 0,-192
+L 512,320
+"
+    />
+
+</svg>

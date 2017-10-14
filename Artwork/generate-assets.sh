@@ -2,14 +2,16 @@
 
 INKSCAPE=${INKSCAPE:-/Applications/Inkscape.app/Contents/Resources/bin/inkscape}
 
-BENZENE_SVG=${BENZENE_SVG:-Artwork/Benzene.svg}
-BENZENE_IOS_SVG=${BENZENE_IOS_SVG:-Artwork/Benzene-iOS.svg}
+TEMPLATE_SVG=Artwork/Benzene.svg
+MACOS_APPICON_SVG=Artwork/Benzene-macOS-appicon.svg
+IOS_APPICON_SVG=Artwork/Benzene-iOS-appicon.svg
 
 MACOS_APPICONSET=Soundtrack-macOS/Assets.xcassets/AppIcon.appiconset
-IOS_APPICONSET=Soundtrack-iOS/Assets.xcassets/AppIcon.appiconset
+MACOS_PLAYBUTTON=Soundtrack-macOS/Assets.xcassets/PlayButton.imageset
+MACOS_STATUSBARBUTTON=Soundtrack-macOS/Assets.xcassets/StatusBarButton.imageset
 
-MACOS_BENZENE_TEMPLATE_PDF=Soundtrack-macOS/Assets.xcassets/Benzene.imageset
-IOS_BENZENE_TEMPLATE_PDF=Soundtrack-iOS/Assets.xcassets/Benzene.imageset
+IOS_APPICONSET=Soundtrack-iOS/Assets.xcassets/AppIcon.appiconset
+IOS_PLAYBUTTON=Soundtrack-iOS/Assets.xcassets/PlayButton.imageset
 
 cd $(dirname $0)/..
 src_root=$(pwd)
@@ -22,10 +24,12 @@ function gen_png () {
     local sz=${3:-1024}
     local suffix=$4
 
+    local output_file=${dest_dir}/${output_base_name}-${sz}${suffix}.png
+
     ${INKSCAPE} \
         --without-gui \
         --file=${input_file} \
-        --export-png=${dest_dir}/${output_base_name}-${sz}${suffix}.png \
+        --export-png=${output_file} \
         --export-width=${sz} \
         --export-height=${sz}
 }
@@ -34,7 +38,8 @@ function gen_template_pdf () {
     local input_file=${src_root}/$1
     local dest_dir=${src_root}/$2
     
-    local output_file=${dest_dir}/${output_base_name}-Template.pdf
+    local output_file=${dest_dir}/${output_base_name}.pdf
+
     ${INKSCAPE} \
         --without-gui \
         --file=${input_file} \
@@ -44,23 +49,28 @@ function gen_template_pdf () {
 }
 
 function gen_macos_icon () {
-    gen_png "${BENZENE_SVG}" "${MACOS_APPICONSET}" "$@"
+    gen_png "${MACOS_APPICON_SVG}" "${MACOS_APPICONSET}" "$@"
 }
 
-function gen_benzene_template_pdf () {
-    gen_template_pdf "${BENZENE_SVG}" "${MACOS_BENZENE_TEMPLATE_PDF}" "$@"
-    gen_template_pdf "${BENZENE_SVG}" "${IOS_BENZENE_TEMPLATE_PDF}" "$@"
+function gen_macos_playbutton () {
+    gen_template_pdf "${TEMPLATE_SVG}" "${MACOS_PLAYBUTTON}" "$@"
+}
+
+function gen_macos_statusbarbutton () {
+    gen_png "${TEMPLATE_SVG}" "${MACOS_STATUSBARBUTTON}" "$@"
 }
 
 function gen_ios_icon () {
-    gen_png "${BENZENE_IOS_SVG}" "${IOS_APPICONSET}" "$@"
+    gen_png "${IOS_APPICON_SVG}" "${IOS_APPICONSET}" "$@"
+}
+
+function gen_ios_playbutton () {
+    gen_template_pdf "${TEMPLATE_SVG}" "${IOS_PLAYBUTTON}" "$@"
 }
 
 function gen_ios_appstore_icon () {
-    gen_png "${BENZENE_IOS_SVG}" "Artwork" 1024 "-iOS"
+    gen_png "${IOS_APPICON_SVG}" "Artwork" 1024 "-iOS-appstore"
 }
-
-gen_benzene_template_pdf
 
 gen_macos_icon 1024
 gen_macos_icon 512
@@ -69,6 +79,12 @@ gen_macos_icon 128
 gen_macos_icon 64
 gen_macos_icon 32
 gen_macos_icon 16
+
+gen_macos_playbutton
+
+gen_macos_statusbarbutton 22
+gen_macos_statusbarbutton 44
+gen_macos_statusbarbutton 66
 
 gen_ios_icon 180
 gen_ios_icon 120
@@ -84,4 +100,7 @@ gen_ios_icon 40
 gen_ios_icon 29
 gen_ios_icon 20
 
+gen_ios_playbutton
+
 gen_ios_appstore_icon
+
