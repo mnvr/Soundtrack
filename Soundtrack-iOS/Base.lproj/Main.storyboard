@@ -28,17 +28,6 @@
                                     <segue destination="fck-Hm-XeM" kind="embed" identifier="" id="nhv-Hm-e0i"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-ti-8ml">
-                                <rect key="frame" x="123" y="269" width="128" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="128" id="9Iw-H5-Aqd"/>
-                                    <constraint firstAttribute="width" secondItem="UIc-ti-8ml" secondAttribute="height" multiplier="1:1" id="RUt-Fm-e76"/>
-                                </constraints>
-                                <state key="normal" image="Benzene"/>
-                                <connections>
-                                    <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aic-A5-L3R"/>
-                                </connections>
-                            </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="esV-fN-xSA">
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                             </activityIndicatorView>
@@ -70,6 +59,17 @@
                                     <constraint firstItem="nAp-Fw-aTN" firstAttribute="top" secondItem="req-lT-nOV" secondAttribute="top" id="fzm-OI-aJp"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-ti-8ml">
+                                <rect key="frame" x="123" y="269" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="9Iw-H5-Aqd"/>
+                                    <constraint firstAttribute="width" secondItem="UIc-ti-8ml" secondAttribute="height" multiplier="1:1" id="RUt-Fm-e76"/>
+                                </constraints>
+                                <state key="normal" image="Benzene"/>
+                                <connections>
+                                    <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aic-A5-L3R"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
