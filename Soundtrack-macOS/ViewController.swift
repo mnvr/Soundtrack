@@ -16,6 +16,8 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
     @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
 
+    var statusItem: NSStatusItem!
+
     private var audioController: AudioController!
 
     private var isPlaying: Bool = false
@@ -30,6 +32,8 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         super.viewDidLoad()
 
         togglePlaybackMenuItem = (NSApp.delegate! as! AppDelegate).togglePlaybackMenuItem
+
+        statusItem = makeStatusButtonItem()
 
         indicateUnavailability()
 
@@ -66,7 +70,17 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }
 
         log.info("User invoked menu toggle")
+        toggle()
+    }
 
+    func toggleStatus(_ sender: NSStatusBarButton) {
+        log.info("User clicked status bar toggle")
+        if togglePlaybackMenuItemIsEnabled == true {
+            toggle()
+        }
+    }
+
+    private func toggle() {
         isPlaying ? prepareForPlaybackStop() : prepareForPlaybackStart()
         audioController.playPause()
     }
@@ -87,6 +101,9 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         togglePlaybackMenuItemTitle = menuTitlePlay()
         togglePlaybackMenuItemIsEnabled = false
+
+        unhighlightStatusButton()
+        clearStatusButtonTooltip()
     }
 
     func audioControllerDidBecomeAvailable(_ audioController: AudioController) {
@@ -138,6 +155,8 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         togglePlaybackMenuItemTitle = menuTitlePause()
         togglePlaybackMenuItemIsEnabled = true
+
+        highlightStatusButton()
     }
 
     private func prepareForPlaybackStop() {
@@ -154,6 +173,8 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         isPlaying = false
 
         fadeOut(titleStackView)
+
+        clearStatusButtonTooltip()
     }
 
     func streamPlayerDidStopPlayback(_ streamPlayer: StreamPlayer) {
@@ -162,10 +183,13 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         togglePlaybackMenuItemTitle = menuTitlePlay()
         togglePlaybackMenuItemIsEnabled = true
+
+        unhighlightStatusButton()
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
         setTitle(title)
+        setStatusButtonTooltip(title)
     }
 
     private func setTitle(_ title: String) {
@@ -208,7 +232,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }, completionHandler: then)
     }
 
-    // MARK: -
+    // MARK: Menu
 
     private func menuTitlePlay() -> String {
         return NSLocalizedString("Play", comment: "Menu Item - Music > Play")
@@ -227,6 +251,36 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }
 
         return super.validateMenuItem(menuItem)
+    }
+
+    // MARK: Status Bar Button
+
+    private func makeStatusButtonItem() -> NSStatusItem {
+        let statusBar = NSStatusBar.system()
+
+        let item = statusBar.statusItem(withLength: NSSquareStatusItemLength)
+
+        item.image = #imageLiteral(resourceName: "StatusBarButton")
+        item.action = #selector(toggleStatus(_:))
+        item.target = self
+
+        return item
+    }
+
+    private func setStatusButtonTooltip(_ title: String) {
+        statusItem.toolTip = title
+    }
+
+    private func clearStatusButtonTooltip() {
+        setStatusButtonTooltip("")
+    }
+
+    private func highlightStatusButton() {
+        statusItem.button!.appearsDisabled = false
+    }
+
+    private func unhighlightStatusButton() {
+        statusItem.button!.appearsDisabled = true
     }
 
 }
