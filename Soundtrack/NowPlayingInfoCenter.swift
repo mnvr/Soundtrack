@@ -4,7 +4,7 @@
 //  Apache License, v2.0
 //
 
-//import Foundation
+import Foundation
 import MediaPlayer
 
 class NowPlayingInfoCenter {
