@@ -6,7 +6,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDelegate, UIPageViewControllerDataSource {
+class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDelegate {
 
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -200,65 +200,6 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
         UIView.transition(with: containerView, duration: duration, options: .transitionCrossDissolve, animations: {
             stackView.isHidden = false
         }, completion: nil)
-    }
-
-    // MARK: Page View Controller - Children
-
-    enum StoryboardIdentifier: String {
-        case empty, about
-    }
-
-    lazy var emptyViewController: UIViewController = self.makeViewController(identifier: .empty)
-    lazy var aboutViewController: UIViewController = self.makeViewController(identifier: .about)
-
-    func makeViewController(identifier: StoryboardIdentifier) -> UIViewController {
-        let identifier = identifier.rawValue
-        return storyboard!.instantiateViewController(withIdentifier: identifier)
-    }
-
-    // MARK: Page View Controller
-
-    private var presentationIndex = 0
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let pageViewController = segue.destination as? UIPageViewController {
-            configurePageViewController(pageViewController)
-        }
-    }
-
-    private func configurePageViewController(_ pageViewController: UIPageViewController) {
-        pageViewController.setViewControllers([emptyViewController], direction: .forward, animated: false, completion: nil)
-        pageViewController.dataSource = self
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if viewController == emptyViewController {
-            presentationIndex = 1
-            return aboutViewController
-        } else {
-            return nil
-        }
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
-        // The order of these checks is important to avoid initializing the
-        // aboutViewController lazy property by unnecessarily accessing it.
-
-        if viewController == emptyViewController {
-            return nil
-        } else {
-            presentationIndex = 0
-            return emptyViewController
-        }
-    }
-
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return 2
-    }
-
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        return presentationIndex
     }
 
 }
