@@ -58,8 +58,6 @@ class AudioSessionIOS: NSObject, AudioSession {
         }
 
         logAudioSessionState()
-
-        UIApplication.shared.beginReceivingRemoteControlEvents()
     }
 
     private func logAudioSessionState() {
