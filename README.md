@@ -34,5 +34,5 @@ Xcode's "Build and Run" button to, well, build and run.
 
 There is also a [pre-built binary][release] available for macOS.
 
-[zip]: https://github.com/mnvr/Soundtrack/releases/download/0.1.1/Soundtrack.zip
-[release]: https://github.com/mnvr/Soundtrack/releases/tag/0.1.1
+[zip]: https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip
+[release]: https://github.com/mnvr/Soundtrack/releases/tag/v1.0
