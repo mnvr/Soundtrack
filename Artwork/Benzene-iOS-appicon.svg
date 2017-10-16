@@ -12,7 +12,7 @@
         path {
           fill: none;
           stroke: black;
-          stroke-width: 40;
+          stroke-width: 56;
           stroke-linejoin: miter;
         }
       ]]></style>
