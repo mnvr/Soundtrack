@@ -76,6 +76,19 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
                                     <items>
+                                        <menuItem title="Song Change Notifications" keyEquivalent="n" id="spa-G5-Q3m">
+                                            <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                            <connections>
+                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.showNotifications" id="flV-lI-d30"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Status Bar Icon" id="gBr-Cy-gE1">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.showStatusBarIcon" id="vdZ-P2-fJA"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="rNn-zP-9Py"/>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
@@ -134,6 +147,7 @@
                         <outlet property="togglePlaybackMenuItem" destination="zJX-KG-Rj6" id="956-t5-0lc"/>
                     </connections>
                 </customObject>
+                <userDefaultsController representsSharedInstance="YES" id="Bn8-jN-r8Z"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>

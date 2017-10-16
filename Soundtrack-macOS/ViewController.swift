@@ -16,15 +16,18 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
     @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
 
-    var statusItem: NSStatusItem!
+    var statusItem: NSStatusItem?
 
     private var audioController: AudioController!
 
     private var isPlaying: Bool = false
     private var currentPlaybackAttempt: Int = 0
+    private var lastTitle: String?
 
     private var togglePlaybackMenuItemTitle: String?
     private var togglePlaybackMenuItemIsEnabled: Bool?
+
+    private var observationContext = 0
 
     // MARK: -
 
@@ -33,12 +36,18 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
         togglePlaybackMenuItem = (NSApp.delegate! as! AppDelegate).togglePlaybackMenuItem
 
-        statusItem = makeStatusButtonItem()
+        observeUserDefaultsController()
+
+        updateStatusBarItem()
 
         indicateUnavailability()
 
         let url = Configuration.shared.shoutcastURL
         audioController = makePlaybackController(url: url)
+    }
+
+    deinit {
+        unobserveUserDefaultsController()
     }
 
     private func makePlaybackController(url: URL) -> AudioController {
@@ -188,14 +197,17 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     }
 
     func streamPlayer(_ streamPlayer: StreamPlayer, didChangeSong title: String) {
-        setTitle(title)
+        let titleComponents = TitleComponents(title)
+
+        setTitleComponents(titleComponents)
         setStatusButtonTooltip(title)
+        maybeShowNotification(titleComponents)
     }
 
-    private func setTitle(_ title: String) {
+    private func setTitleComponents(_ titleComponents: TitleComponents) {
         let maybeFadeInTitle = { [weak self] in
-            if !title.isEmpty {
-                self?.setTitleComponents(title)
+            if !titleComponents.title.isEmpty {
+                self?.setTitleComponents2(titleComponents)
             }
         }
 
@@ -208,8 +220,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }
     }
 
-    private func setTitleComponents(_ title: String) {
-        let titleComponents = TitleComponents(title)
+    private func setTitleComponents2(_ titleComponents: TitleComponents) {
         songTextField.stringValue = titleComponents.song
         artistTextField.stringValue = titleComponents.artist
 
@@ -232,7 +243,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         }, completionHandler: then)
     }
 
-    // MARK: Menu
+    // MARK: Music Menu
 
     private func menuTitlePlay() -> String {
         return NSLocalizedString("Play", comment: "Menu Item - Music > Play")
@@ -267,8 +278,16 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         return item
     }
 
+    private func removeStatusBarItem() {
+        if let item = statusItem {
+            item.statusBar.removeStatusItem(item)
+        }
+        statusItem = nil
+    }
+
     private func setStatusButtonTooltip(_ title: String) {
-        statusItem.toolTip = title
+        statusItem?.toolTip = title
+        lastTitle = title
     }
 
     private func clearStatusButtonTooltip() {
@@ -276,11 +295,71 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     }
 
     private func highlightStatusButton() {
-        statusItem.button!.appearsDisabled = false
+        statusItem?.button!.appearsDisabled = false
     }
 
     private func unhighlightStatusButton() {
-        statusItem.button!.appearsDisabled = true
+        statusItem?.button!.appearsDisabled = true
+    }
+
+    private func updateStatusBarItem() {
+        if showStatusBarIcon {
+            if statusItem == nil {
+                statusItem = makeStatusButtonItem()
+                gleanStatusItemState()
+            }
+        } else {
+            if statusItem != nil {
+                removeStatusBarItem()
+            }
+        }
+    }
+
+    private func gleanStatusItemState() {
+        if titleStackView.isHidden {
+            unhighlightStatusButton()
+        } else {
+            highlightStatusButton()
+        }
+        statusItem?.toolTip = lastTitle
+    }
+
+    // MARK: View Menu
+
+    let showStatusBarIconKVOPath = "values.showStatusBarIcon"
+
+    private func observeUserDefaultsController() {
+        NSUserDefaultsController.shared().addObserver(self, forKeyPath: showStatusBarIconKVOPath, options: [], context: &observationContext)
+    }
+
+    private func unobserveUserDefaultsController() {
+        NSUserDefaultsController.shared().removeObserver(self, forKeyPath: showStatusBarIconKVOPath, context: &observationContext)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if context == &observationContext {
+            if keyPath == showStatusBarIconKVOPath {
+                updateStatusBarItem()
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+
+    var showNotifications: Bool {
+        return NSUserDefaultsController.shared().defaults.bool(forKey: "showNotifications")
+    }
+
+    var showStatusBarIcon: Bool {
+        return NSUserDefaultsController.shared().defaults.bool(forKey: "showStatusBarIcon")
+    }
+
+    // MARK: Notifications
+
+    private func maybeShowNotification(_ titleComponents: TitleComponents) {
+        if showNotifications {
+            UserNotification.show(titleComponents)
+        }
     }
 
 }

@@ -4,22 +4,12 @@
 //  Apache License, v2.0
 //
 
-import Foundation
 import MediaPlayer
 
 class NowPlayingInfoCenter {
 
     func setTitle(_ title: String) {
         let titleComponents = TitleComponents(title)
-
-        #if os(macOS)
-
-            let notification = NSUserNotification()
-            notification.title = titleComponents.song
-            notification.subtitle = titleComponents.artist
-            NSUserNotificationCenter.default.deliver(notification)
-
-        #endif
 
         guard #available(OSX 10.12.2, *) else {
             return
