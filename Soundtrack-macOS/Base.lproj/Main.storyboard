@@ -186,11 +186,11 @@
                                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-ne-KBI">
                                         <rect key="frame" x="232" y="127" width="16" height="16"/>
                                     </progressIndicator>
-                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfD-VX-Iub">
-                                        <rect key="frame" x="224" y="118" width="32" height="35"/>
+                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfD-VX-Iub">
+                                        <rect key="frame" x="224" y="118" width="32" height="36"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Pt-9k-Aye">
-                                                <rect key="frame" x="-2" y="18" width="36" height="17"/>
+                                                <rect key="frame" x="-2" y="19" width="36" height="17"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Song" id="FbC-B2-er5">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
