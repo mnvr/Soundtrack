@@ -169,25 +169,11 @@
                             <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="PuU-OJ-Edb">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
-                                        <rect key="frame" x="192" y="87" width="96" height="96"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="1hl-U6-7Wv" secondAttribute="height" id="0a1-AB-6Uj"/>
-                                            <constraint firstAttribute="width" constant="96" id="9TA-1s-3YN"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="PlayButton" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="play:" target="XfG-lQ-9wD" id="Xsd-p6-a4P"/>
-                                        </connections>
-                                    </button>
                                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-ne-KBI">
                                         <rect key="frame" x="232" y="127" width="16" height="16"/>
                                     </progressIndicator>
                                     <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfD-VX-Iub">
-                                        <rect key="frame" x="224" y="118" width="32" height="36"/>
+                                        <rect key="frame" x="224" y="117" width="32" height="36"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Pt-9k-Aye">
                                                 <rect key="frame" x="-2" y="19" width="36" height="17"/>
@@ -215,6 +201,20 @@
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
                                     </stackView>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-U6-7Wv">
+                                        <rect key="frame" x="192" y="87" width="96" height="96"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1hl-U6-7Wv" secondAttribute="height" id="0a1-AB-6Uj"/>
+                                            <constraint firstAttribute="width" constant="96" id="9TA-1s-3YN"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="PlayButton" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="play:" target="XfG-lQ-9wD" id="Xsd-p6-a4P"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="1hl-U6-7Wv" firstAttribute="centerY" secondItem="NGX-ne-KBI" secondAttribute="centerY" id="8fa-0I-wEv"/>

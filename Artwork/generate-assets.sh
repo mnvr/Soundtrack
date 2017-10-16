@@ -4,6 +4,7 @@ INKSCAPE=${INKSCAPE:-/Applications/Inkscape.app/Contents/Resources/bin/inkscape}
 
 TEMPLATE_SVG=Artwork/Benzene.svg
 MACOS_APPICON_SVG=Artwork/Benzene-macOS-appicon.svg
+MACOS_STATUSBARICON_SVG=Artwork/Benzene-macOS-statusBarIcon.svg
 IOS_APPICON_SVG=Artwork/Benzene-iOS-appicon.svg
 
 MACOS_APPICONSET=Soundtrack-macOS/Assets.xcassets/AppIcon.appiconset
@@ -57,7 +58,11 @@ function gen_macos_playbutton () {
 }
 
 function gen_macos_statusbarbutton () {
-    gen_png "${TEMPLATE_SVG}" "${MACOS_STATUSBARBUTTON}" "$@"
+    for scale in 1 2 3
+    do
+        sz=$(( scale * 23 ))
+        gen_png "${MACOS_STATUSBARICON_SVG}" "${MACOS_STATUSBARBUTTON}" $sz
+    done
 }
 
 function gen_ios_icon () {
@@ -82,9 +87,7 @@ gen_macos_icon 16
 
 gen_macos_playbutton
 
-gen_macos_statusbarbutton 22
-gen_macos_statusbarbutton 44
-gen_macos_statusbarbutton 66
+gen_macos_statusbarbutton
 
 gen_ios_icon 180
 gen_ios_icon 120
