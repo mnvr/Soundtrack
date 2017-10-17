@@ -75,13 +75,13 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
         try engine.start()
         playerNode.volume = 0
         playerNode.play()
-        installTap()
+        //installTap()
         fadeIn()
         delegate?.streamPlayerDidStartPlayback(self)
     }
 
     private func stopPlayback() {
-        removeTap()
+        //removeTap()
         playerNode.stop()
         engine.stop()
         delegate?.streamPlayerDidStopPlayback(self)
@@ -138,15 +138,49 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
     // MARK: Tap
 
     private func installTap() {
-        let bufferSizeAdvice: AVAudioFrameCount = 1024
-        playerNode.installTap(onBus: 0, bufferSize: bufferSizeAdvice, format: nil) { (pcmBuffer, audioTime) in
-            log.info("Will play buffer \(pcmBuffer) at \(audioTime)")
-            log.info("buffer has \(pcmBuffer.frameLength) valid frames")
+        let bufferSizeAdvice: AVAudioFrameCount = 16384
+        playerNode.installTap(onBus: 0, bufferSize: bufferSizeAdvice, format: nil) { [weak self] (pcmBuffer, audioTime) in
+            self?.didOutputPCMBuffer(pcmBuffer)
         }
     }
 
     private func removeTap() {
         playerNode.removeTap(onBus: 0)
+    }
+
+    private func didOutputPCMBuffer(_ pcmBuffer: AVAudioPCMBuffer) {
+        assert(pcmBuffer.format.isStandard)
+        assert(pcmBuffer.format.channelCount == 2)
+
+        let sampleCount = Int(pcmBuffer.frameLength)
+        let leftSamples = pcmBuffer.floatChannelData![0]
+        let rightSamples = pcmBuffer.floatChannelData![1]
+
+        var peakLeft: Float = 0, peakRight: Float = 0.0
+        var squaredSumLeft: Float = 0.0, squaredSumRight: Float = 0.0
+
+        for i in 0..<sampleCount {
+            let left = Float.abs(leftSamples[i])
+            let right = Float.abs(rightSamples[i])
+
+            if left > peakLeft {
+                peakLeft = left
+            }
+            if right > peakRight {
+                peakRight = right
+            }
+
+            squaredSumLeft += left * left
+            squaredSumRight += right * right
+        }
+
+        let meanPowerLeft = squaredSumLeft / Float(sampleCount)
+        let meanPowerRight = squaredSumRight / Float(sampleCount)
+
+        let rmsLeft = meanPowerLeft.squareRoot()
+        let rmsRight = meanPowerRight.squareRoot()
+
+        log.info("\(sampleCount) frames: peak \(peakLeft) \(peakRight), RMS \(rmsLeft) \(rmsRight)")
     }
 
 }
