@@ -2,7 +2,9 @@
 
 Music that helps you get in the flow.
 
-[Download for macOS][zip]
+* [Download for macOS](https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip)
+* [Download for iOS](https://itunes.apple.com/us/app/soundtrack-ambient-music/id1296831059?ls=1&mt=8)
+
 
 ## About
 
@@ -28,11 +30,14 @@ button. Guess what it does.
 
 Soundtrack runs on macOS and iOS.
 
+For macOS, you can [download a pre-built Soundtrack app](https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip).
+
+For iOS, you can [download Soundtrack from the App
+Store](https://itunes.apple.com/us/app/soundtrack-ambient-music/id1296831059?ls=1&mt=8).
+
+## Building Soundtrack from Source
+
 There are no external dependencies. You can download the source code,
 double click the Xcode project file to open it in Xcode, and click the
 Xcode's "Build and Run" button to, well, build and run.
 
-There is also a [pre-built binary][release] available for macOS.
-
-[zip]: https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip
-[release]: https://github.com/mnvr/Soundtrack/releases/tag/v1.0
