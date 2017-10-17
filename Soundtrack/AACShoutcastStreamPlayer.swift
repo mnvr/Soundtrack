@@ -75,11 +75,13 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
         try engine.start()
         playerNode.volume = 0
         playerNode.play()
+        installTap()
         fadeIn()
         delegate?.streamPlayerDidStartPlayback(self)
     }
 
     private func stopPlayback() {
+        removeTap()
         playerNode.stop()
         engine.stop()
         delegate?.streamPlayerDidStopPlayback(self)
@@ -114,6 +116,8 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
         playerNode.scheduleBuffer(buffer)
     }
 
+    // MARK: Fade
+
     private func fadeIn() {
         ramp(toVolume: 1, duration: 1)
     }
@@ -130,6 +134,21 @@ class AACShoutcastStreamPlayer: StreamPlayer, ShoutcastStreamDelegate, ADTSParse
             }
         }
     }
+
+    // MARK: Tap
+
+    private func installTap() {
+        let bufferSizeAdvice: AVAudioFrameCount = 1024
+        playerNode.installTap(onBus: 0, bufferSize: bufferSizeAdvice, format: nil) { (pcmBuffer, audioTime) in
+            log.info("Will play buffer \(pcmBuffer) at \(audioTime)")
+            log.info("buffer has \(pcmBuffer.frameLength) valid frames")
+        }
+    }
+
+    private func removeTap() {
+        playerNode.removeTap(onBus: 0)
+    }
+
 }
 
 private class VolumeRamp {
