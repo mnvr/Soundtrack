@@ -30,7 +30,11 @@ button. Guess what it does.
 
 Soundtrack runs on macOS and iOS.
 
-For macOS, you can [download a pre-built Soundtrack app](https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip).
+For macOS, you can [download a pre-built Soundtrack
+app](https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip).
+The first time around, you will have to right click the downloaded app
+and select "Open" from the menu to get it to run; subsequently, you
+can just double click it.
 
 For iOS, you can [download Soundtrack from the App
 Store](https://itunes.apple.com/us/app/soundtrack-ambient-music/id1296831059?ls=1&mt=8).
