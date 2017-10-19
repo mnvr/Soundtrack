@@ -41,7 +41,6 @@
 		F98AADB71F67E826000294F6 /* StreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98AADB61F67E826000294F6 /* StreamPlayer.swift */; };
 		F98AADB81F67E82B000294F6 /* StreamPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98AADB61F67E826000294F6 /* StreamPlayer.swift */; };
 		F99CEAAC1F827AEE0064FDCB /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99CEAAB1F827AEE0064FDCB /* WindowController.swift */; };
-		F9A3CF161F6BA79C00E16AF0 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F938E2161F69332A006C2B51 /* AboutViewController.swift */; };
 		F9A3FD1D1F8B95EE0091D20C /* Soundtrack.help in Resources */ = {isa = PBXBuildFile; fileRef = F9A3FD1C1F8B95EE0091D20C /* Soundtrack.help */; };
 		F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
 		F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A93C231F2569BD00A2EAAE /* NSObjectExtensions.swift */; };
@@ -68,7 +67,6 @@
 		F92B47B71F20BDC900FAFAA3 /* Soundtrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundtrack.entitlements; sourceTree = "<group>"; };
 		F938E2111F690032006C2B51 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		F938E2131F690743006C2B51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		F938E2161F69332A006C2B51 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		F94DD9611F19A2EC00BFA8ED /* Soundtrack-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundtrack-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F94DD9661F19A2EC00BFA8ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				F94DD9661F19A2EC00BFA8ED /* ViewController.swift */,
 				F91EBFDF1F26D4880046E642 /* AudioSessionIOS.swift */,
 				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
-				F938E2161F69332A006C2B51 /* AboutViewController.swift */,
 				F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */,
 				F94DD9681F19A2EC00BFA8ED /* Main.storyboard */,
 				F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */,
@@ -322,7 +319,6 @@
 				F92994D91F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,
 				F94DD9651F19A2EC00BFA8ED /* AppDelegate.swift in Sources */,
 				F90E273C1F5EF18F00F092DA /* ADTSParser.swift in Sources */,
-				F9A3CF161F6BA79C00E16AF0 /* AboutViewController.swift in Sources */,
 				F9C597381F1CEA15000B1A8B /* Log.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

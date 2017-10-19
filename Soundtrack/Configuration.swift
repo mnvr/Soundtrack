@@ -11,17 +11,12 @@ class Configuration {
     static let shared = Configuration()
 
     var shoutcastURL: URL {
-        return (userDefaultsShoutcastURLs ?? preconfiguredShoutcastURLs).random!
+        if let urls = userDefaultsShoutcastURLs, let url = urls.random {
+            return url
+        } else {
+            fatalError("Please configure a SHOUTcast URL. You can use the following command: defaults write com.github.mnvr.Soundtrack.Soundtrack-macOS shoutcastURLs -array \"http://your-shoutcast-or-icecast-endpoint.com/\"")
+        }
     }
-
-    // MARK: -
-
-    // There are corresponding ATS exceptions for these in the Info Plists.
-
-    private let preconfiguredShoutcastURLs = [
-        URL(string: "http://ice1.somafm.com/dronezone-128-aac")!,
-        URL(string: "http://ice2.somafm.com/dronezone-128-aac")!
-    ]
 
     private enum UserDefaultsKey: String {
         case shoutcastURLs
