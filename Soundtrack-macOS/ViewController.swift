@@ -22,14 +22,13 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
     private var lastTitle: String?
     private var togglePlaybackMenuItemTitle: String?
     private var togglePlaybackMenuItemIsEnabled: Bool?
-    private var observationContext = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         observeUserDefaultsController()
-
         updateStatusBarItem()
+        updateDockIcon()
 
         indicateUnavailability()
 
@@ -54,8 +53,6 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         return AudioController(url: url, delegate: self, delegateQueue: DispatchQueue.main, makeSession: makeSession)
     }
 
-    // MARK: -
-
     @IBAction func play(_ sender: NSButton) {
         log.info("User pressed play")
         prepareForPlaybackStart()
@@ -78,19 +75,10 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         toggle()
     }
 
-    @objc func toggleStatus(_ sender: NSStatusBarButton) {
-        log.info("User clicked status bar toggle")
-        if togglePlaybackMenuItemIsEnabled == true {
-            toggle()
-        }
-    }
-
     private func toggle() {
         isPlaying ? prepareForPlaybackStop() : prepareForPlaybackStart()
         audioController?.playPause()
     }
-
-    // MARK: -
 
     private func indicateUnavailability() {
         isPlaying = false
@@ -223,8 +211,6 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         fadeIn(titleStackView)
     }
 
-    // MARK: -
-
     private func fadeOut(_ view: NSView, duration: TimeInterval = 2, then: (() -> Void)? = nil) {
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = duration
@@ -238,8 +224,6 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
             view.animator().isHidden = false
         }, completionHandler: then)
     }
-
-    // MARK: Music Menu
 
     private func menuTitlePlay() -> String {
         return NSLocalizedString("Play", comment: "Menu Item - Music > Play")
@@ -260,18 +244,27 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         return true
     }
 
-    // MARK: Status Bar Button
-
     private func makeStatusButtonItem() -> NSStatusItem {
-        let statusBar = NSStatusBar.system
-
-        let item = statusBar.statusItem(withLength: NSStatusItem.squareLength)
-
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         item.image = #imageLiteral(resourceName: "StatusBarButton")
-        item.action = #selector(toggleStatus(_:))
+        item.action = #selector(statusBarEvent)
         item.target = self
-
+        item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
         return item
+    }
+
+    @objc private func statusBarEvent(_ sender: NSStatusBarButton) {
+        if let event = NSApp.currentEvent {
+            if event.modifierFlags.contains(.control) || event.type == .rightMouseUp {
+                configuration.hideDockIcon = false
+                view.window?.makeKeyAndOrderFront(self)
+                view.window?.makeMain()
+            } else {
+                if togglePlaybackMenuItemIsEnabled == true {
+                    toggle()
+                }
+            }
+        }
     }
 
     private func removeStatusBarItem() {
@@ -299,14 +292,14 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
     }
 
     private func updateStatusBarItem() {
-        if showStatusBarIcon {
+        if configuration.hideStatusBarIcon {
+            if statusItem != nil {
+                removeStatusBarItem()
+            }
+        } else {
             if statusItem == nil {
                 statusItem = makeStatusButtonItem()
                 gleanStatusItemState()
-            }
-        } else {
-            if statusItem != nil {
-                removeStatusBarItem()
             }
         }
     }
@@ -320,43 +313,52 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         statusItem?.toolTip = lastTitle
     }
 
-    // MARK: View Menu
+    private func updateDockIcon() {
+        if configuration.hideDockIcon {
+            NSApp?.setActivationPolicy(.accessory)
+        } else {
+            NSApp?.setActivationPolicy(.regular)
+        }
+    }
 
-    let showStatusBarIconKVOPath = "values.showStatusBarIcon"
+    private var userDefaultsController = NSUserDefaultsController.shared
+    // Apparently, cannot use Swift 4 KVO with NSUserDefaultsController,
+    // so do it the old way.
+    private var observationContext = 0
+    private let hideStatusBarIconKVOPath = "values.hideStatusBarIcon"
+    private let hideDockIconKVOPath = "values.hideDockIcon"
 
     private func observeUserDefaultsController() {
-        NSUserDefaultsController.shared.addObserver(self, forKeyPath: showStatusBarIconKVOPath, options: [], context: &observationContext)
+        userDefaultsController.addObserver(self, forKeyPath: hideStatusBarIconKVOPath, options: [], context: &observationContext)
+        userDefaultsController.addObserver(self, forKeyPath: hideDockIconKVOPath, options: [], context: &observationContext)
     }
 
     private func unobserveUserDefaultsController() {
-        NSUserDefaultsController.shared.removeObserver(self, forKeyPath: showStatusBarIconKVOPath, context: &observationContext)
+        userDefaultsController.removeObserver(self, forKeyPath: hideStatusBarIconKVOPath, context: &observationContext)
+        userDefaultsController.removeObserver(self, forKeyPath: hideDockIconKVOPath, context: &observationContext)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if context == &observationContext {
-            if keyPath == showStatusBarIconKVOPath {
+            if keyPath == hideStatusBarIconKVOPath {
                 updateStatusBarItem()
+            } else if keyPath == hideDockIconKVOPath {
+                updateDockIcon()
             }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
 
-    var showNotifications: Bool {
-        return NSUserDefaultsController.shared.defaults.bool(forKey: "showNotifications")
-    }
-
-    var showStatusBarIcon: Bool {
-        return NSUserDefaultsController.shared.defaults.bool(forKey: "showStatusBarIcon")
-    }
-
     private func maybeShowNotification(_ titleComponents: TitleComponents) {
-        if showNotifications {
-            let notification = NSUserNotification()
-            notification.title = titleComponents.song
-            notification.subtitle = titleComponents.artist
-            NSUserNotificationCenter.default.deliver(notification)
+        if configuration.hideNotifications {
+            return
         }
+
+        let notification = NSUserNotification()
+        notification.title = titleComponents.song
+        notification.subtitle = titleComponents.artist
+        NSUserNotificationCenter.default.deliver(notification)
     }
 
     @objc func paste(_ sender: Any) {

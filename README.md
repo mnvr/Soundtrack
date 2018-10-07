@@ -9,6 +9,11 @@ To set the radio station, paste the URL of the radio station in the
 Soundtrack window. This is the HTTP link to the shoutcast playlist
 file, ending in ".pls" or ".m3u".
 
+## Advanced
+
+* If you choose to hide the dock icon, you can show the Soundtrack
+  window by right or control clicking the status bar icon.
+
 ## Obtaining Soundtrack
 
 ### Building from Source

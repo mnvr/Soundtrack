@@ -88,13 +88,31 @@
                                         <menuItem title="Song Change Notifications" keyEquivalent="n" id="spa-G5-Q3m">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
-                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.showNotifications" id="flV-lI-d30"/>
+                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.hideNotifications" id="nIH-jg-cCL">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Status Bar Icon" id="gBr-Cy-gE1">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.showStatusBarIcon" id="vdZ-P2-fJA"/>
+                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.hideStatusBarIcon" id="0my-ky-0Uc">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dock Icon" id="CYO-yh-o1i">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <binding destination="Bn8-jN-r8Z" name="value" keyPath="values.hideDockIcon" id="uJL-8e-e2w">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="rNn-zP-9Py"/>
@@ -127,18 +145,6 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="arrangeInFront:" target="Ady-hI-5gd" id="DRN-fu-gQh"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="Help" id="wpr-3q-Mcd">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
-                                    <items>
-                                        <menuItem title="Soundtrack Help" keyEquivalent="?" id="FKE-Sm-Kum">
-                                            <connections>
-                                                <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
                                         </menuItem>
                                     </items>

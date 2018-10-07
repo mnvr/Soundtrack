@@ -8,16 +8,47 @@ import Foundation
 
 class Configuration {
     static let shared = Configuration()
+    private let userDefaults = UserDefaults.standard
 
     private(set) var shoutcastURL: URL? {
         get {
-            if let string = UserDefaults.standard.string(forKey: "shoutcastURL") {
+            if let string = userDefaults.string(forKey: "shoutcastURL") {
                 return URL(string: string)
             }
             return nil
         }
         set {
-            UserDefaults.standard.set(newValue?.absoluteString, forKey: "shoutcastURL")
+            userDefaults.set(newValue?.absoluteString, forKey: "shoutcastURL")
+        }
+    }
+
+    var hideNotifications: Bool {
+        get {
+            return userDefaults.bool(forKey: "hideNotifications")
+        }
+        set {
+            userDefaults.set(newValue, forKey: "hideNotifications")
+        }
+    }
+
+    var hideStatusBarIcon: Bool {
+        get {
+            return userDefaults.bool(forKey: "hideStatusBarIcon")
+        }
+        set {
+            return userDefaults.set(newValue, forKey: "hideStatusBarIcon")
+        }
+    }
+
+    var hideDockIcon: Bool {
+        get {
+            if hideStatusBarIcon {
+                return true
+            }
+            return userDefaults.bool(forKey: "hideDockIcon")
+        }
+        set {
+            return userDefaults.set(newValue, forKey: "hideDockIcon")
         }
     }
 

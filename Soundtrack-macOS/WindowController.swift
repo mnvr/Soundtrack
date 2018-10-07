@@ -10,8 +10,8 @@ class WindowController: NSWindowController, NSWindowDelegate {
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        window!.titlebarAppearsTransparent = true
-        window!.isMovableByWindowBackground = true
+        window?.titlebarAppearsTransparent = true
+        window?.isMovableByWindowBackground = true
     }
 
     func windowWillUseStandardFrame(_ window: NSWindow, defaultFrame newFrame: NSRect) -> NSRect {
