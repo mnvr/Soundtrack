@@ -43,16 +43,23 @@ class AudioSessionIOS: NSObject, AudioSession {
         // running on a device (iPhone 4S, iOS 9.3) that they are instead
         // delivered on a thread named "AVAudioSession Notify Thread".
 
-        observeOnQueue(.AVAudioSessionInterruption, with: #selector(audioSessionInterruption(_:)))
-        observeOnQueue(.AVAudioSessionRouteChange, with: #selector(audioSessionRouteChange(_:)))
-        observeOnQueue(.AVAudioSessionMediaServicesWereLost, with: #selector(audioSessionMediaServicesWereLost(_:)))
-        observeOnQueue(.AVAudioSessionMediaServicesWereReset, with: #selector(audioSessionMediaServicesWereReset(_:)))
+        observeOnQueue(AVAudioSession.interruptionNotification, with: #selector(audioSessionInterruption(_:)))
+        observeOnQueue(AVAudioSession.routeChangeNotification, with: #selector(audioSessionRouteChange(_:)))
+        observeOnQueue(AVAudioSession.mediaServicesWereLostNotification, with: #selector(audioSessionMediaServicesWereLost(_:)))
+        observeOnQueue(AVAudioSession.mediaServicesWereResetNotification, with: #selector(audioSessionMediaServicesWereReset(_:)))
     }
 
 
     private func configure() {
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            if #available(iOS 10.0, *) {
+                try audioSession.setCategory(.playback, mode: .default)
+            } else {
+                // There is no fallback on earlier versions, this is an iOS bug.
+                // http://www.openradar.me/42382075
+                // TODO: Remove this #available check when the upstream
+                // bug is fixed.
+            }
         } catch {
             return log.warning("Could not set audio session category: \(error)")
         }
@@ -65,8 +72,8 @@ class AudioSessionIOS: NSObject, AudioSession {
 
         let ms = { Int($0 * 1000.0) }
 
-        log.info("\tCategory: \(audioSession.category) [Options = \(audioSession.categoryOptions)]")
-        log.info("\tMode: \(audioSession.mode)")
+        log.info("\tCategory: \(convertFromAVAudioSessionCategory(audioSession.category)) [Options = \(audioSession.categoryOptions)]")
+        log.info("\tMode: \(convertFromAVAudioSessionMode(audioSession.mode))")
         log.info("\tCurrent Route: \(audioSession.currentRoute)")
         log.info("\tOutput Channels: \(audioSession.outputNumberOfChannels) [max \(audioSession.maximumOutputNumberOfChannels)]")
         log.info("\tVolume: \(audioSession.outputVolume)")
@@ -99,7 +106,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         }
 
         do {
-            try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
+            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
         } catch {
             log.warning("Could not deactivate audio session: \(error)")
             return false
@@ -117,7 +124,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: {
             log.warning("We were asked to relinquish our background task before playback ended")
         })
-        log.debug("Did begin background task with identifier \(backgroundTaskIdentifier)")
+        log.debug("Did begin background task with identifier \(String(describing: backgroundTaskIdentifier))")
     }
 
     private func endBackgroundTask() {
@@ -133,10 +140,10 @@ class AudioSessionIOS: NSObject, AudioSession {
     
     // MARK: Audio Session Notifications
 
-    func audioSessionInterruption(_ notification: Notification) {
+    @objc func audioSessionInterruption(_ notification: Notification) {
         log.debug("Audio session interruption: \(notification)")
 
-        guard let type: AVAudioSessionInterruptionType = notification.enumForKey( AVAudioSessionInterruptionTypeKey) else {
+        guard let type: AVAudioSession.InterruptionType = notification.enumForKey( AVAudioSessionInterruptionTypeKey) else {
             return log.warning()
         }
 
@@ -151,7 +158,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         case .ended:
             log.info("Interruption ended")
 
-            guard let options: AVAudioSessionInterruptionOptions = notification.enumForKey(AVAudioSessionInterruptionOptionKey) else {
+            guard let options: AVAudioSession.InterruptionOptions = notification.enumForKey(AVAudioSessionInterruptionOptionKey) else {
                 break
             }
 
@@ -165,10 +172,10 @@ class AudioSessionIOS: NSObject, AudioSession {
         }
     }
 
-    func audioSessionRouteChange(_ notification: Notification) {
+    @objc func audioSessionRouteChange(_ notification: Notification) {
         log.debug("Audio route changed: \(notification)")
 
-        if let reason: AVAudioSessionRouteChangeReason = notification.enumForKey(AVAudioSessionRouteChangeReasonKey) {
+        if let reason: AVAudioSession.RouteChangeReason = notification.enumForKey(AVAudioSessionRouteChangeReasonKey) {
 
             log.debug("Route change reason: \(reason.rawValue)")
 
@@ -183,14 +190,14 @@ class AudioSessionIOS: NSObject, AudioSession {
         }
     }
 
-    func audioSessionMediaServicesWereLost(_ notification: Notification) {
+    @objc func audioSessionMediaServicesWereLost(_ notification: Notification) {
         log.info("Media services were lost: \(notification)")
         wasPlaying = false
         endBackgroundTask()
         delegate?.audioSessionMediaServicesWereLost(self)
     }
 
-    func audioSessionMediaServicesWereReset(_ notification: Notification) {
+    @objc func audioSessionMediaServicesWereReset(_ notification: Notification) {
         log.info("Media services were restarted: \(notification)")
         delegate?.audioSessionMediaServicesWereReset(self)
     }
@@ -216,4 +223,14 @@ class AudioSessionIOS: NSObject, AudioSession {
             }
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionMode(_ input: AVAudioSession.Mode) -> String {
+	return input.rawValue
 }

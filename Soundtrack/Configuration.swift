@@ -25,7 +25,7 @@ class Configuration {
     private var userDefaultsShoutcastURLs: [URL]? {
         let key = UserDefaultsKey.shoutcastURLs.rawValue
         let array = UserDefaults.standard.array(forKey: key)
-        return array?.flatMap { element in
+        return array?.compactMap { element in
             if let string = element as? String {
                 return URL(string: string)
             }

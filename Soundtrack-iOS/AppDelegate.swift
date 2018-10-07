@@ -13,8 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: App Life Cycle
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        log.info("Launch Options: \(launchOptions)")
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        log.info("Launch Options: \(String(describing: launchOptions))")
 
         if application.applicationState == .inactive {
             log.info("Application is launching into the foreground")

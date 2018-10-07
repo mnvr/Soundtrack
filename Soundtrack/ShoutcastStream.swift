@@ -103,7 +103,7 @@ final class ShoutcastStream {
 
     private func parse(response: URLResponse) -> Bool {
         guard response.mimeType == expectedMIMEType else {
-            log.info("Unexpected MIME type '\(response.mimeType)' received (we were expecting '\(expectedMIMEType)')")
+            log.info("Unexpected MIME type '\(String(describing: response.mimeType))' received (we were expecting '\(expectedMIMEType)')")
             return false
         }
 

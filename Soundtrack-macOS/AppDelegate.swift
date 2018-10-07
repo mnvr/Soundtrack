@@ -11,8 +11,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
 
-    override class func initialize() {
-        NSUserDefaultsController.shared().defaults.register(defaults: [
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        NSUserDefaultsController.shared.defaults.register(defaults: [
             "showNotifications": true,
             "showStatusBarIcon": true
             ])

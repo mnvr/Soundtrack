@@ -135,7 +135,7 @@ class ADTSParser {
     }
 
     private func createConverter(inputStreamDescription: inout AudioStreamBasicDescription) -> Bool {
-        guard converter == nil else {
+        if let converter = converter {
             log.warning("Trying to create a new converter for \(inputStreamDescription) when there is an already existing converter: \(converter)")
             return false
         }
@@ -209,7 +209,9 @@ class ADTSParser {
         }
 
         var frameCount = AVAudioFrameCount(packetDescriptions.count * framesPerPacket)
-        var outputBuffer = AVAudioPCMBuffer(pcmFormat: pcmFormat, frameCapacity: frameCount)
+        guard var outputBuffer = AVAudioPCMBuffer(pcmFormat: pcmFormat, frameCapacity: frameCount) else {
+            return nil
+        }
 
         let outputBufferList = fixOutputBufferFrameLength(outputBuffer: &outputBuffer)
 

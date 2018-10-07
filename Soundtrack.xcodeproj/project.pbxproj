@@ -239,11 +239,13 @@
 					F94DD9601F19A2EC00BFA8ED = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 4682UAMU7T;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					F9C5973C1F1CEB90000B1A8B = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 4682UAMU7T;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
@@ -499,7 +501,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -512,7 +514,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -529,7 +531,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
 				PRODUCT_NAME = Soundtrack;
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -546,7 +548,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.mnvr.Soundtrack.Soundtrack-macOS";
 				PRODUCT_NAME = Soundtrack;
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

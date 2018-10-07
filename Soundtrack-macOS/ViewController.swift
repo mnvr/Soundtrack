@@ -6,7 +6,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDelegate {
+class ViewController: NSViewController, NSUserInterfaceValidations, AudioControllerDelegate, StreamPlayerDelegate {
 
     @IBOutlet weak var playButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
@@ -82,7 +82,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         toggle()
     }
 
-    func toggleStatus(_ sender: NSStatusBarButton) {
+    @objc func toggleStatus(_ sender: NSStatusBarButton) {
         log.info("User clicked status bar toggle")
         if togglePlaybackMenuItemIsEnabled == true {
             toggle()
@@ -253,23 +253,23 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
         return NSLocalizedString("Pause", comment: "Menu Item - Music > Pause")
     }
 
-    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        if menuItem.action == #selector(togglePlayback(_:)) {
+    func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        if let menuItem = item as? NSMenuItem, menuItem.action == #selector(togglePlayback(_:)) {
             if let title = togglePlaybackMenuItemTitle {
                 menuItem.title = title
             }
             return togglePlaybackMenuItemIsEnabled ?? false
         }
 
-        return super.validateMenuItem(menuItem)
+        return true
     }
 
     // MARK: Status Bar Button
 
     private func makeStatusButtonItem() -> NSStatusItem {
-        let statusBar = NSStatusBar.system()
+        let statusBar = NSStatusBar.system
 
-        let item = statusBar.statusItem(withLength: NSSquareStatusItemLength)
+        let item = statusBar.statusItem(withLength: NSStatusItem.squareLength)
 
         item.image = #imageLiteral(resourceName: "StatusBarButton")
         item.action = #selector(toggleStatus(_:))
@@ -329,11 +329,11 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     let showStatusBarIconKVOPath = "values.showStatusBarIcon"
 
     private func observeUserDefaultsController() {
-        NSUserDefaultsController.shared().addObserver(self, forKeyPath: showStatusBarIconKVOPath, options: [], context: &observationContext)
+        NSUserDefaultsController.shared.addObserver(self, forKeyPath: showStatusBarIconKVOPath, options: [], context: &observationContext)
     }
 
     private func unobserveUserDefaultsController() {
-        NSUserDefaultsController.shared().removeObserver(self, forKeyPath: showStatusBarIconKVOPath, context: &observationContext)
+        NSUserDefaultsController.shared.removeObserver(self, forKeyPath: showStatusBarIconKVOPath, context: &observationContext)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -347,11 +347,11 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
     }
 
     var showNotifications: Bool {
-        return NSUserDefaultsController.shared().defaults.bool(forKey: "showNotifications")
+        return NSUserDefaultsController.shared.defaults.bool(forKey: "showNotifications")
     }
 
     var showStatusBarIcon: Bool {
-        return NSUserDefaultsController.shared().defaults.bool(forKey: "showStatusBarIcon")
+        return NSUserDefaultsController.shared.defaults.bool(forKey: "showStatusBarIcon")
     }
 
     // MARK: Notifications
