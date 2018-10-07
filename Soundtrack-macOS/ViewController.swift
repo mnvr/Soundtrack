@@ -280,7 +280,7 @@ class ViewController: NSViewController, AudioControllerDelegate, StreamPlayerDel
 
     private func removeStatusBarItem() {
         if let item = statusItem {
-            item.statusBar.removeStatusItem(item)
+            item.statusBar?.removeStatusItem(item)
         }
         statusItem = nil
     }

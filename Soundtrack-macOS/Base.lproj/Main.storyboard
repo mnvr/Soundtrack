@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1611" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
-        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -156,8 +153,8 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="WindowController" customModule="Soundtrack" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Main" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Main" animationBehavior="default" id="IQv-IB-iLA">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" topStrut="YES"/>
                         <rect key="contentRect" x="100" y="680" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -181,7 +178,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="PuU-OJ-Edb">
+                            <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="sheet" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="PuU-OJ-Edb">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <subviews>
                                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-ne-KBI">
@@ -190,7 +187,7 @@
                                     <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfD-VX-Iub">
                                         <rect key="frame" x="224" y="116" width="32" height="38"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Pt-9k-Aye">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Pt-9k-Aye">
                                                 <rect key="frame" x="-2" y="21" width="36" height="17"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Song" id="FbC-B2-er5">
                                                     <font key="font" metaFont="system"/>
@@ -198,7 +195,7 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jqa-Cq-ILO">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jqa-Cq-ILO">
                                                 <rect key="frame" x="-1" y="0.0" width="35" height="16"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Artist" id="KYF-om-SOx">
                                                     <font key="font" metaFont="systemLight" size="12"/>
@@ -222,7 +219,7 @@
                                             <constraint firstAttribute="width" secondItem="1hl-U6-7Wv" secondAttribute="height" id="0a1-AB-6Uj"/>
                                             <constraint firstAttribute="width" constant="96" id="9TA-1s-3YN"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="PlayButton" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="cep-cT-LCc">
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="PlayButton" imagePosition="only" alignment="center" scrollable="YES" lineBreakMode="clipping" imageScaling="axesIndependently" inset="2" id="cep-cT-LCc">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
