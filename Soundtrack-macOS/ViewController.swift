@@ -350,11 +350,12 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         return NSUserDefaultsController.shared.defaults.bool(forKey: "showStatusBarIcon")
     }
 
-    // MARK: Notifications
-
     private func maybeShowNotification(_ titleComponents: TitleComponents) {
         if showNotifications {
-            UserNotification.show(titleComponents)
+            let notification = NSUserNotification()
+            notification.title = titleComponents.song
+            notification.subtitle = titleComponents.artist
+            NSUserNotificationCenter.default.deliver(notification)
         }
     }
 

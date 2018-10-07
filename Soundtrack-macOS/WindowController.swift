@@ -7,7 +7,6 @@
 import Cocoa
 
 class WindowController: NSWindowController, NSWindowDelegate {
-
     override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -25,5 +24,4 @@ class WindowController: NSWindowController, NSWindowDelegate {
 
         return NSRect(origin: newOrigin, size: defaultSize)
     }
-
 }

@@ -28,9 +28,6 @@
 		F94DD96A1F19A2EC00BFA8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD9681F19A2EC00BFA8ED /* Main.storyboard */; };
 		F94DD96C1F19A2EC00BFA8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */; };
 		F94DD96F1F19A2EC00BFA8ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */; };
-		F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */; };
-		F95A432C1F6BB12E00D2A429 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */; };
-		F973012C1F94BB3C00083221 /* UserNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973012B1F94BB3C00083221 /* UserNotification.swift */; };
 		F97FE5731F905A0C0040883A /* RemoteCommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */; };
 		F97FE5741F905A0C0040883A /* RemoteCommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */; };
 		F97FE5761F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */; };
@@ -74,9 +71,6 @@
 		F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F94DD96E1F19A2EC00BFA8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F94DD9701F19A2EC00BFA8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
-		F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
-		F973012B1F94BB3C00083221 /* UserNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotification.swift; sourceTree = "<group>"; };
 		F97FE5721F905A0C0040883A /* RemoteCommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandCenter.swift; sourceTree = "<group>"; };
 		F97FE5751F90F4870040883A /* NowPlayingInfoCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoCenter.swift; sourceTree = "<group>"; };
 		F985E17E1F2994D10050285C /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
@@ -116,8 +110,8 @@
 		F94DD9581F19A2EC00BFA8ED = {
 			isa = PBXGroup;
 			children = (
-				F91E384D1F24D5CE00E6E332 /* LICENSE */,
 				F938E2131F690743006C2B51 /* README.md */,
+				F91E384D1F24D5CE00E6E332 /* LICENSE */,
 				F9C597361F1CE9E3000B1A8B /* Soundtrack */,
 				F94DD9631F19A2EC00BFA8ED /* Soundtrack-iOS */,
 				F9C5973E1F1CEB90000B1A8B /* Soundtrack-macOS */,
@@ -140,8 +134,6 @@
 				F94DD9641F19A2EC00BFA8ED /* AppDelegate.swift */,
 				F94DD9661F19A2EC00BFA8ED /* ViewController.swift */,
 				F91EBFDF1F26D4880046E642 /* AudioSessionIOS.swift */,
-				F94DD97A1F19A43600BFA8ED /* NotificationExtensions.swift */,
-				F95A432B1F6BB12E00D2A429 /* BundleExtensions.swift */,
 				F94DD9681F19A2EC00BFA8ED /* Main.storyboard */,
 				F94DD96B1F19A2EC00BFA8ED /* Assets.xcassets */,
 				F94DD96D1F19A2EC00BFA8ED /* LaunchScreen.storyboard */,
@@ -178,7 +170,6 @@
 				F99CEAAB1F827AEE0064FDCB /* WindowController.swift */,
 				F9C597411F1CEB90000B1A8B /* ViewController.swift */,
 				F985E1811F29CDB20050285C /* AudioSessionMacOS.swift */,
-				F973012B1F94BB3C00083221 /* UserNotification.swift */,
 				F9C597431F1CEB90000B1A8B /* Assets.xcassets */,
 				F9C597451F1CEB90000B1A8B /* Main.storyboard */,
 				F9C597481F1CEB90000B1A8B /* Info.plist */,
@@ -305,7 +296,6 @@
 			files = (
 				F94DD9671F19A2EC00BFA8ED /* ViewController.swift in Sources */,
 				F98AADB71F67E826000294F6 /* StreamPlayer.swift in Sources */,
-				F94DD97C1F19A43600BFA8ED /* NotificationExtensions.swift in Sources */,
 				F985E17F1F2994D10050285C /* AudioSession.swift in Sources */,
 				F9B339C11F910C16001E9FAD /* TitleComponents.swift in Sources */,
 				F97FE5731F905A0C0040883A /* RemoteCommandCenter.swift in Sources */,
@@ -314,7 +304,6 @@
 				F90E27361F5ED10800F092DA /* ShoutcastStream.swift in Sources */,
 				F92B47B01F2079B400FAFAA3 /* AudioController.swift in Sources */,
 				F97FE5761F90F4870040883A /* NowPlayingInfoCenter.swift in Sources */,
-				F95A432C1F6BB12E00D2A429 /* BundleExtensions.swift in Sources */,
 				F9241FF81F3327C4001D56FD /* Configuration.swift in Sources */,
 				F90555A01F34745A006FEAF5 /* DataExtensions.swift in Sources */,
 				F9A93C241F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
@@ -335,7 +324,6 @@
 				F9A93C251F2569BD00A2EAAE /* NSObjectExtensions.swift in Sources */,
 				F9B339C21F910C16001E9FAD /* TitleComponents.swift in Sources */,
 				F9C5974C1F1CECC0000B1A8B /* Log.swift in Sources */,
-				F973012C1F94BB3C00083221 /* UserNotification.swift in Sources */,
 				F9C597401F1CEB90000B1A8B /* AppDelegate.swift in Sources */,
 				F92994DA1F334DFC00B5BF6A /* ArrayExtensions.swift in Sources */,
 				F90E27351F5ED10800F092DA /* AACShoutcastStreamPlayer.swift in Sources */,

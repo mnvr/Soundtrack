@@ -8,7 +8,6 @@ import UIKit
 import AVFoundation
 
 class AudioSessionIOS: NSObject, AudioSession {
-
     let queue: DispatchQueue
 
     weak var delegate: AudioSessionDelegate?
@@ -72,8 +71,8 @@ class AudioSessionIOS: NSObject, AudioSession {
 
         let ms = { Int($0 * 1000.0) }
 
-        log.info("\tCategory: \(convertFromAVAudioSessionCategory(audioSession.category)) [Options = \(audioSession.categoryOptions)]")
-        log.info("\tMode: \(convertFromAVAudioSessionMode(audioSession.mode))")
+        log.info("\tCategory: \(audioSession.category) [Options = \(audioSession.categoryOptions)]")
+        log.info("\tMode: \(audioSession.mode)")
         log.info("\tCurrent Route: \(audioSession.currentRoute)")
         log.info("\tOutput Channels: \(audioSession.outputNumberOfChannels) [max \(audioSession.maximumOutputNumberOfChannels)]")
         log.info("\tVolume: \(audioSession.outputVolume)")
@@ -143,7 +142,8 @@ class AudioSessionIOS: NSObject, AudioSession {
     @objc func audioSessionInterruption(_ notification: Notification) {
         log.debug("Audio session interruption: \(notification)")
 
-        guard let type: AVAudioSession.InterruptionType = notification.enumForKey( AVAudioSessionInterruptionTypeKey) else {
+        guard let userInfo = notification.userInfo,
+            let type = userInfo[AVAudioSessionInterruptionTypeKey] as? AVAudioSession.InterruptionType else {
             return log.warning()
         }
 
@@ -158,7 +158,7 @@ class AudioSessionIOS: NSObject, AudioSession {
         case .ended:
             log.info("Interruption ended")
 
-            guard let options: AVAudioSession.InterruptionOptions = notification.enumForKey(AVAudioSessionInterruptionOptionKey) else {
+            guard let options = userInfo[AVAudioSessionInterruptionOptionKey] as? AVAudioSession.InterruptionOptions  else {
                 break
             }
 
@@ -175,8 +175,7 @@ class AudioSessionIOS: NSObject, AudioSession {
     @objc func audioSessionRouteChange(_ notification: Notification) {
         log.debug("Audio route changed: \(notification)")
 
-        if let reason: AVAudioSession.RouteChangeReason = notification.enumForKey(AVAudioSessionRouteChangeReasonKey) {
-
+        if let reason = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? AVAudioSession.RouteChangeReason {
             log.debug("Route change reason: \(reason.rawValue)")
 
             if reason == .oldDeviceUnavailable {
@@ -223,14 +222,4 @@ class AudioSessionIOS: NSObject, AudioSession {
             }
         }
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
-	return input.rawValue
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionMode(_ input: AVAudioSession.Mode) -> String {
-	return input.rawValue
 }

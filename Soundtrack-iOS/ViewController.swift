@@ -7,7 +7,6 @@
 import UIKit
 
 class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDelegate {
-
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var titleStackView: UIStackView!
@@ -19,8 +18,6 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
     private var isPlaying: Bool = false
     private var currentPlaybackAttempt: Int = 0
-
-    // MARK: -
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -201,5 +198,4 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
             stackView.isHidden = false
         }, completion: nil)
     }
-
 }

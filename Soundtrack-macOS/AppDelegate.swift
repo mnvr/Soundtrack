@@ -14,15 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             "showStatusBarIcon": true
             ])
     }
-
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        log.info("Launched: \(notification.userInfo ?? [:])")
-    }
-
-    func applicationWillTerminate(_ notification: Notification) {
-        log.info("Terminated: \(notification.userInfo ?? [:])")
-    }
-    
+   
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows: Bool) -> Bool {
         if !hasVisibleWindows {
             sender.windows.first?.makeKeyAndOrderFront(self)
