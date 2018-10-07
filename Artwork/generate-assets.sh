@@ -73,10 +73,6 @@ function gen_ios_playbutton () {
     gen_template_pdf "${TEMPLATE_SVG}" "${IOS_PLAYBUTTON}" "$@"
 }
 
-function gen_ios_appstore_icon () {
-    gen_png "${IOS_APPICON_SVG}" "Artwork" 1024 "-iOS-appstore"
-}
-
 gen_macos_icon 1024
 gen_macos_icon 512
 gen_macos_icon 256
@@ -89,6 +85,7 @@ gen_macos_playbutton
 
 gen_macos_statusbarbutton
 
+gen_ios_icon 1024
 gen_ios_icon 180
 gen_ios_icon 120
 gen_ios_icon 167
@@ -104,6 +101,3 @@ gen_ios_icon 29
 gen_ios_icon 20
 
 gen_ios_playbutton
-
-gen_ios_appstore_icon
-
