@@ -1,6 +1,6 @@
 all: help
 
-.PHONY: all help release
+.PHONY: all help archive
 
 help:
 	@echo "Available Tasks:"
@@ -12,7 +12,3 @@ archive:
 	rm build/Soundtrack.zip || true
 	cd build/Release && zip -r ../Soundtrack.zip Soundtrack.app
 	open build
-
-helpindex:
-	cd Soundtrack-macOS/Soundtrack.help/Contents/Resources/ && \
-	    hiutil --create . --file index.helpindex -vvv
