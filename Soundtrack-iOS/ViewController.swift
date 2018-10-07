@@ -14,7 +14,7 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
 
-    var audioController: AudioController!
+    var audioController: AudioController?
 
     private var isPlaying: Bool = false
     private var currentPlaybackAttempt: Int = 0
@@ -24,8 +24,9 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
 
         indicateUnavailability()
 
-        let url = Configuration.shared.shoutcastURL
-        audioController = makePlaybackController(url: url)
+        if let url = Configuration.shared.shoutcastURL {
+            audioController = makePlaybackController(url: url)
+        }
     }
 
     private func makePlaybackController(url: URL) -> AudioController {
@@ -41,13 +42,13 @@ class ViewController: UIViewController, AudioControllerDelegate, StreamPlayerDel
     @IBAction func play(_ sender: UIButton) {
         log.info("User pressed play")
         prepareForPlaybackStart()
-        audioController.playPause()
+        audioController?.playPause()
     }
 
     @IBAction func pause(_ sender: UITapGestureRecognizer) {
         log.info("User tapped inside the window")
         prepareForPlaybackStop()
-        audioController.playPause()
+        audioController?.playPause()
     }
 
     // MARK: -

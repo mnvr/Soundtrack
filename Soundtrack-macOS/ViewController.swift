@@ -13,21 +13,16 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
     @IBOutlet weak var songTextField: NSTextField!
     @IBOutlet weak var artistTextField: NSTextField!
     @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
-
     var statusItem: NSStatusItem?
 
-    private var audioController: AudioController!
-
+    let configuration = Configuration.shared
+    private var audioController: AudioController?
     private var isPlaying: Bool = false
     private var currentPlaybackAttempt: Int = 0
     private var lastTitle: String?
-
     private var togglePlaybackMenuItemTitle: String?
     private var togglePlaybackMenuItemIsEnabled: Bool?
-
     private var observationContext = 0
-
-    // MARK: -
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +33,17 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
 
         indicateUnavailability()
 
-        let url = Configuration.shared.shoutcastURL
-        audioController = makePlaybackController(url: url)
+        tryMakeAudioController()
     }
 
     deinit {
         unobserveUserDefaultsController()
+    }
+
+    func tryMakeAudioController() {
+        if let url = configuration.shoutcastURL {
+            audioController = makePlaybackController(url: url)
+        }
     }
 
     private func makePlaybackController(url: URL) -> AudioController {
@@ -59,13 +59,13 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
     @IBAction func play(_ sender: NSButton) {
         log.info("User pressed play")
         prepareForPlaybackStart()
-        audioController.playPause()
+        audioController?.playPause()
     }
 
     @IBAction func pause(_ sender: NSGestureRecognizer) {
         log.info("User clicked inside the window")
         prepareForPlaybackStop()
-        audioController.playPause()
+        audioController?.playPause()
     }
 
     @IBAction func togglePlayback(_ sender: NSMenuItem) {
@@ -87,7 +87,7 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
 
     private func toggle() {
         isPlaying ? prepareForPlaybackStop() : prepareForPlaybackStart()
-        audioController.playPause()
+        audioController?.playPause()
     }
 
     // MARK: -
@@ -363,7 +363,10 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         let pasteboard = NSPasteboard.general
         if let urlString = pasteboard.string(forType: .string),
             let url = URL(string: urlString) {
-            NSLog("URL: \(url)")
+            NSLog("URL was pasted: \(url)")
+            configuration.updateShoutcastURL(playlistURL: url) { [weak self] _ in
+                self?.tryMakeAudioController()
+            }
         }
     }
 }

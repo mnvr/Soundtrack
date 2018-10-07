@@ -7,30 +7,50 @@
 import Foundation
 
 class Configuration {
-
     static let shared = Configuration()
 
-    var shoutcastURL: URL {
-        if let urls = userDefaultsShoutcastURLs, let url = urls.random {
-            return url
-        } else {
-            fatalError("Please configure a SHOUTcast URL. You can use the following command: defaults write com.github.mnvr.Soundtrack.Soundtrack-macOS shoutcastURLs -array \"http://your-shoutcast-or-icecast-endpoint.com/\"")
-        }
-    }
-
-    private enum UserDefaultsKey: String {
-        case shoutcastURLs
-    }
-
-    private var userDefaultsShoutcastURLs: [URL]? {
-        let key = UserDefaultsKey.shoutcastURLs.rawValue
-        let array = UserDefaults.standard.array(forKey: key)
-        return array?.compactMap { element in
-            if let string = element as? String {
+    private(set) var shoutcastURL: URL? {
+        get {
+            if let string = UserDefaults.standard.string(forKey: "shoutcastURL") {
                 return URL(string: string)
             }
             return nil
         }
+        set {
+            UserDefaults.standard.set(newValue?.absoluteString, forKey: "shoutcastURL")
+        }
     }
 
+    func updateShoutcastURL(playlistURL: URL, completion: @escaping (Bool) -> Void) {
+        let task = URLSession.shared.dataTask(with: playlistURL) { [weak self] data, urlResponse, error in
+            if let data = data, let string = String(data: data, encoding: .utf8) {
+                self?.updateShoutcastURL(playlistContents: string, completion: completion)
+            } else {
+                NSLog("Failed to obtain contents of playlist from url \(playlistURL): \(String(describing: error))")
+                completion(false)
+            }
+        }
+        task.resume()
+    }
+
+    private func updateShoutcastURL(playlistContents: String, completion: @escaping (Bool) -> Void) {
+        NSLog("Got playlist contents: \(playlistContents)")
+        var url: URL?
+        for line in playlistContents.split(separator: "\n") {
+            let components = line.split(separator: "=")
+            if let key = components.first, let value = components.last,
+                key == "File1" {
+                url = URL(string: String(value))
+                break
+            }
+        }
+
+        if let url = url {
+            NSLog("Was able to extract shoutcast URL from playlist: \(url)")
+            shoutcastURL = url
+            completion(true)
+        } else {
+            completion(false)
+        }
+    }
 }
