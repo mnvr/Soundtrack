@@ -7,14 +7,12 @@
 import Cocoa
 
 class ViewController: NSViewController, NSUserInterfaceValidations, AudioControllerDelegate, StreamPlayerDelegate {
-
     @IBOutlet weak var playButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     @IBOutlet weak var titleStackView: NSStackView!
     @IBOutlet weak var songTextField: NSTextField!
     @IBOutlet weak var artistTextField: NSTextField!
     @IBOutlet weak var clickGestureRecognizer: NSClickGestureRecognizer!
-    @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
 
     var statusItem: NSStatusItem?
 
@@ -33,8 +31,6 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        togglePlaybackMenuItem = (NSApp.delegate! as! AppDelegate).togglePlaybackMenuItem
 
         observeUserDefaultsController()
 
@@ -362,4 +358,11 @@ class ViewController: NSViewController, NSUserInterfaceValidations, AudioControl
         }
     }
 
+    @objc func paste(_ sender: Any) {
+        let pasteboard = NSPasteboard.general
+        if let urlString = pasteboard.string(forType: .string),
+            let url = URL(string: urlString) {
+            NSLog("URL: \(url)")
+        }
+    }
 }

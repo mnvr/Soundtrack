@@ -8,9 +8,6 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet weak var togglePlaybackMenuItem: NSMenuItem!
-
     func applicationWillFinishLaunching(_ notification: Notification) {
         NSUserDefaultsController.shared.defaults.register(defaults: [
             "showNotifications": true,
@@ -32,6 +29,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         return true
     }
-
 }
 

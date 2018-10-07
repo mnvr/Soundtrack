@@ -56,14 +56,26 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Music" id="zJX-KG-Rj6">
+                            <menuItem title="File" id="zJX-KG-Rj6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Music" id="EAx-Lj-2Ov">
+                                <menu key="submenu" title="File" id="EAx-Lj-2Ov">
                                     <items>
                                         <menuItem title="Play" keyEquivalent=" " id="n4k-ro-mMP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="togglePlayback:" target="Ady-hI-5gd" id="LTI-aX-zqC"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Edit" id="g0M-dS-moX">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Edit" id="5V2-Om-4W4">
+                                    <items>
+                                        <menuItem title="Paste" keyEquivalent="v" id="bAF-yk-KHR">
+                                            <connections>
+                                                <action selector="paste:" target="Ady-hI-5gd" id="Vuq-AP-1Rj"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -140,11 +152,7 @@
                     </connections>
                 </application>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack" customModuleProvider="target">
-                    <connections>
-                        <outlet property="togglePlaybackMenuItem" destination="zJX-KG-Rj6" id="956-t5-0lc"/>
-                    </connections>
-                </customObject>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Soundtrack" customModuleProvider="target"/>
                 <userDefaultsController representsSharedInstance="YES" id="Bn8-jN-r8Z"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
