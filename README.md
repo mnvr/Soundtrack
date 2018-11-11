@@ -18,7 +18,7 @@ It also works on iPhones.
 To set the radio station, paste the URL of the radio station in the
 Soundtrack window. This URL is the HTTP link to the shoutcast playlist
 file, usually ending in ".pls" or ".m3u" (something like
-"http://example.org/station.pls").
+`http://example.org/station.pls`).
 
 [Download](https://github.com/mnvr/Soundtrack/releases/download/v1.0/Soundtrack.zip)
 
